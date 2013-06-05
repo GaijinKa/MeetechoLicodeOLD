@@ -18,7 +18,7 @@ Erizo.VideoPlayer = function (spec) {
     that.id = spec.id;
 
     // Stream that the VideoPlayer will play
-    that.stream = spec.stream.stream;
+    that.stream = spec.stream;
 
     // DOM element in which the VideoPlayer will be appended
     that.elementID = spec.elementID;
@@ -41,12 +41,13 @@ Erizo.VideoPlayer = function (spec) {
         that.parentNode.removeChild(that.div);
     };
 
-    /*window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
         document.getElementById(key).value = unescape(value);
-    });*/
+    });
 
     L.Logger.debug('Creating URL from stream ' + that.stream);
-    that.stream_url = webkitURL.createObjectURL(that.stream);
+	cbURL = URL || webkitURL || mozURL || msURL;
+    that.stream_url = cbURL.createObjectURL(that.stream);
 
     // Container
     that.div = document.createElement('div');
@@ -57,7 +58,7 @@ Erizo.VideoPlayer = function (spec) {
     that.loader = document.createElement('img');
     that.loader.setAttribute('style', 'width: 16px; height: 16px; position: absolute; top: 50%; left: 50%; margin-top: -8px; margin-left: -8px');
     that.loader.setAttribute('id', 'back_' + that.id);
-    that.loader.setAttribute('src', that.url + '/assets/loader.gif');
+    that.loader.setAttribute('src', 'img/loader.gif');
 
     // Video tag
     that.video = document.createElement('video');
@@ -115,12 +116,18 @@ Erizo.VideoPlayer = function (spec) {
 
 
     // Bottom Bar
-    that.bar = new Erizo.Bar({elementID: 'player_' + that.id, id: that.id, stream: spec.stream, video: that.video, options: spec.options});
+    that.bar = new Erizo.Bar({elementID: 'player_' + that.id, id: that.id, video: that.video, options: spec.options});
 
     that.div.onmouseover = onmouseover;
     that.div.onmouseout = onmouseout;
 
-    that.video.src = that.stream_url;
+	//ADDED BY PAOLO
+	if (that.video.mozSrcObject !== undefined) {
+            that.video.mozSrcObject = that.stream;
+    } else {
+            that.video.src = that.stream_url;
+    }
+    //that.video.src = that.stream_url;
 
     return that;
 };

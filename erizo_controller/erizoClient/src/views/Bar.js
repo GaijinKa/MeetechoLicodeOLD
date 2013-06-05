@@ -27,18 +27,18 @@ Erizo.Bar = function (spec) {
 
     // Bottom bar
     that.bar = document.createElement('div');
-    that.bar.setAttribute('style', 'width: 100%; height: 15%; max-height: 30px; position: absolute; bottom: 0; right: 0; background-color: rgba(255,255,255,0.62)');
+    that.bar.setAttribute('style', 'width: 100%; height: 15%; max-height: 30px; position: absolute; bottom: 0; right: 0; background-color: rgba(51,51,51,0.62)');
     that.bar.setAttribute('id', 'subbar_' + that.id);
 
     // Lynckia icon
     that.link = document.createElement('a');
-    that.link.setAttribute('href', 'http://www.lynckia.com/');
+    that.link.setAttribute('href', 'http://www.meetecho.com');
     that.link.setAttribute('target', '_blank');
 
     that.logo = document.createElement('img');
-    that.logo.setAttribute('style', 'width: 100%; height: 100%; max-width: 30px; position: absolute; top: 0; left: 2px;');
-    that.logo.setAttribute('alt', 'Lynckia');
-    that.logo.setAttribute('src', that.url + '/assets/star.svg');
+    that.logo.setAttribute('style', 'width: 10%; height: 100%; max-width: 30px; position: absolute; top: 0; left: 2px;');
+    that.logo.setAttribute('alt', 'Meetecho');
+    that.logo.setAttribute('src', 'img/logo_mb.png');
 
     // Private functions
     show = function (displaying) {
@@ -68,7 +68,7 @@ Erizo.Bar = function (spec) {
 
     // Speaker component
     if (spec.options === undefined || spec.options.speaker === undefined || spec.options.speaker === true) {
-        that.speaker = new Erizo.Speaker({elementID: 'subbar_' + that.id, id: that.id, stream: spec.stream, video: spec.video});
+        that.speaker = new Erizo.Speaker({elementID: 'subbar_' + that.id, id: that.id, video: spec.video});
     }
 
     that.display();
