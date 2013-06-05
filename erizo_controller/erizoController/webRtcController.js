@@ -70,6 +70,12 @@ exports.WebRtcController = function () {
             }, INTERVAL_TIME_SDP);
     };
 
+    
+    initWebRtpRecorder = function (rtcrec, callback) {
+        //rtcrec.init();
+        callback();
+    };
+    
     /*
      * Gets SDP from roap message.
      */
