@@ -285,36 +285,6 @@ var listen = function () {
 
         });
 
-        //Gets 'record' messages on the socket in order add a recorder to a determined stream (to).
-        socket.on('record', function (to) {
-
-            if (socket.room.streams[to] === undefined) {
-                return;
-            }
-
-            if (socket.room.streams[to].hasAudio() || socket.room.streams[to].hasVideo()) {
-                console.log("Socket gets recorder message correctly");
-            	socket.room.webRtcController.addRecorder(to, function () {
-            		console.log("STUB : Recorder instantiate correctly to "+to);
-            	});
-            }
-
-        });
-        
-        //Gets 'stoprecord' messages on the socket in order add a recorder to a determined stream (to).
-        socket.on('stoprecord', function (to) {
-
-            if (socket.room.streams[to] === undefined) {
-                return;
-            }
-
-            if (socket.room.streams[to].hasAudio() || socket.room.streams[to].hasVideo()) {
-                console.log("Socket gets stop recorder message correctly");
-            	//socket.room.webRtcController.addRecorder(socket.id, to);
-            }
-
-        });
-        
         //Gets 'unpublish' messages on the socket in order to remove a stream from the room.
         socket.on('unpublish', function (streamId) {
             var i, index;
