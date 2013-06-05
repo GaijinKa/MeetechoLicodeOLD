@@ -11,7 +11,9 @@ exports.WebRtcController = function () {
         subscribers = {},
         // {id: OneToManyProcessor}
         publishers = {},
-
+        // {id: OneToManyProcessor}
+        recorder = {},
+        
         INTERVAL_TIME_SDP = 100,
         INTERVAL_TIME_FIR = 100,
         waitForFIR,
@@ -161,6 +163,28 @@ exports.WebRtcController = function () {
         }
     };
 
+    /*
+     * Adds a subscriber to the room. This creates a new WebRtcConnection. 
+     * This WebRtcConnection will be added to the subscribers list of the
+     * OneToManyProcessor.
+     */
+    that.addRecorder = function (to, callback) {
+
+    	if (publishers[to] !== undefined && recorder[to] === undefined) {
+
+            console.log("Adding recorder to ", to);
+            var rtcrec = "";//new addon.RTPRecorder();
+            recorder[to] = true;
+            //publishers[to].addRecorder(rtcrec);  //lo sto prima associando e poi inizializzando
+            initWebRtpRecorder(rtcrec, function () {
+            	console.log("recorder initialized correctly")
+            });
+
+            console.log('Recorder: ', recorder);
+            callback(); //Questa callback passata da erizoController (il log) ed in questo caso viene chiamata sempre 
+        }
+    };
+    
     /*
      * Removes a publisher from the room. This also deletes the associated OneToManyProcessor.
      */
