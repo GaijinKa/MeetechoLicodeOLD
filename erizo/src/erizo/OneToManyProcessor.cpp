@@ -48,7 +48,7 @@ namespace erizo {
   int OneToManyProcessor::receiveVideoData(char* buf, int len) {
 
 	if (recorder!=NULL) {
-		printf("Received video data\n");
+		printf("Received video data: %s\n",buf);
 	}
     if (subscribers.empty() || len <= 0)
       return 0;
