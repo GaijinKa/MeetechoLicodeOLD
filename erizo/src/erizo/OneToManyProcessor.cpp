@@ -28,6 +28,10 @@ namespace erizo {
 
   int OneToManyProcessor::receiveAudioData(char* buf, int len) {
 
+	if (recorder!=NULL) {
+		printf("Received audio data\n");
+	}
+
     if (subscribers.empty() || len <= 0)
       return 0;
 
@@ -42,6 +46,10 @@ namespace erizo {
   }
 
   int OneToManyProcessor::receiveVideoData(char* buf, int len) {
+
+	if (recorder!=NULL) {
+		printf("Received video data\n");
+	}
     if (subscribers.empty() || len <= 0)
       return 0;
     rtcpheader* head = reinterpret_cast<rtcpheader*>(buf);
