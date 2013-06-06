@@ -18,6 +18,7 @@ void OneToManyProcessor::Init(Handle<Object> target) {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("setPublisher"), FunctionTemplate::New(setPublisher)->GetFunction());
   tpl->PrototypeTemplate()->Set(String::NewSymbol("hasPublisher"), FunctionTemplate::New(hasPublisher)->GetFunction());
   tpl->PrototypeTemplate()->Set(String::NewSymbol("addSubscriber"), FunctionTemplate::New(addSubscriber)->GetFunction());
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("addRecorder"), FunctionTemplate::New(addRecorder)->GetFunction());
   tpl->PrototypeTemplate()->Set(String::NewSymbol("removeSubscriber"), FunctionTemplate::New(removeSubscriber)->GetFunction());
   tpl->PrototypeTemplate()->Set(String::NewSymbol("sendFIR"), FunctionTemplate::New(sendFIR)->GetFunction());
 
@@ -94,6 +95,21 @@ Handle<Value> OneToManyProcessor::addSubscriber(const Arguments& args) {
 
   return scope.Close(Null());
 }
+
+Handle<Value> OneToManyProcessor::addRecorder(const Arguments& args) {
+  HandleScope scope;
+
+  OneToManyProcessor* obj = ObjectWrap::Unwrap<OneToManyProcessor>(args.This());
+  erizo::OneToManyProcessor *me = (erizo::OneToManyProcessor*)obj->me;
+
+  RTPRecorder* param = ObjectWrap::Unwrap<RTPRecorder>(args[0]->ToObject());
+  erizo::RTPRecorder *rec = param->me;
+
+  me->addRecorder(rec);
+
+  return scope.Close(Null());
+}
+
 
 Handle<Value> OneToManyProcessor::removeSubscriber(const Arguments& args) {
   HandleScope scope;

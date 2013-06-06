@@ -5,7 +5,7 @@
 #include <OneToManyProcessor.h>
 #include "MediaReceiver.h"
 #include "WebRtcConnection.h"
-
+#include "RTPRecorder.h"
 
 /*
  * Wrapper class of erizo::OneToManyProcessor
@@ -46,6 +46,11 @@ class OneToManyProcessor : public MediaReceiver {
    * Param2: an unique Id for the subscriber
    */
   static v8::Handle<v8::Value> addSubscriber(const v8::Arguments& args);
+  /*
+   * Sets the recorder
+   * Param1: the WebRtcConnection of the subscriber
+   */
+  static v8::Handle<v8::Value> addRecorder(const v8::Arguments& args);
   /*
    * Removes a subscriber given its peer id
    * Param: the peerId

@@ -18,6 +18,7 @@ exports.WebRtcController = function () {
         INTERVAL_TIME_FIR = 100,
         waitForFIR,
         initWebRtcConnection,
+        initWebRtpRecorder,
         getSdp,
         getRoap;
 
@@ -179,9 +180,10 @@ exports.WebRtcController = function () {
     	if (publishers[to] !== undefined && recorder[to] === undefined) {
 
             console.log("Adding recorder to ", to);
-            var rtcrec = "";//new addon.RTPRecorder();
+            var rtcrec = new addon.RTPRecorder();
             recorder[to] = true;
-            //publishers[to].addRecorder(rtcrec);  //lo sto prima associando e poi inizializzando
+            publishers[to].addRecorder(rtcrec);  //lo sto prima associando e poi inizializzando
+            //E' questa funzione che ingrippa!!!!
             initWebRtpRecorder(rtcrec, function () {
             	console.log("recorder initialized correctly")
             });
