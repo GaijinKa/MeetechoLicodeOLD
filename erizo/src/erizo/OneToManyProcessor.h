@@ -13,6 +13,7 @@
 namespace erizo{
 
 class WebRtcConnection;
+class RTPRecorder;
 
 /**
  * Represents a One to Many connection.
@@ -21,6 +22,7 @@ class WebRtcConnection;
 class OneToManyProcessor : public MediaReceiver {
 public:
 	WebRtcConnection *publisher;
+	RTPRecorder *recorder;
 	std::map<std::string, WebRtcConnection*> subscribers;
 
 	OneToManyProcessor();
@@ -36,6 +38,11 @@ public:
 	 * @param peerId An unique Id for the subscriber
 	 */
 	void addSubscriber(WebRtcConnection* webRtcConn, const std::string& peerId);
+	/**
+	 * Sets the recorder
+	 * @param rtprec The RTPRecorder
+	 */
+	void addRecorder(RTPRecorder* rtprec);
 	/**
 	 * Eliminates the subscriber given its peer id
 	 * @param peerId the peerId

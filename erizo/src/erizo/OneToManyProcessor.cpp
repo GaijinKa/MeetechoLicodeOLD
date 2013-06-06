@@ -4,6 +4,7 @@
 
 #include "OneToManyProcessor.h"
 #include "WebRtcConnection.h"
+#include "RTPRecorder.h"
 
 namespace erizo {
   OneToManyProcessor::OneToManyProcessor() :
@@ -12,6 +13,7 @@ namespace erizo {
       sendVideoBuffer_ = (char*) malloc(2000);
       sendAudioBuffer_ = (char*) malloc(2000);
       publisher = NULL;
+      recorder = NULL;
       sentPackets_ = 0;
 
     }
@@ -91,6 +93,12 @@ namespace erizo {
     this->subscribers[peerId] = webRtcConn;
   }
 
+  void OneToManyProcessor::addRecorder(RTPRecorder* rtprec) {
+    printf("Adding recorder\n");
+    this->recorder = rtprec;
+  }
+
+
   void OneToManyProcessor::removeSubscriber(const std::string& peerId) {
 //    if (!rtcpReceiverPeerId_.compare(peerId)){
 //      rtcpReceiverPeerId_.clear();
@@ -110,4 +118,3 @@ namespace erizo {
   }
 
 }/* namespace erizo */
-
