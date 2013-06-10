@@ -7,6 +7,13 @@
 
 namespace erizo {
 
+/* state struct for passing around our handles
+typedef struct {
+  ogg_stream_state *stream;
+  FILE *out;
+  int seq;
+} state;*/
+
   RTPRecorder::RTPRecorder(){
     printf("RTPRecorder constructor called");
     bundle_ = false;
@@ -20,7 +27,7 @@ namespace erizo {
 
 
   bool RTPRecorder::init(const std::string path) {
-	    fprintf(stderr, "initializing RTPRecorder");
+	   /* fprintf(stderr, "initializing RTPRecorder");
 		state *params;
 		ogg_packet *op;
 		params = malloc(sizeof(state));
@@ -44,14 +51,14 @@ namespace erizo {
 		}
 		params->seq = 0;
 
-		/* write stream headers */
+		/* write stream headers
 		op = op_opushead();
 		ogg_stream_packetin(params->stream, op);
 		op_free(op);
 		op = op_opustags();
 		ogg_stream_packetin(params->stream, op);
 		op_free(op);
-		ogg_flush(params);
+		ogg_flush(params);*/
 
 		return true;
   }
