@@ -70,8 +70,8 @@ void op_free(ogg_packet *op) {
 /* manufacture a generic OpusTags packet */
 ogg_packet *op_opustags(void)
 {
-  char *identifier = "OpusTags";
-  char *vendor = "opus rtp packet dump";
+  char *identifier = const_cast<char *>("OpusTags");
+  char *vendor = const_cast<char *>("opus rtp packet dump");
   int size = strlen(identifier) + 4 + strlen(vendor) + 4;
   unsigned char *data = (unsigned char *)malloc(size);
   ogg_packet *op = (ogg_packet *)malloc(sizeof(*op));
