@@ -73,7 +73,7 @@ exports.WebRtcController = function () {
 
     
     initWebRtpRecorder = function (rtcrec, callback) {
-        //rtcrec.init();
+        rtcrec.init(config.erizo.recorderpath+"/test.opus");
         callback();
     };
     
@@ -188,7 +188,7 @@ exports.WebRtcController = function () {
             	console.log("recorder initialized correctly")
             });
 
-            console.log('Recorder: ', recorder);
+            console.log('Recorder: ', recorder.id);
             callback(); //Questa callback passata da erizoController (il log) ed in questo caso viene chiamata sempre 
         }
     };
