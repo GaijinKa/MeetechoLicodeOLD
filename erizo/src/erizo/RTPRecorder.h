@@ -4,7 +4,7 @@
 #include <string>
 #include "MediaDefinitions.h"
 
-typedef struct state;
+struct state;
 
 namespace erizo {
 
