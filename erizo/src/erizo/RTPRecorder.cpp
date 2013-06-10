@@ -60,7 +60,7 @@ namespace erizo {
   void RTPRecorder::close() {
 		fclose(params->out);
 		ogg_stream_destroy(params->stream);
-		free(params);
+		std::free(params);
   }
 
   void RTPRecorder::start() {
