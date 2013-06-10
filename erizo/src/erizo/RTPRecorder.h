@@ -2,6 +2,7 @@
 #define RTPRECORDER_H_
 
 #include <string>
+#include <ogg/ogg.h>
 #include "MediaDefinitions.h"
 
 typedef struct {
