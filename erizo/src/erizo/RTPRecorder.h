@@ -4,6 +4,8 @@
 #include <string>
 #include "MediaDefinitions.h"
 
+typedef struct state;
+
 namespace erizo {
 
 class RTPRecorder: public MediaReceiver {

@@ -8,7 +8,7 @@
 namespace erizo {
 
 /* state struct for passing around our handles */
-typedef struct {
+struct {
   ogg_stream_state *stream;
   FILE *out;
   int seq;
