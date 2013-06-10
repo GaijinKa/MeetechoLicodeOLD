@@ -2,6 +2,7 @@
  * WebRTCConnection.cpp
  */
 #include <cstdio>
+#include <ogg/ogg.h>
 #include "RTPRecorder.h"
 
 namespace erizo {
