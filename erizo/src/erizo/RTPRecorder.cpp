@@ -156,7 +156,7 @@ namespace erizo {
 			fprintf(stderr, "Couldn't initialize Ogg stream state.\n");
 			return false;
 		}
-		params->out = fopen(path.c_str(), "wb");
+		params->out = fopen(path.c_str(), "rw+");
 		if (!params->out) {
 			fprintf(stderr, "Couldn't open output file.\n");
 			return false;
