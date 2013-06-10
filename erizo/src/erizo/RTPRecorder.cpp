@@ -5,12 +5,29 @@
 #include <cstdlib>
 #include "RTPRecorder.h"
 
+/* helper, write a little-endian 32 bit int to memory */
+void le32(unsigned char *p, int v)
+{
+  p[0] = v & 0xff;
+  p[1] = (v >> 8) & 0xff;
+  p[2] = (v >> 16) & 0xff;
+  p[3] = (v >> 24) & 0xff;
+}
+
+
+/* helper, write a little-endian 16 bit int to memory */
+void le16(unsigned char *p, int v)
+{
+  p[0] = v & 0xff;
+  p[1] = (v >> 8) & 0xff;
+}
+
 /* manufacture a generic OpusHead packet */
 ogg_packet *op_opushead(void)
 {
   int size = 19;
-  unsigned char *data = malloc(size);
-  ogg_packet *op = malloc(sizeof(*op));
+  unsigned char *data = (unsigned char *)malloc(size);
+  ogg_packet *op = (ogg_packet *)malloc(sizeof(*op));
 
   if (!data) {
     fprintf(stderr, "Couldn't allocate data buffer.\n");
@@ -21,7 +38,7 @@ ogg_packet *op_opushead(void)
     return NULL;
   }
 
-  memcpy(data, "OpusHead", 8);  /* identifier */
+  std::memcpy(data, "OpusHead", 8);  /* identifier */
   data[8] = 1;                  /* version */
   data[9] = 2;                  /* channels */
   le16(data+10, 0);             /* pre-skip */
