@@ -2,7 +2,7 @@
  * WebRTCConnection.cpp
  */
 #include <cstdio>
-#include <ogg/ogg.h>
+//#include <ogg/ogg.h>
 #include "RTPRecorder.h"
 
 namespace erizo {
@@ -20,7 +20,7 @@ namespace erizo {
 
 
   bool RTPRecorder::init(const std::string path) {
-	    fprintf(stderr, "initializing RTPRecorder");
+/*	    fprintf(stderr, "initializing RTPRecorder");
 		state *params;
 		ogg_packet *op;
 		params = malloc(sizeof(state));
@@ -43,23 +43,23 @@ namespace erizo {
 			return false;
 		}
 		params->seq = 0;
-
+*/
 		/* write stream headers */
-		op = op_opushead();
+/*		op = op_opushead();
 		ogg_stream_packetin(params->stream, op);
 		op_free(op);
 		op = op_opustags();
 		ogg_stream_packetin(params->stream, op);
 		op_free(op);
 		ogg_flush(params);
-
+*/
 		return true;
   }
 
   void RTPRecorder::close() {
-		fclose(params->out);
+/*		fclose(params->out);
 		ogg_stream_destroy(params->stream);
-		free(params);
+		free(params);*/
   }
 
   void RTPRecorder::start() {
