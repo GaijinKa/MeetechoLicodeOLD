@@ -52,7 +52,13 @@ Handle<Value> RTPRecorder::init(const Arguments& args) {
 
   RTPRecorder* obj = ObjectWrap::Unwrap<RTPRecorder>(args.This());
   erizo::RTPRecorder *me = obj->me;
-  me->init();
+
+  v8::String::Utf8Value param(args[0]->ToString());
+
+// convert it to string
+  std::string path = std::string(*param);
+  me->init(path);
+
   return scope.Close(Null());
 }
 

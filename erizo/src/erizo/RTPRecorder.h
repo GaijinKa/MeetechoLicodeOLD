@@ -21,7 +21,7 @@ public:
 	 * Inits the RTPRecorder Interacting with filsystem.
 	 * @return True if the file opens correctly.
 	 */
-	bool init();
+	bool init(const std::string path);
 	/**
 	 * Closes the RTPRecorder.
 	 * The object cannot be used after this call.
