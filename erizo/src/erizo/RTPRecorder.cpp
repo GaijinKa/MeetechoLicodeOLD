@@ -57,6 +57,75 @@ ogg_packet *op_opushead(void)
   return op;
 }
 
+/* free a packet and its contents */
+void op_free(ogg_packet *op) {
+  if (op) {
+    if (op->packet) {
+      std::free(op->packet);
+    }
+    std::free(op);
+  }
+}
+
+/* manufacture a generic OpusTags packet */
+ogg_packet *op_opustags(void)
+{
+  char *identifier = "OpusTags";
+  char *vendor = "opus rtp packet dump";
+  int size = strlen(identifier) + 4 + strlen(vendor) + 4;
+  unsigned char *data = (unsigned char *)malloc(size);
+  ogg_packet *op = (ogg_packet *)malloc(sizeof(*op));
+
+  if (!data) {
+    fprintf(stderr, "Couldn't allocate data buffer.\n");
+    return NULL;
+  }
+  if (!op) {
+    fprintf(stderr, "Couldn't allocate Ogg packet.\n");
+    return NULL;
+  }
+
+  std::memcpy(data, identifier, 8);
+  le32(data + 8, strlen(vendor));
+  std::memcpy(data + 12, vendor, strlen(vendor));
+  le32(data + 12 + strlen(vendor), 0);
+
+  op->packet = data;
+  op->bytes = size;
+  op->b_o_s = 0;
+  op->e_o_s = 0;
+  op->granulepos = 0;
+  op->packetno = 1;
+
+  return op;
+}
+
+/* helper, flush remaining ogg data */
+int ogg_flush(state *params)
+{
+  ogg_page page;
+  size_t written;
+
+  if (!params || !params->stream || !params->out) {
+    return -1;
+  }
+
+  while (ogg_stream_flush(params->stream, &page)) {
+    written = fwrite(page.header, 1, page.header_len, params->out);
+    if (written != (size_t)page.header_len) {
+      fprintf(stderr, "Error writing Ogg page header\n");
+      return -2;
+    }
+    written = fwrite(page.body, 1, page.body_len, params->out);
+    if (written != (size_t)page.body_len) {
+      fprintf(stderr, "Error writing Ogg page body\n");
+      return -3;
+    }
+  }
+
+  return 0;
+}
+
 namespace erizo {
 
   RTPRecorder::RTPRecorder(){
