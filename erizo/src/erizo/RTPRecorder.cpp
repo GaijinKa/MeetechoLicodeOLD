@@ -19,6 +19,7 @@ namespace erizo {
 
 
   bool RTPRecorder::init(const std::string path) {
+	    fprintf(stderr, "initializing RTPRecorder");
 		state *params;
 		ogg_packet *op;
 		params = malloc(sizeof(state));
