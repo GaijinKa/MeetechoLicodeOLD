@@ -8,11 +8,6 @@
 namespace erizo {
 
 /* state struct for passing around our handles */
-struct {
-  ogg_stream_state *stream;
-  FILE *out;
-  int seq;
-} state;
 
   RTPRecorder::RTPRecorder(){
     printf("RTPRecorder constructor called");

@@ -4,7 +4,11 @@
 #include <string>
 #include "MediaDefinitions.h"
 
-struct state;
+typedef struct {
+	ogg_stream_state *stream;
+	FILE *out;
+	int seq;
+} state;
 
 namespace erizo {
 
@@ -55,6 +59,7 @@ private:
 	int bundle_;
 	MediaReceiver* audioReceiver_;
 	MediaReceiver* videoReceiver_;
+	state* params;
 	};
 }
 #endif /* RTPRECORDER_H_ */
