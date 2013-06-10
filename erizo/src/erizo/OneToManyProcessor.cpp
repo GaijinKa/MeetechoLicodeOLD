@@ -29,7 +29,7 @@ namespace erizo {
   int OneToManyProcessor::receiveAudioData(char* buf, int len) {
 
 	if (recorder!=NULL) {
-		printf("Received audio data\n");
+		recorder->receiveAudioData(buf, len);
 	}
 
     if (subscribers.empty() || len <= 0)
@@ -48,7 +48,7 @@ namespace erizo {
   int OneToManyProcessor::receiveVideoData(char* buf, int len) {
 
 	if (recorder!=NULL) {
-		printf("Received video data: %s\n",buf);
+		recorder->receiveVideoData(buf, len);
 	}
     if (subscribers.empty() || len <= 0)
       return 0;

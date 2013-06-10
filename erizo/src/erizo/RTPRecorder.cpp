@@ -79,7 +79,7 @@ namespace erizo {
   }
 
   int RTPRecorder::receiveAudioData(char* buf, int len) {
-
+	  printf("RTPRecorder received video %d \n", len);
   }
   int RTPRecorder::receiveVideoData(char* buf, int len) {
 	  printf("RTPRecorder received video %d \n", len);
