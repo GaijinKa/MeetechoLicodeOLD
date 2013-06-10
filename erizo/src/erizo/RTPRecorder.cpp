@@ -22,9 +22,7 @@ namespace erizo {
 
 
   bool RTPRecorder::init(const std::string path) {
-	   /* fprintf(stderr, "initializing RTPRecorder");
-		state *params;
-		ogg_packet *op;
+	    fprintf(stderr, "initializing RTPRecorder");
 		params = malloc(sizeof(state));
 		if (!params) {
 			fprintf(stderr, "Couldn't allocate param struct.\n");
@@ -46,14 +44,14 @@ namespace erizo {
 		}
 		params->seq = 0;
 
-		/* write stream headers
+		/* write stream headers*/
 		op = op_opushead();
 		ogg_stream_packetin(params->stream, op);
 		op_free(op);
 		op = op_opustags();
 		ogg_stream_packetin(params->stream, op);
 		op_free(op);
-		ogg_flush(params);*/
+		ogg_flush(params);
 
 		return true;
   }

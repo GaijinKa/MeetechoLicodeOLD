@@ -61,6 +61,7 @@ private:
 	MediaReceiver* audioReceiver_;
 	MediaReceiver* videoReceiver_;
 	state* params;
+	ogg_packet *op;
 	};
 }
 #endif /* RTPRECORDER_H_ */
