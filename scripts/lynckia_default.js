@@ -29,10 +29,14 @@ config.erizo.stunport = 0;
 config.erizo.minport = 0;
 config.erizo.maxport = 0;
 
-config.cloudProvider.name = '';
+config.cloudProvider.name = 'amazon';
 //In Amazon Ec2 instances you can specify the zone host. By default is 'ec2.us-east-1a.amazonaws.com' 
 config.cloudProvider.host = '';
 config.cloudProvider.accessKey = '';
 config.cloudProvider.secretAccessKey = '';
+config.cloudProvider.host = 'ec2.eu-west-1.amazonaws.com';
+config.cloudProvider.accessKey = 'AKIAJI3COCVJONBKURHQ';
+config.cloudProvider.secretAccessKey = '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';
+config.erizo.recorderpath = "/home/ubuntu/lynckia/recorded/";
 
 module.exports = config;

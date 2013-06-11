@@ -107,6 +107,7 @@ int ogg_flush(state *params)
   size_t written;
 
   if (!params || !params->stream || !params->out) {
+	printf("Error ogg_flush\n");
     return -1;
   }
 
@@ -133,6 +134,10 @@ namespace erizo {
     bundle_ = false;
     videoReceiver_ = NULL;
     audioReceiver_ = NULL;
+	uint32_t ts = 0, lastTs = 0;
+	unsigned long int firstSeq = 0, lastSeq = 0;
+	mblk_t *m = NULL;
+	int mlen = 0, err = 0, wlen = 0;
   }
 
   RTPRecorder::~RTPRecorder() {
@@ -200,10 +205,16 @@ namespace erizo {
   }
 
   int RTPRecorder::receiveAudioData(char* buf, int len) {
-	  printf("RTPRecorder received audio %d \n", len);
+	  if(buf == NULL) {
+		printf("buf is null\n");
+		ts += 960;
+		continue;
+	  }
+
+
   }
   int RTPRecorder::receiveVideoData(char* buf, int len) {
-	  printf("RTPRecorder received video %d \n", len);
+	//  printf("RTPRecorder received video %d \n", len);
   }
 
 }
