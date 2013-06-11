@@ -62,6 +62,10 @@ private:
 	MediaReceiver* videoReceiver_;
 	state* params;
 	ogg_packet *op;
+	mblk_t *m;
+	uint32_t ts, lastTs;
+	unsigned long int firstSeq, lastSeq;
+	int mlen, err, wlen;
 	};
 }
 #endif /* RTPRECORDER_H_ */

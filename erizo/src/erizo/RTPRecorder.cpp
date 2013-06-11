@@ -134,10 +134,10 @@ namespace erizo {
     bundle_ = false;
     videoReceiver_ = NULL;
     audioReceiver_ = NULL;
-	uint32_t ts = 0, lastTs = 0;
-	unsigned long int firstSeq = 0, lastSeq = 0;
-	mblk_t *m = NULL;
-	int mlen = 0, err = 0, wlen = 0;
+	ts = 0, lastTs = 0;
+	firstSeq = 0, lastSeq = 0;
+	m = NULL;
+	mlen = 0, err = 0, wlen = 0;
   }
 
   RTPRecorder::~RTPRecorder() {
@@ -208,7 +208,7 @@ namespace erizo {
 	  if(buf == NULL) {
 		printf("buf is null\n");
 		ts += 960;
-		continue;
+		return NULL;
 	  }
 
 
