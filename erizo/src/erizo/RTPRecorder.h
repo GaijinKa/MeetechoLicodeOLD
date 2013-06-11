@@ -11,6 +11,29 @@ typedef struct {
 	int seq;
 } state;
 
+typedef struct rtp_header
+{
+#if __BYTE_ORDER == __BIG_ENDIAN
+        uint16_t version:2;
+        uint16_t padbit:1;
+        uint16_t extbit:1;
+        uint16_t cc:4;
+        uint16_t markbit:1;
+        uint16_t paytype:7;
+#else
+        uint16_t cc:4;
+        uint16_t extbit:1;
+        uint16_t padbit:1;
+        uint16_t version:2;
+        uint16_t paytype:7;
+        uint16_t markbit:1;
+#endif
+        uint16_t seq_number;
+        uint32_t timestamp;
+        uint32_t ssrc;
+        uint32_t csrc[16];
+} rtp_header_t;
+
 namespace erizo {
 
 class RTPRecorder: public MediaReceiver {

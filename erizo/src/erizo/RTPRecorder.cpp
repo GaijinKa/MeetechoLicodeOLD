@@ -100,6 +100,22 @@ ogg_packet *op_opustags(void)
   return op;
 }
 
+ogg_packet *op_from_pkt(const unsigned char *pkt, int len)
+{
+  ogg_packet *op = malloc(sizeof(*op));
+  if (!op) {
+    printf("Couldn't allocate Ogg packet.\n");
+    return NULL;
+  }
+
+  op->packet = (unsigned char *)pkt;
+  op->bytes = len;
+  op->b_o_s = 0;
+  op->e_o_s = 0;
+
+  return op;
+}
+
 /* helper, flush remaining ogg data */
 int ogg_flush(state *params)
 {
@@ -204,15 +220,19 @@ namespace erizo {
   }
 
   int RTPRecorder::receiveAudioData(char* buf, int len) {
+
 	  if(buf == NULL) {
 		printf("buf is null\n");
 		ts += 960;
 		return len; //FIXME ?? che devo far ritornare?
 	  }
+	  lastSeq =  ((rtp_header_t*)buf)->seq_number;
+	  if(firstSeq == 0) {
+	  		firstSeq = lastSeq;
+	  		printf("First seq: %d\n", firstSeq);
+	  }
 
-      packet p_;
-      memset(p_.data, 0, len);
-      memcpy(p_.data, buf, len);
+	  ogg_packet *op = op_from_pkt(buf, len);
 
   }
   int RTPRecorder::receiveVideoData(char* buf, int len) {
