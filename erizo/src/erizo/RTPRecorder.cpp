@@ -31,11 +31,11 @@ ogg_packet *op_opushead(void)
   ogg_packet *op = (ogg_packet *)malloc(sizeof(*op));
 
   if (!data) {
-    fprintf(stderr, "Couldn't allocate data buffer.\n");
+    printf("Couldn't allocate data buffer.\n");
     return NULL;
   }
   if (!op) {
-    fprintf(stderr, "Couldn't allocate Ogg packet.\n");
+    printf("Couldn't allocate Ogg packet.\n");
     return NULL;
   }
 
@@ -77,11 +77,11 @@ ogg_packet *op_opustags(void)
   ogg_packet *op = (ogg_packet *)malloc(sizeof(*op));
 
   if (!data) {
-    fprintf(stderr, "Couldn't allocate data buffer.\n");
+    printf("Couldn't allocate data buffer.\n");
     return NULL;
   }
   if (!op) {
-    fprintf(stderr, "Couldn't allocate Ogg packet.\n");
+    printf("Couldn't allocate Ogg packet.\n");
     return NULL;
   }
 
@@ -113,12 +113,12 @@ int ogg_flush(state *params)
   while (ogg_stream_flush(params->stream, &page)) {
     written = fwrite(page.header, 1, page.header_len, params->out);
     if (written != (size_t)page.header_len) {
-      fprintf(stderr, "Error writing Ogg page header\n");
+      printf("Error writing Ogg page header\n");
       return -2;
     }
     written = fwrite(page.body, 1, page.body_len, params->out);
     if (written != (size_t)page.body_len) {
-      fprintf(stderr, "Error writing Ogg page body\n");
+      printf("Error writing Ogg page body\n");
       return -3;
     }
   }
@@ -141,36 +141,36 @@ namespace erizo {
 
 
   bool RTPRecorder::init(std::string path) {
-	    /*fprintf(stderr, "initializing RTPRecorder");
+	    printf("initializing RTPRecorder");
 		params = (state *)malloc(sizeof(state));
 		if (!params) {
-			fprintf(stderr, "Couldn't allocate param struct.\n");
+			printf("Couldn't allocate param struct.\n");
 			return false;
 		}
 		params->stream = (ogg_stream_state *)malloc(sizeof(ogg_stream_state));
 		if (!params->stream) {
-			fprintf(stderr, "Couldn't allocate stream struct.\n");
+			printf("Couldn't allocate stream struct.\n");
 			return false;
 		}
 		if (ogg_stream_init(params->stream, rand()) < 0) {
-			fprintf(stderr, "Couldn't initialize Ogg stream state.\n");
+			printf("Couldn't initialize Ogg stream state.\n");
 			return false;
 		}
 		params->out = fopen(path.c_str(), "rw+");
 		if (!params->out) {
-			fprintf(stderr, "Couldn't open output file.\n");
+			printf("Couldn't open output file.\n");
 			return false;
 		}
 		params->seq = 0;
 
 		/* write stream headers*/
-		/*op = op_opushead();
+		op = op_opushead();
 		ogg_stream_packetin(params->stream, op);
 		op_free(op);
 		op = op_opustags();
 		ogg_stream_packetin(params->stream, op);
 		op_free(op);
-		ogg_flush(params);*/
+		ogg_flush(params);
 
 		return true;
   }
