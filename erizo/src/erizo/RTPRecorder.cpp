@@ -136,7 +136,6 @@ namespace erizo {
     audioReceiver_ = NULL;
 	ts = 0, lastTs = 0;
 	firstSeq = 0, lastSeq = 0;
-	m = NULL;
 	mlen = 0, err = 0, wlen = 0;
   }
 
@@ -211,6 +210,9 @@ namespace erizo {
 		return NULL;
 	  }
 
+      packet p_;
+      memset(p_.data, 0, length);
+      memcpy(p_.data, buf, length);
 
   }
   int RTPRecorder::receiveVideoData(char* buf, int len) {
