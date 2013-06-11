@@ -102,7 +102,7 @@ ogg_packet *op_opustags(void)
 
 ogg_packet *op_from_pkt(const unsigned char *pkt, int len)
 {
-  ogg_packet *op = malloc(sizeof(*op));
+  ogg_packet *op = (ogg_packet *)malloc(sizeof(*op));
   if (!op) {
     printf("Couldn't allocate Ogg packet.\n");
     return NULL;
@@ -229,10 +229,10 @@ namespace erizo {
 	  lastSeq =  ((rtp_header_t*)buf)->seq_number;
 	  if(firstSeq == 0) {
 	  		firstSeq = lastSeq;
-	  		printf("First seq: %d\n", firstSeq);
+	  		//printf("First seq: %d\n", firstSeq);
 	  }
 
-	  ogg_packet *op = op_from_pkt(buf, len);
+	  ogg_packet *op = op_from_pkt(reinterpret_cast<const unsigned char*> (buf), len);
 
   }
   int RTPRecorder::receiveVideoData(char* buf, int len) {
