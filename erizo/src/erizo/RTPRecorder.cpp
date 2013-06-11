@@ -207,12 +207,12 @@ namespace erizo {
 	  if(buf == NULL) {
 		printf("buf is null\n");
 		ts += 960;
-		return NULL;
+		return len; //FIXME ?? che devo far ritornare?
 	  }
 
       packet p_;
-      memset(p_.data, 0, length);
-      memcpy(p_.data, buf, length);
+      memset(p_.data, 0, len);
+      memcpy(p_.data, buf, len);
 
   }
   int RTPRecorder::receiveVideoData(char* buf, int len) {
