@@ -331,7 +331,7 @@ var listen = function () {
 
             if (socket.room.streams[to].hasAudio() || socket.room.streams[to].hasVideo()) {
                 console.log("Socket gets stop recorder message correctly");
-            	//socket.room.webRtcController.addRecorder(socket.id, to);
+            	socket.room.webRtcController.removeRecorder(to);
             }
 
         });

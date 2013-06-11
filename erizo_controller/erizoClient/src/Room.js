@@ -327,6 +327,24 @@ Erizo.Room = function (spec) {
         }
     };
 
+    // Start Recording
+    that.record = function (stream) {
+        sendMessageSocket('startrec', stream.getID(), function () {
+        	L.Logger.info("start recording correctly");
+        }, function () {
+        	L.Logger.error("start recording failed");
+        });
+    };
+
+    // Stop Recording
+    that.stoprecord = function (stream) {
+        sendMessageSocket('stoprec', stream.getID(), function () {
+        	L.Logger.info("stop recording correctly");
+        }, function () {
+        	L.Logger.error("stop recording failed");
+        });
+    };
+
     //It searchs the streams that have "name" attribute with "value" value
     that.getStreamsByAttribute = function (name, value) {
 

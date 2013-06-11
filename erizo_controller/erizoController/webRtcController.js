@@ -220,6 +220,19 @@ exports.WebRtcController = function () {
     };
 
     /*
+     * Removes a subscriber from the room. This also removes it from the associated OneToManyProcessor.
+     */
+    that.removeRecorder = function (to) {
+
+        if (recorder[to]) {
+            console.log('Removing Recorder from muxer ', to);
+            publishers[to].removeRecorder();
+            recorder[to] = false;
+        }
+    };
+
+    
+    /*
      * Removes a client from the session. This removes the publisher and all the subscribers related.
      */
     that.removeClient = function (from, streamId) {
