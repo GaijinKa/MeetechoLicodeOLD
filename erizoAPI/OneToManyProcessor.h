@@ -60,7 +60,7 @@ class OneToManyProcessor : public MediaReceiver {
    * Removes a recorder
    * Param: none
    */
-  static v8::Handle<v8::Value> removeSubscriber(const v8::Arguments& args);
+  static v8::Handle<v8::Value> removeRecorder(const v8::Arguments& args);
   /*
    * Ask the publisher to send a FIR packet
    */
