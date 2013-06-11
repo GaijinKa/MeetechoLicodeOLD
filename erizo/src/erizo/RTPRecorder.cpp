@@ -255,11 +255,11 @@ namespace erizo {
 	  lastSeq =  ((rtp_header_t*)buf)->seq_number;
 	  if(firstSeq == 0) {
 	  		firstSeq = lastSeq;
-	  		printf("First seq: %u\n", firstSeq);
+	  		printf("First seq: %lu\n", firstSeq);
 	  }
 
 	  ogg_packet *op = op_from_pkt(reinterpret_cast<const unsigned char*> (buf), len);
-	  printf("\t\tWriting at position %u (%u)\n", lastSeq-firstSeq+1, 960*(lastSeq-firstSeq+1));
+	  printf("\t\tWriting at position %lu (%lu)\n", lastSeq-firstSeq+1, 960*(lastSeq-firstSeq+1));
 	  op->granulepos = 960*(lastSeq-firstSeq+1); // FIXME: get this from the toc byte
 	  ogg_stream_packetin(params->stream, op);
 	  std::free(op);
