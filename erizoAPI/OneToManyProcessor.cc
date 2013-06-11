@@ -20,6 +20,7 @@ void OneToManyProcessor::Init(Handle<Object> target) {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("addSubscriber"), FunctionTemplate::New(addSubscriber)->GetFunction());
   tpl->PrototypeTemplate()->Set(String::NewSymbol("addRecorder"), FunctionTemplate::New(addRecorder)->GetFunction());
   tpl->PrototypeTemplate()->Set(String::NewSymbol("removeSubscriber"), FunctionTemplate::New(removeSubscriber)->GetFunction());
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("removeRecorder"), FunctionTemplate::New(removeRecorder)->GetFunction());
   tpl->PrototypeTemplate()->Set(String::NewSymbol("sendFIR"), FunctionTemplate::New(sendFIR)->GetFunction());
 
   Persistent<Function> constructor = Persistent<Function>::New(tpl->GetFunction());
@@ -123,6 +124,17 @@ Handle<Value> OneToManyProcessor::removeSubscriber(const Arguments& args) {
 // convert it to string
   std::string peerId = std::string(*param1);
   me->removeSubscriber(peerId);
+
+  return scope.Close(Null());
+}
+
+Handle<Value> OneToManyProcessor::removeRecorder(const Arguments& args) {
+  HandleScope scope;
+
+  OneToManyProcessor* obj = ObjectWrap::Unwrap<OneToManyProcessor>(args.This());
+  erizo::OneToManyProcessor *me = (erizo::OneToManyProcessor*)obj->me;
+
+  me->removeRecorder();
 
   return scope.Close(Null());
 }

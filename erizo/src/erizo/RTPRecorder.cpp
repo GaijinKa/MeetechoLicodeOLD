@@ -116,6 +116,32 @@ ogg_packet *op_from_pkt(const unsigned char *pkt, int len)
   return op;
 }
 
+/* helper, write out available ogg pages */
+int ogg_write(state *params)
+{
+  ogg_page page;
+  size_t written;
+
+  if (!params || !params->stream || !params->out) {
+    return -1;
+  }
+
+  while (ogg_stream_pageout(params->stream, &page)) {
+    written = fwrite(page.header, 1, page.header_len, params->out);
+    if (written != (size_t)page.header_len) {
+      printf("Error writing Ogg page header\n");
+      return -2;
+    }
+    written = fwrite(page.body, 1, page.body_len, params->out);
+    if (written != (size_t)page.body_len) {
+      printf("Error writing Ogg page body\n");
+      return -3;
+    }
+  }
+
+  return 0;
+}
+
 /* helper, flush remaining ogg data */
 int ogg_flush(state *params)
 {
@@ -233,7 +259,13 @@ namespace erizo {
 	  }
 
 	  ogg_packet *op = op_from_pkt(reinterpret_cast<const unsigned char*> (buf), len);
-
+	  printf("\t\tWriting at position %d (%d)\n", lastSeq-firstSeq+1, 960*(lastSeq-firstSeq+1));
+	  op->granulepos = 960*(lastSeq-firstSeq+1); // FIXME: get this from the toc byte
+	  ogg_stream_packetin(params->stream, op);
+	  std::free(op);
+	  ogg_write(params);
+	  ts += 960;
+	  return 0;
   }
   int RTPRecorder::receiveVideoData(char* buf, int len) {
 	//  printf("RTPRecorder received video %d \n", len);

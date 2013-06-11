@@ -42,6 +42,11 @@ public:
 	 * Sets the recorder
 	 * @param rtprec The RTPRecorder
 	 */
+	void removeRecorder();
+	/**
+	 * Sets the recorder
+	 * @param rtprec The RTPRecorder
+	 */
 	void addRecorder(RTPRecorder* rtprec);
 	/**
 	 * Eliminates the subscriber given its peer id
