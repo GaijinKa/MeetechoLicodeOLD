@@ -156,10 +156,12 @@ namespace erizo {
 			printf("Couldn't initialize Ogg stream state.\n");
 			return false;
 		}
-		params->out = fopen(path.c_str(), "rw+");
+		params->out = fopen(path.c_str(), "w+");
 		if (!params->out) {
 			printf("Couldn't open output file.\n");
 			return false;
+		} else {
+			printf("File opened in %s.\n",path.c_str());
 		}
 		params->seq = 0;
 

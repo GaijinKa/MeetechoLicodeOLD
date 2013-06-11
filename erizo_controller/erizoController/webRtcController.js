@@ -188,7 +188,7 @@ exports.WebRtcController = function () {
             	console.log("recorder initialized correctly")
             });
 
-            console.log('Recorder: ', recorder.id);
+            console.log('Recorder: ', recorder);
             callback(); //Questa callback passata da erizoController (il log) ed in questo caso viene chiamata sempre 
         }
     };
