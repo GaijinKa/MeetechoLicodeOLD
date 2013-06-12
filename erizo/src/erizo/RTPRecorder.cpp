@@ -267,7 +267,7 @@ namespace erizo {
 	    	printf("Maybe we must use videorecorder here?");
 	    } else {
 	    	printf("Not Bundle");
-	    	rtpheader* inHead = reinterpret_cast<rtpheader*> (buf);
+	    	rtp_header_t* inHead = reinterpret_cast<rtp_header_t*> (buf);
 	    	inHead->ssrc = htonl("444444"); //localAudioSsrc_
 	    	if (len <= 10) {
 	    		printf("Packet length < 10");
