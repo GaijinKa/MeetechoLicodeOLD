@@ -274,7 +274,7 @@ namespace erizo {
   }
 
   void RTPRecorder::setBundle(int bund) {
-	  printf("setting recorder bundle to %b \n", bund);
+	  printf("setting recorder bundle to %d \n", bund);
 	  bundle_ = bund;
   }
 
