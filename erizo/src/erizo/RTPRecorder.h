@@ -65,6 +65,10 @@ public:
 	 * Stops the RTPRecorder.
 	 */
 	void stop();
+	/**
+	 * set bundle_ var.
+	 */
+	void setBundle(int bund);
 
 	int receiveAudioData(char* buf, int len);
 	int receiveVideoData(char* buf, int len);

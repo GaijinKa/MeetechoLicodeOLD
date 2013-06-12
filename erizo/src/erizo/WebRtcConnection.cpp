@@ -77,6 +77,10 @@ namespace erizo {
     }
   }
 
+  int WebRtcConnection::isBundle() {
+	  return bundle_;
+  }
+
   bool WebRtcConnection::setRemoteSdp(const std::string &sdp) {
     printf("Set Remote SDP\n %s", sdp.c_str());
     remoteSdp_.initWithSdp(sdp);

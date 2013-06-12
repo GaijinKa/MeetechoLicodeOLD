@@ -252,7 +252,7 @@ namespace erizo {
 		ts += 960;
 		return len; //FIXME ?? che devo far ritornare?
 	  }
-	  lastSeq =  ((rtp_header_t*)buf)->seq_number;
+	  lastSeq = ((rtp_header_t*)buf)->seq_number;
 	  if(firstSeq == 0) {
 	  		firstSeq = lastSeq;
 	  		printf("First seq: %lu\n", firstSeq);
@@ -266,9 +266,16 @@ namespace erizo {
 	  ogg_write(params);
 	  ts += 960;
 	  return 0;
+
   }
+
   int RTPRecorder::receiveVideoData(char* buf, int len) {
 	//  printf("RTPRecorder received video %d \n", len);
+  }
+
+  void RTPRecorder::setBundle(int bund) {
+	  printf("setting recorder bundle to %b \n", bund);
+	  bundle_ = bund;
   }
 
 }

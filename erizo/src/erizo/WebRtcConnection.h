@@ -68,6 +68,11 @@ public:
 	 * @return The SDP as a string.
 	 */
 	std::string getLocalSdp();
+	/**
+	 * Obtains the local SDP.
+	 * @return The SDP as a string.
+	 */
+	int isBundle();
 
 	int receiveAudioData(char* buf, int len);
 	int receiveVideoData(char* buf, int len);

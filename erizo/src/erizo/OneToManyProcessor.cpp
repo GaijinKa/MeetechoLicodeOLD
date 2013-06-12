@@ -103,6 +103,7 @@ namespace erizo {
 
   void OneToManyProcessor::addRecorder(RTPRecorder* rtprec) {
     printf("Adding recorder\n");
+    rtprec->setBundle(this->publisher->isBundle());
     this->recorder = rtprec;
   }
 
