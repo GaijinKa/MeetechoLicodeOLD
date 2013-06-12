@@ -269,7 +269,7 @@ namespace erizo {
 	    } else {
 	    	printf("Not Bundle");
 	    	rtp_header_t* inHead = reinterpret_cast<rtp_header_t*> (buf);
-	    	inHead->ssrc = std::htonl(44444); //localAudioSsrc_
+	    	inHead->ssrc = htonl(44444); //localAudioSsrc_
 	    	if (len <= 10) {
 	    		printf("Packet length < 10");
 	    		return len;
