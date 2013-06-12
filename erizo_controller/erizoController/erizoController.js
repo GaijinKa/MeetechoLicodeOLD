@@ -307,7 +307,7 @@ var listen = function () {
         });
 
         //Gets 'record' messages on the socket in order add a recorder to a determined stream (to).
-        socket.on('record', function (to) {
+        socket.on('startrec', function (to) {
 
             if (socket.room.streams[to] === undefined) {
                 return;
@@ -323,7 +323,7 @@ var listen = function () {
         });
         
         //Gets 'stoprecord' messages on the socket in order add a recorder to a determined stream (to).
-        socket.on('stoprecord', function (to) {
+        socket.on('stoprec', function (to) {
 
             if (socket.room.streams[to] === undefined) {
                 return;
