@@ -258,13 +258,31 @@ namespace erizo {
 	  		printf("First seq: %lu\n", firstSeq);
 	  }
 
-	  ogg_packet *op = op_from_pkt(reinterpret_cast<const unsigned char*> (buf)+12, len-12);
-	  printf("\t\tWriting at position %lu (%lu)\n", lastSeq-firstSeq+1, 960*(lastSeq-firstSeq+1));
-	  op->granulepos = 960*(lastSeq-firstSeq+1); // FIXME: get this from the toc byte
-	  ogg_stream_packetin(params->stream, op);
-	  std::free(op);
-	  ogg_write(params);
-	  ts += 960;
+	    if (bundle_){
+	    	printf("Recorder for Bundle Communication");
+	    	if (len <= 10) {
+	    		printf("Packet length < 10");
+	    		return len;
+	    	}
+	    	printf("Maybe we must use videorecorder here?");
+	    } else {
+	    	printf("Not Bundle");
+	    	rtpheader* inHead = reinterpret_cast<rtpheader*> (buf);
+	    	inHead->ssrc = htonl("444444"); //localAudioSsrc_
+	    	if (len <= 10) {
+	    		printf("Packet length < 10");
+	    		return len;
+	    	}
+
+	    	ogg_packet *op = op_from_pkt(reinterpret_cast<const unsigned char*> (buf)+12, len-12);
+	    	printf("\t\tWriting at position %lu (%lu)\n", lastSeq-firstSeq+1, 960*(lastSeq-firstSeq+1));
+	    	op->granulepos = 960*(lastSeq-firstSeq+1); // FIXME: get this from the toc byte
+	    	ogg_stream_packetin(params->stream, op);
+	    	std::free(op);
+	    	ogg_write(params);
+	    	ts += 960;
+	    }
+
 	  return 0;
 
   }
