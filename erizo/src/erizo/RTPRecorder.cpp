@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+#include <netinet/in.h>
 #include "RTPRecorder.h"
 
 /* helper, write a little-endian 32 bit int to memory */
