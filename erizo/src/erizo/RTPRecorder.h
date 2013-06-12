@@ -72,6 +72,7 @@ public:
 
 	int receiveAudioData(char* buf, int len);
 	int receiveVideoData(char* buf, int len);
+
 	/**
 	 * Sets a MediaReceiver that is going to receive Audio Data
 	 * @param receiv The MediaReceiver to send audio to.

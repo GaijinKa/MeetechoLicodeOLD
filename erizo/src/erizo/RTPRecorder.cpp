@@ -260,16 +260,24 @@ namespace erizo {
 	  }
 
 	    if (bundle_){
-	    	printf("Recorder for Bundle Communication");
+	    	printf("Recorder for Bundle Communication\n");
 	    	if (len <= 10) {
 	    		printf("Packet length < 10");
 	    		return len;
 	    	}
-	    	printf("Maybe we must use videorecorder here?");
+
+	    	ogg_packet *op = op_from_pkt(reinterpret_cast<const unsigned char*> (buf)+12, len-12);
+	    	printf("\t\tWriting at position %lu (%lu)\n", lastSeq-firstSeq+1, 960*(lastSeq-firstSeq+1));
+	    	op->granulepos = 960*(lastSeq-firstSeq+1); // FIXME: get this from the toc byte
+	    	ogg_stream_packetin(params->stream, op);
+	    	std::free(op);
+	    	ogg_write(params);
+	    	ts += 960;
+
 	    } else {
 	    	printf("Not Bundle");
 	    	rtp_header_t* inHead = reinterpret_cast<rtp_header_t*> (buf);
-	    	inHead->ssrc = htonl(44444); //localAudioSsrc_
+	    	inHead->ssrc = htonl(44444);
 	    	if (len <= 10) {
 	    		printf("Packet length < 10");
 	    		return len;
