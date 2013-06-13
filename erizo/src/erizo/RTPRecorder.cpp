@@ -269,11 +269,11 @@ namespace erizo {
       paytype = ((rtp_header_t*)buf)->paytype;
 
 
-      blockcount = reinterpret_cast<rtcpheader*>buf->blockcount;
-      padding = reinterpret_cast<rtcpheader*>buf->padding;
-      versionrtcp = reinterpret_cast<rtcpheader*>buf->versionrtcp;
-      packettype = reinterpret_cast<rtcpheader*>buf->packettype;
-      length = reinterpret_cast<rtcpheader*>bufbuf)->length;
+      blockcount = ((rtcpheader*)buf)->blockcount;
+      padding = ((rtcpheader*)buf)->padding;
+      versionrtcp = ((rtcpheader*)buf)->version;
+      packettype = ((rtcpheader*)buf)->packettype;
+      length = ((rtcpheader*)buf)->length;
 
 	  printf("Stampa pacchetto RTP: \n");
 	  printf(" Version : %u \n Padding : %u \n Mark : %u \n PayloadType : %u \n Ext : %u \n CC : %u \n ",
