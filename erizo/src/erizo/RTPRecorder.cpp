@@ -260,9 +260,9 @@ namespace erizo {
 	  }
 
 	  printf("Stampa pacchetto: \n");
-	  printf(" Version : %lu \n Padding : %lu \n Mark : %lu \n PayloadType : %lu \n Ext : %lu \n CC : %lu \n ",
-			  ((rtp_header_t*)buf)->version, (rtp_header_t*)buf)->padbit, (rtp_header_t*)buf)->markbit, (rtp_header_t*)buf)->paytype, (rtp_header_t*)buf)->cc;
-	  printf(" Seq_num : %lu \n timestamp: %lu \n ssrc: %lu \n csrc : %lu \n ",
+	  printf(" Version : %i \n Padding : %i \n Mark : %i \n PayloadType : %i \n Ext : %i \n CC : %i \n ",
+			  ((rtp_header_t*)buf)->version, (rtp_header_t*)buf)->padbit, (rtp_header_t*)buf)->markbit, (rtp_header_t*)buf)->paytype, (rtp_header_t*)buf)->cc);
+	  printf(" Seq_num : %i \n timestamp: %i \n ssrc: %i \n csrc : %i \n ",
 			  ((rtp_header_t*)buf)->seq_number, (rtp_header_t*)buf)->timestamp, (rtp_header_t*)buf)->ssrc, (rtp_header_t*)buf)->csrc);
 
 
