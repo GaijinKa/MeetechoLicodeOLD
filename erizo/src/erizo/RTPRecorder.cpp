@@ -260,13 +260,13 @@ namespace erizo {
 	  }
 
 
-	  ssrc = (rtp_header_t*)buf)->ssrc;
-	  version = (rtp_header_t*)buf)->version;
-      padbit = (rtp_header_t*)buf)->padbit;
-      extbit = (rtp_header_t*)buf)->extbit;
-      cc = (rtp_header_t*)buf)->cc;
-      markbit = (rtp_header_t*)buf)->markbit;
-      paytype = (rtp_header_t*)buf)->paytype;
+	  ssrc = ((rtp_header_t*)buf)->ssrc;
+	  version = ((rtp_header_t*)buf)->version;
+      padbit = ((rtp_header_t*)buf)->padbit;
+      extbit = ((rtp_header_t*)buf)->extbit;
+      cc = ((rtp_header_t*)buf)->cc;
+      markbit = ((rtp_header_t*)buf)->markbit;
+      paytype = ((rtp_header_t*)buf)->paytype;
 
 	  printf("Stampa pacchetto: \n");
 	  printf(" Version : %u \n Padding : %u \n Mark : %u \n PayloadType : %u \n Ext : %u \n CC : %u \n ",
