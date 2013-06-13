@@ -85,12 +85,13 @@ namespace erizo {
         if (!printedAudio) {
           sdp << "m=audio " << cand.hostPort
             << " RTP/" << (profile==SAVPF?"SAVPF ":"AVPF ");// << "103 104 0 8 106 105 13 126\n"
-          for (unsigned int it =0; it<payloadVector_.size(); it++){
+          sdp << " 111";
+          /*for (unsigned int it =0; it<payloadVector_.size(); it++){
             const RtpMap& payload_info = payloadVector_[it];
             if (payload_info.mediaType == AUDIO_TYPE)
               sdp << payload_info.payloadType <<" ";
 
-          }
+          }*/
           sdp << "\n"
             << "c=IN IP4 " << cand.hostAddress
             << endl << "a=rtcp:" << candidateVector_[0].hostPort
