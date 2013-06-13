@@ -22,7 +22,7 @@ typedef struct {
   uint32_t fractionLost:8;
 } rtcpheader;
 
-/*typedef struct rtp_header
+typedef struct rtp_header
 {
 #if __BYTE_ORDER == __BIG_ENDIAN
         uint16_t version:2;
@@ -43,19 +43,8 @@ typedef struct {
         uint32_t timestamp;
         uint32_t ssrc;
         uint32_t csrc[16];
-} rtp_header_t;*/
+} rtp_header_t;
 
-#define RTP_HEADER_MIN 12
-typedef struct {
-  int version;
-  int type;
-  int pad, ext, cc, mark;
-  int seq, time;
-  int ssrc;
-  int *csrc;
-  int header_size;
-  int payload_size;
-} rtp_header;
 
 namespace erizo {
 
@@ -92,7 +81,7 @@ public:
 	 * set bundle_ var.
 	 */
 	void setBundle(int bund);
-	int parse_rtp_header(const unsigned char *packet, int size, rtp_header *rtp);
+
 	int receiveAudioData(char* buf, int len);
 	int receiveVideoData(char* buf, int len);
 
@@ -114,9 +103,7 @@ private:
 	state* params;
 	ogg_packet *op;
 	uint32_t ts, lastTs, ssrc, blockcount, padding, versionrtcp, packettype, length;
-	//uint16_t version, padbit, extbit, cc, markbit, paytype, seq_number;
-	uint16_t seq_number;
-	int version, padbit, extbit, cc, markbit, paytype, seqnumber, hSize;
+	uint16_t version, padbit, extbit, cc, markbit, paytype, seq_number;
 	unsigned long int firstSeq, lastSeq;
 	int mlen, err, wlen;
 	};
