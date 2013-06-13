@@ -268,10 +268,22 @@ namespace erizo {
       markbit = ((rtp_header_t*)buf)->markbit;
       paytype = ((rtp_header_t*)buf)->paytype;
 
-	  printf("Stampa pacchetto: \n");
+
+      blockcount = ((rtcpheader*)buf)->blockcount;
+      padding = ((rtcpheader*)buf)->blockcount;
+      versionrtcp = ((rtcpheader*)buf)->blockcount;
+      packettype = ((rtcpheader*)buf)->blockcount;
+      length = ((rtcpheader*)buf)->length;
+
+	  printf("Stampa pacchetto RTP: \n");
 	  printf(" Version : %u \n Padding : %u \n Mark : %u \n PayloadType : %u \n Ext : %u \n CC : %u \n ",
 			  version, padbit, markbit, paytype, extbit, cc);
-//	  printf(" Version : %i \n Padding : %i \n Mark : %i \n PayloadType : %i \n Ext : %i \n CC : %i \n ",
+
+	  printf("Stampa pacchetto RTCP: \n");
+	  printf(" Version : %lu \n Padding : %lu \n packettype : %lu \n length : %lu \n Blockcount : %lu \n ",
+			  versionrtcp, padding, packettype, length, blockcount);
+
+	  //	  printf(" Version : %i \n Padding : %i \n Mark : %i \n PayloadType : %i \n Ext : %i \n CC : %i \n ",
 //			  ((rtp_header_t*)buf)->version, (rtp_header_t*)buf)->padbit, (rtp_header_t*)buf)->markbit, (rtp_header_t*)buf)->paytype, (rtp_header_t*)buf)->cc);
 //	  printf(" Seq_num : %i \n timestamp: %i \n ssrc: %i \n csrc : %i \n ",
 //			  ((rtp_header_t*)buf)->seq_number, (rtp_header_t*)buf)->timestamp, (rtp_header_t*)buf)->ssrc, (rtp_header_t*)buf)->csrc);
