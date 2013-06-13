@@ -143,6 +143,36 @@ int ogg_write(state *params)
   return 0;
 }
 
+int parse_rtp_header(const unsigned char *packet, int size, rtp_header *rtp)
+{
+  if (!packet || !rtp) {
+    return -2;
+  }
+  if (size < RTP_HEADER_MIN) {
+    fprintf(stderr, "Packet too short for rtp\n");
+    return -1;
+  }
+  rtp->version = (packet[0] >> 6) & 3;
+  rtp->pad = (packet[0] >> 5) & 1;
+  rtp->ext = (packet[0] >> 4) & 1;
+  rtp->cc = packet[0] & 7;
+  rtp->header_size = 12 + 4 * rtp->cc;
+  rtp->payload_size = size - rtp->header_size;
+
+  rtp->mark = (packet[1] >> 7) & 1;
+  rtp->type = (packet[1]) & 127;
+  rtp->seq  = rbe16(packet + 2);
+  rtp->time = rbe32(packet + 4);
+  rtp->ssrc = rbe32(packet + 8);
+  rtp->csrc = NULL;
+  if (size < rtp->header_size) {
+    fprintf(stderr, "Packet too short for RTP header\n");
+    return -1;
+  }
+
+  return 0;
+}
+
 /* helper, flush remaining ogg data */
 int ogg_flush(state *params)
 {
@@ -259,14 +289,19 @@ namespace erizo {
 	  		printf("First seq: %lu\n", firstSeq);
 	  }
 
+	  rtp_header *rtpH = new rtp_header();
+	  int res = parse_rtp_header(reinterpret_cast<const unsigned char*> buf, len, rtpH);
 
-	  ssrc = ((rtp_header_t*)buf)->ssrc;
-	  version = ((rtp_header_t*)buf)->version;
-      padbit = ((rtp_header_t*)buf)->padbit;
-      extbit = ((rtp_header_t*)buf)->extbit;
-      cc = ((rtp_header_t*)buf)->cc;
-      markbit = ((rtp_header_t*)buf)->markbit;
-      paytype = ((rtp_header_t*)buf)->paytype;
+
+	  ssrc = rtpH->ssrc;
+	  version = rtpH->version;
+      padbit = rtpH->pad;
+      extbit = rtpH->ext;
+      cc = rtpH->cc;
+      markbit = rtpH->mark;
+      paytype = rtpH->type;
+      seqnumber = rtpH->seq;
+      hSize = rtpH->header_size;
 
 
       blockcount = ((rtcpheader*)buf)->blockcount;
@@ -276,8 +311,8 @@ namespace erizo {
       length = ((rtcpheader*)buf)->length;
 
 	  printf("Stampa pacchetto RTP: \n");
-	  printf(" Version : %u \n Padding : %u \n Mark : %u \n PayloadType : %u \n Ext : %u \n CC : %u \n ",
-			  version, padbit, markbit, paytype, extbit, cc);
+	  printf(" Version : %d \n Padding : %d \n Mark : %d \n PayloadType : %d \n Ext : %d \n CC : %d \n, Header Size : %d \n ",
+			  version, padbit, markbit, paytype, extbit, cc, hSize);
 
 	  printf("Stampa pacchetto RTCP: \n");
 	  printf(" Version : %u \n Padding : %u \n packettype : %u \n length : %u \n Blockcount : %u \n ",
