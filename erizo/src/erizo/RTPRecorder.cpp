@@ -266,7 +266,7 @@ namespace erizo {
 	    		return len;
 	    	}
 
-	    	ogg_packet *op = op_from_pkt(reinterpret_cast<const unsigned char*> (buf)+12, len-12);
+	    	ogg_packet *op = op_from_pkt((const char *)(buf+12), len-12);
 	    	printf("\t\tWriting at position %lu (%lu)\n", lastSeq-firstSeq+1, 960*(lastSeq-firstSeq+1));
 	    	op->granulepos = 960*(lastSeq-firstSeq+1); // FIXME: get this from the toc byte
 	    	ogg_stream_packetin(params->stream, op);
