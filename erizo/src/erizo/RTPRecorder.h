@@ -92,7 +92,7 @@ public:
 	 * set bundle_ var.
 	 */
 	void setBundle(int bund);
-	int parse_rtp_header(const unsigned char *packet, int size, rtp_header *rtp)
+	int parse_rtp_header(const unsigned char *packet, int size, rtp_header *rtp);
 	int receiveAudioData(char* buf, int len);
 	int receiveVideoData(char* buf, int len);
 
