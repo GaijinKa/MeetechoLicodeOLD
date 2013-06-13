@@ -270,7 +270,7 @@ namespace erizo {
 
 	  printf("Stampa pacchetto: \n");
 	  printf(" Version : %u \n Padding : %u \n Mark : %u \n PayloadType : %u \n Ext : %u \n CC : %u \n ",
-			  version, padbit, markbit, extbit, cc);
+			  version, padbit, markbit, paytype, extbit, cc);
 //	  printf(" Version : %i \n Padding : %i \n Mark : %i \n PayloadType : %i \n Ext : %i \n CC : %i \n ",
 //			  ((rtp_header_t*)buf)->version, (rtp_header_t*)buf)->padbit, (rtp_header_t*)buf)->markbit, (rtp_header_t*)buf)->paytype, (rtp_header_t*)buf)->cc);
 //	  printf(" Seq_num : %i \n timestamp: %i \n ssrc: %i \n csrc : %i \n ",
@@ -284,7 +284,7 @@ namespace erizo {
 	    		return len;
 	    	}
 
-	    	ogg_packet *op = op_from_pkt((const char *)(buf+12), len-12);
+	    	ogg_packet *op = op_from_pkt(reinterpret_cast<const unsigned char*> (buf+12), len-12);
 	    	printf("\t\tWriting at position %lu (%lu)\n", lastSeq-firstSeq+1, 960*(lastSeq-firstSeq+1));
 	    	op->granulepos = 960*(lastSeq-firstSeq+1); // FIXME: get this from the toc byte
 	    	ogg_stream_packetin(params->stream, op);
