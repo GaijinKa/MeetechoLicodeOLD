@@ -259,11 +259,22 @@ namespace erizo {
 	  		printf("First seq: %lu\n", firstSeq);
 	  }
 
+
+	  ssrc = (rtp_header_t*)buf)->ssrc;
+	  version = (rtp_header_t*)buf)->version;
+      padbit = (rtp_header_t*)buf)->padbit;
+      extbit = (rtp_header_t*)buf)->extbit;
+      cc = (rtp_header_t*)buf)->cc;
+      markbit = (rtp_header_t*)buf)->markbit;
+      paytype = (rtp_header_t*)buf)->paytype;
+
 	  printf("Stampa pacchetto: \n");
-	  printf(" Version : %i \n Padding : %i \n Mark : %i \n PayloadType : %i \n Ext : %i \n CC : %i \n ",
-			  ((rtp_header_t*)buf)->version, (rtp_header_t*)buf)->padbit, (rtp_header_t*)buf)->markbit, (rtp_header_t*)buf)->paytype, (rtp_header_t*)buf)->cc);
-	  printf(" Seq_num : %i \n timestamp: %i \n ssrc: %i \n csrc : %i \n ",
-			  ((rtp_header_t*)buf)->seq_number, (rtp_header_t*)buf)->timestamp, (rtp_header_t*)buf)->ssrc, (rtp_header_t*)buf)->csrc);
+	  printf(" Version : %u \n Padding : %u \n Mark : %u \n PayloadType : %u \n Ext : %u \n CC : %u \n ",
+			  version, padbit, markbit, extbit, cc);
+//	  printf(" Version : %i \n Padding : %i \n Mark : %i \n PayloadType : %i \n Ext : %i \n CC : %i \n ",
+//			  ((rtp_header_t*)buf)->version, (rtp_header_t*)buf)->padbit, (rtp_header_t*)buf)->markbit, (rtp_header_t*)buf)->paytype, (rtp_header_t*)buf)->cc);
+//	  printf(" Seq_num : %i \n timestamp: %i \n ssrc: %i \n csrc : %i \n ",
+//			  ((rtp_header_t*)buf)->seq_number, (rtp_header_t*)buf)->timestamp, (rtp_header_t*)buf)->ssrc, (rtp_header_t*)buf)->csrc);
 
 
 	    if (bundle_){
