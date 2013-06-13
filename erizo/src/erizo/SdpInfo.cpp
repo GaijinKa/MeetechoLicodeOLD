@@ -86,6 +86,8 @@ namespace erizo {
           sdp << "m=audio " << cand.hostPort
             << " RTP/" << (profile==SAVPF?"SAVPF ":"AVPF ");// << "103 104 0 8 106 105 13 126\n"
           for (unsigned int it =0; it<payloadVector_.size(); it++){
+        	if (it==1 || it==2 || it==3 || it==4)
+        		continue;
             const RtpMap& payload_info = payloadVector_[it];
             if (payload_info.mediaType == AUDIO_TYPE)
               sdp << payload_info.payloadType <<" ";
@@ -127,6 +129,8 @@ namespace erizo {
       }
 
       for (unsigned int it = 0; it < payloadVector_.size(); it++) {
+      	if (it==1 || it==2 || it==3 || it==4)
+      		continue;
         const RtpMap& rtp = payloadVector_[it];
         if (rtp.mediaType==AUDIO_TYPE)// && rtp.encodingName=="opus")
           sdp << "a=rtpmap:"<<rtp.payloadType << " " << rtp.encodingName << "/"
