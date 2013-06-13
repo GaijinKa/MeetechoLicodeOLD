@@ -197,7 +197,14 @@ Erizo.ChromeStableStack = function (spec) {
                 // If not, no change is needed.   
 
                 that.peerConnection.createOffer(function (sessionDescription) {
-
+                	 //TEST PAOLO TODO
+                	sessionDescription.sdp.replace("103 104 0 8 107 106 105 13 126","");
+                	sessionDescription.sdp.replace("a=rtpmap:103 ISAC/16000","");
+                	sessionDescription.sdp.replace("a=rtpmap:103 ISAC/32000","");
+                	sessionDescription.sdp.replace("a=rtpmap:0 PCMU/8000","");
+                	sessionDescription.sdp.replace("a=rtpmap:8 PCMA/8000","");
+                	
+                	
                     var newOffer = sessionDescription.sdp;
 
                     console.log("Changed", sessionDescription.sdp);
