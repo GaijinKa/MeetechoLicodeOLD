@@ -280,7 +280,7 @@ namespace erizo {
 			  version, padbit, markbit, paytype, extbit, cc);
 
 	  printf("Stampa pacchetto RTCP: \n");
-	  printf(" Version : %lu \n Padding : %lu \n packettype : %lu \n length : %lu \n Blockcount : %lu \n ",
+	  printf(" Version : %u \n Padding : %u \n packettype : %u \n length : %u \n Blockcount : %u \n ",
 			  versionrtcp, padding, packettype, length, blockcount);
 
 	  //	  printf(" Version : %i \n Padding : %i \n Mark : %i \n PayloadType : %i \n Ext : %i \n CC : %i \n ",
