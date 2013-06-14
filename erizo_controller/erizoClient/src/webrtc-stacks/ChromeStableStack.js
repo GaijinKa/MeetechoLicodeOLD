@@ -92,7 +92,7 @@ Erizo.ChromeStableStack = function (spec) {
                     sdp: msg.sdp,
                     type: 'answer'
                 };
-                console.log("Received ANSWER: ", sd);
+                console.log("Received ANSWER: ", sd.sdp);
                 that.peerConnection.setRemoteDescription(new RTCSessionDescription(sd));
                 that.sendOK();
                 that.state = 'established';
