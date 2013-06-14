@@ -90,7 +90,8 @@ private:
 	MediaReceiver* videoReceiver_;
 	state* params;
 	ogg_packet *op;
-	uint32_t ts, lastTs;
+	uint32_t ts, lastTs, ssrc, blockcount, padding, versionrtcp, packettype, length;
+	uint16_t version, padbit, extbit, cc, markbit, paytype, seq_number;
 	unsigned long int firstSeq, lastSeq;
 	int mlen, err, wlen;
 	};
