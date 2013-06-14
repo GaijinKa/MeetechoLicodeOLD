@@ -341,7 +341,7 @@ namespace erizo {
 	  const unsigned char *packet;
 	  int size;
 	  rtp_header rtp;
-	  packet = buf;
+	  packet = reinterpret_cast<const unsigned char*> buf;
 	  size = len;
 
 	  if (parse_rtp_header(packet, size, &rtp)) {
