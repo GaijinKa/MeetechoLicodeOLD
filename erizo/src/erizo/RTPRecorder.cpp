@@ -5,6 +5,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <netinet/in.h>
+#include <opus.h>
 #include "RTPRecorder.h"
 
 #define OPUS_PAYLOAD_TYPE 111
@@ -345,7 +346,7 @@ namespace erizo {
 
 	  if (parse_rtp_header(packet, size, &rtp)) {
 	      printf("error parsing rtp header\n");
-	      return;
+	      return len;
 	    }
 	    printf("  rtp 0x%08x %d %d %d",
 	            rtp.ssrc, rtp.type, rtp.seq, rtp.time);
@@ -359,18 +360,18 @@ namespace erizo {
 
 	    if (size < 0) {
 	      printf("skipping short packet\n");
-	      return;
+	      return len;
 	    }
 
 	    if (rtp.seq < params->seq) {
 	      printf("skipping out-of-sequence packet\n");
-	      return;
+	      return len;
 	    }
 	    params->seq = rtp.seq;
 
 	    if (rtp.type != OPUS_PAYLOAD_TYPE) {
 	       printf("skipping non-opus packet\n");
-	       return;
+	       return len;
 	     }
 
 
@@ -397,11 +398,6 @@ namespace erizo {
 
 	    } else {
 	    	printf("Not Bundle");
-	    	rtp_header_t* inHead = reinterpret_cast<rtp_header_t*> (buf);
-	    	if (len <= 10) {
-	    		printf("Packet length < 10");
-	    		return len;
-	    	}
 	    		//Missing
 	    }
 
