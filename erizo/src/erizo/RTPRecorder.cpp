@@ -341,7 +341,7 @@ namespace erizo {
 	  const unsigned char *packet;
 	  int size;
 	  rtp_header rtp;
-	  packet = reinterpret_cast<const unsigned char*> buf;
+	  packet = reinterpret_cast<const unsigned char*> (buf);
 	  size = len;
 
 	  if (parse_rtp_header(packet, size, &rtp)) {
@@ -388,7 +388,7 @@ namespace erizo {
 	    	  params->granulepos += opus_samples(packet, size);
 	    	  op->granulepos = params->granulepos;
 	    	  ogg_stream_packetin(params->stream, op);
-	    	  free(op);
+	    	  std::free(op);
 	    	  ogg_write(params);
 
 	    	  if (size < rtp.payload_size) {
