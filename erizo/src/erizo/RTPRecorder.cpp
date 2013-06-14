@@ -5,7 +5,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <netinet/in.h>
-#include <opus.h>
+#include <opus/opus.h>
 #include "RTPRecorder.h"
 
 #define OPUS_PAYLOAD_TYPE 111
