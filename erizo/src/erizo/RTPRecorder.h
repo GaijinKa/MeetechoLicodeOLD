@@ -34,6 +34,17 @@ typedef struct rtp_header
         uint32_t csrc[16];
 } rtp_header_t;
 
+typedef struct {
+	uint32_t blockcount :5;
+	uint32_t padding :1;
+	uint32_t version :2;
+	uint32_t packettype :8;
+	uint32_t length :16;
+	uint32_t ssrc;
+  uint32_t ssrcsource;
+  uint32_t fractionLost:8;
+} rtcpheader;
+
 namespace erizo {
 
 class RTPRecorder: public MediaReceiver {
