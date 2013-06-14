@@ -9,7 +9,7 @@
 #include <netinet/in.h>
 #include <opus/opus.h>
 #include "RTPRecorder.h"
-
+#include <signal.h>
 
 /******VIDEO RECORDING******/
 /* Create WebM context and file */

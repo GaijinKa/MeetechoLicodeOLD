@@ -3,6 +3,8 @@
 
 #include <string>
 #include <ogg/ogg.h>
+#include <libavcodec/avcodec.h>	/* FFmpeg libavcodec */
+#include <libavformat/avformat.h>	/* FFmpeg libavformat */
 #include "MediaDefinitions.h"
 
 typedef struct {
@@ -91,10 +93,18 @@ private:
 	AVFrame *frame;
 	uint32_t video_ts, video_lastTs, video_pts;
 	unsigned long int lastSeq, now, before, resync;
-
 	mblk_t *m;
-
 	struct timeval tv;
+
+	/* VP8 decoding */
+	AVCodecContext *dec_context;	/* FFmpeg decoding context */
+	int dec_errors;                 /* Number of consecutive decoding errors */
+	AVCodec *dec_codec;		/* FFmpeg decoding codec */
+	/* WebM output */
+	AVFormatContext *fctx;
+	//~ AVFormatParameters parameters;
+	AVStream *vStream;
+	AVCodec *vCodec;
 
 	};
 }
