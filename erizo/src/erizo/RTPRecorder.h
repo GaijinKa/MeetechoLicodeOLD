@@ -93,7 +93,6 @@ private:
 	AVFrame *frame;
 	uint32_t video_ts, video_lastTs, video_pts;
 	unsigned long int lastSeq, now, before, resync;
-	mblk_t *m;
 	struct timeval tv;
 
 	/* VP8 decoding */
