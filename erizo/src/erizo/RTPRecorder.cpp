@@ -9,7 +9,6 @@
 #include "RTPRecorder.h"
 
 
-
 /******AUDIO RECORDING******/
 #define OPUS_PAYLOAD_TYPE 111
 
