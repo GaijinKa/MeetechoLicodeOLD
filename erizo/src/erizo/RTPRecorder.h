@@ -88,7 +88,7 @@ private:
 	ogg_packet *op;
 
 	//video
-	uint8_t *received_frame, *buffer, *start;
+	uint8_t *received_frame, *buffer, *start_f;
 	int frameLen, err, have_more, mlen, marker, wlen, frames, fps, step, vp8gotFirstKey, keyFrame, vp8w, vp8h, numBytes;
 	AVFrame *frame;
 	uint32_t video_ts, video_lastTs, video_pts;

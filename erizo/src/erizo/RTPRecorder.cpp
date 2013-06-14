@@ -392,14 +392,14 @@ namespace erizo {
 		  av_register_all();
      	  uint8_t *received_frame = calloc(numBytes, sizeof(uint8_t));
      	  memset(received_frame, 0, numBytes);
-     	  uint8_t *buffer = calloc(10000, sizeof(uint8_t)), *start = buffer;
+     	  uint8_t *buffer = calloc(10000, sizeof(uint8_t)), *start_f = buffer;
      	  memset(buffer, 0, 10000);
 
      	  //test - inserisco qui l'inizio del fps?
      	  gettimeofday(&tv, NULL);
      	  before = tv.tv_sec*1000 + tv.tv_usec/1000;
           resync = before;
-     	  printf("Starting fps evaluation (start=%lu)...\n", before);
+     	  printf("Starting fps evaluation (start_f=%lu)...\n", before);
 
      	  printf("Waiting for RTP frames...\n");
 
