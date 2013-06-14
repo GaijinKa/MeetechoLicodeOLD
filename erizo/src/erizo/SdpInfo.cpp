@@ -129,7 +129,10 @@ namespace erizo {
         const RtpMap& rtp = payloadVector_[it];
         if (rtp.mediaType==AUDIO_TYPE)// && rtp.encodingName=="opus")
           sdp << "a=rtpmap:"<<rtp.payloadType << " " << rtp.encodingName << "/"
-            << rtp.clockRate <<"/2\n";
+            << rtp.clockRate;
+        if (rtp.encodingName=="opus")
+        	sdp << "/2";
+        sdp << "\n";
 
       }
       sdp << "a=ssrc:" << audioSsrc << " cname:o/i14u9pJrxRKAsu" << endl<<
