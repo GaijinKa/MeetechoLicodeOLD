@@ -6,25 +6,44 @@
 #include "MediaDefinitions.h"
 
 typedef struct {
-  ogg_stream_state *stream;
-  FILE *out;
-  int seq;
-  ogg_int64_t granulepos;
-  int linktype;
+	ogg_stream_state *stream;
+	FILE *out;
+	int seq;
 } state;
 
-#define RTP_HEADER_MIN 12
-typedef struct {
-  int version;
-  int type;
-  int pad, ext, cc, mark;
-  int seq, time;
-  int ssrc;
-  int *csrc;
-  int header_size;
-  int payload_size;
-} rtp_header;
+typedef struct rtp_header
+{
+#if __BYTE_ORDER == __BIG_ENDIAN
+        uint16_t version:2;
+        uint16_t padbit:1;
+        uint16_t extbit:1;
+        uint16_t cc:4;
+        uint16_t markbit:1;
+        uint16_t paytype:7;
+#else
+        uint16_t cc:4;
+        uint16_t extbit:1;
+        uint16_t padbit:1;
+        uint16_t version:2;
+        uint16_t paytype:7;
+        uint16_t markbit:1;
+#endif
+        uint16_t seq_number;
+        uint32_t timestamp;
+        uint32_t ssrc;
+        uint32_t csrc[16];
+} rtp_header_t;
 
+typedef struct {
+	uint32_t blockcount :5;
+	uint32_t padding :1;
+	uint32_t version :2;
+	uint32_t packettype :8;
+	uint32_t length :16;
+	uint32_t ssrc;
+  uint32_t ssrcsource;
+  uint32_t fractionLost:8;
+} rtcpheader;
 
 namespace erizo {
 
