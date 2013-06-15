@@ -94,10 +94,16 @@ private:
 	//video
 	uint8_t *received_frame, *buffer, *start_f;
 	int frameLen, dec_errors, have_more, mlen, marker, wlen, frames, fps, step, vp8gotFirstKey, keyFrame, vp8w, vp8h, numBytes;
-	uint32_t video_ts, video_lastTs, video_pts;
+	uint32_t video_ts, video_lastTs;
 	unsigned long int lastSeq, now, before, resync;
 	struct timeval tv;
 
+	AVCodecContext *dec_context;	/* FFmpeg decoding context */
+	AVCodec *dec_codec;		/* FFmpeg decoding codec */
+	AVFormatContext *fctx;
+	AVStream *vStream;
+	AVCodec *vCodec;
+	AVFrame *frame;
 	};
 }
 #endif /* RTPRECORDER_H_ */

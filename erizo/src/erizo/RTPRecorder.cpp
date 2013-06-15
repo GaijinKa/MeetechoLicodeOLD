@@ -342,9 +342,7 @@ namespace erizo {
 	firstSeq = 0, lastSeq = 0;
  	numBytes = 320*240*3, frameLen = 0, err = 0, have_more = 1, mlen = 0, wlen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
    	*frame = NULL;
-   	ts = 0, lastTs = 0, pts = 0;
-
-   	*m = NULL;
+   	ts = 0, video_lastTs=0;
    	now = 0, before = 0, resync = 0;
   }
 
@@ -388,23 +386,15 @@ namespace erizo {
 		  op_free(op);
 		  ogg_flush(params);
 
-
-			AVCodecContext *dec_context;	/* FFmpeg decoding context */
-			AVCodec *dec_codec;		/* FFmpeg decoding codec */
-			AVFormatContext *fctx;
-			AVStream *vStream;
-			AVCodec *vCodec;
-			AVFrame *frame;
-
 		  //Video Init - test
 		  av_register_all();
-     	  uint8_t *received_frame = calloc(numBytes, sizeof(uint8_t));
+     	  uint8_t *received_frame = (uint8_t *)calloc(numBytes, sizeof(uint8_t));
      	  memset(received_frame, 0, numBytes);
-     	  uint8_t *buffer = calloc(10000, sizeof(uint8_t)), *start_f = buffer;
+     	  uint8_t *buffer = (uint8_t *)calloc(10000, sizeof(uint8_t)), *start_f = buffer;
      	  memset(buffer, 0, 10000);
 
      	  //test - inserisco qui l'inizio del fps?
-     	  gettimeofday(&tv, NULL);
+     	  std::gettimeofday(&tv, NULL);
      	  before = tv.tv_sec*1000 + tv.tv_usec/1000;
           resync = before;
      	  printf("Starting fps evaluation (start_f=%lu)...\n", before);
@@ -658,7 +648,7 @@ namespace erizo {
 				  }
 				  /* Try evaluating the incoming FPS */
 				  frames++;
-				  gettimeofday(&tv, NULL);
+				  std::gettimeofday(&tv, NULL);
 				  now = tv.tv_sec*1000 + tv.tv_usec/1000;
 				  if((now-before) >= 1000) {	/* Evaluate every second */
 					  printf("fps=%d (in %hu ms)\n", frames, now-before);
