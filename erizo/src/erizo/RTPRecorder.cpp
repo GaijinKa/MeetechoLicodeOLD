@@ -388,6 +388,14 @@ namespace erizo {
 		  op_free(op);
 		  ogg_flush(params);
 
+
+			AVCodecContext *dec_context;	/* FFmpeg decoding context */
+			AVCodec *dec_codec;		/* FFmpeg decoding codec */
+			AVFormatContext *fctx;
+			AVStream *vStream;
+			AVCodec *vCodec;
+			AVFrame *frame;
+
 		  //Video Init - test
 		  av_register_all();
      	  uint8_t *received_frame = calloc(numBytes, sizeof(uint8_t));
