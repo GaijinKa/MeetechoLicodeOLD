@@ -94,20 +94,20 @@ private:
 	//video
 	uint8_t *received_frame, *buffer, *start_f;
 	int frameLen, err, have_more, mlen, marker, wlen, frames, fps, step, vp8gotFirstKey, keyFrame, vp8w, vp8h, numBytes;
-	Multimedia::AVFrame *frame;
+	FFmpeg::AVFrame *frame;
 	uint32_t video_ts, video_lastTs, video_pts;
 	unsigned long int lastSeq, now, before, resync;
 	struct timeval tv;
 
 	/* VP8 decoding */
-	Multimedia::AVCodecContext *dec_context;	/* FFmpeg decoding context */
+	FFmpeg::AVCodecContext *dec_context;	/* FFmpeg decoding context */
 	int dec_errors;                 /* Number of consecutive decoding errors */
-	Multimedia::AVCodec *dec_codec;		/* FFmpeg decoding codec */
+	FFmpeg::AVCodec *dec_codec;		/* FFmpeg decoding codec */
 	/* WebM output */
-	Multimedia::AVFormatContext *fctx;
+	FFmpeg::AVFormatContext *fctx;
 	//~ AVFormatParameters parameters;
-	Multimedia::AVStream *vStream;
-	Multimedia::AVCodec *vCodec;
+	FFmpeg::AVStream *vStream;
+	FFmpeg::AVCodec *vCodec;
 
 	};
 }
