@@ -32,9 +32,9 @@ echo [nuve] Setup lynckia files
 
 cd $CURRENT_DIR
 
-sudo dos2unix lynckia/scripts/initMeetechoNode.sh
-sudo chmod 755 lynckia/scripts/initMeetechoNode.sh
+sudo dos2unix /home/ubuntu/lynckia/scripts/initMeetechoNode.sh
+sudo chmod 755 /home/ubuntu/lynckia/scripts/initMeetechoNode.sh
 
-sudo mkdir lynckia/recorded
+sudo mkdir /home/ubuntu/lynckia/recorded
 
 echo [nuve] Lynckia Setted-Up
