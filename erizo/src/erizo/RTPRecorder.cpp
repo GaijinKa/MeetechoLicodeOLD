@@ -530,7 +530,7 @@ namespace erizo {
 	  video_ts = rtp_v.time;
 	  if (video_ts==video_lastTs) { 	//continue encoding
 		  if((rtp_v.seq-lastSeq) > 1)
-			  printf("VIDEO unexpected seq (%d, should have been %d)!\n", rtp_v.seq, lastSeq);
+			  printf("VIDEO unexpected seq (%d, should have been %lu)!\n", rtp_v.seq, lastSeq);
 
 		  lastSeq = rtp_v.seq;
 		  memcpy(buffer, buf, size); //Attenzione Sto copiando già i dati privi di header!
@@ -642,7 +642,7 @@ namespace erizo {
 					  if(av_write_frame(fctx, &packet) < 0)
 						  fprintf(stderr, "Error writing video frame to file...");
 					  else
-						  printf(" ### ### frame written (pts=%lu)...\n", packet.pts);
+						  printf(" ### ### frame written (pts=%d)...\n", packet.pts);
 				  } else {
 					  printf("Still waiting for fps evaluation to create the file...\n");
 				  }
