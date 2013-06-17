@@ -718,6 +718,8 @@ namespace erizo {
 							  fps = 10;
 						  else if(frames > 2)
 							  fps = 5;
+						  else //TEST PER VEDERE SE IL PROB E' QUI
+							  fps = 15;
 						  printf("Creating WebM file: %d fps\n", fps);
 						  create_webm(fps);
 					  }
