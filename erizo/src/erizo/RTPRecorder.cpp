@@ -420,14 +420,6 @@ namespace erizo {
      	  uint8_t *buffer = (uint8_t *)calloc(10000, sizeof(uint8_t)), *start_f = buffer;
      	  memset(buffer, 0, 10000);
 
-     	  //test - inserisco qui l'inizio del fps?
-     	  clock_gettime(CLOCK_MONOTONIC, &tv);
-     	  before = tv.tv_sec*1000 + tv.tv_nsec;
-          resync = before;
-     	  printf("Starting fps evaluation (start_f=%lu)...\n", before);
-
-     	  printf("Waiting for RTP frames...\n");
-
 		return true;
   }
 
@@ -527,6 +519,17 @@ namespace erizo {
   }
 
   int RTPRecorder::receiveVideoData(char* buf, int len) {
+
+	  if (resync==0) {
+    	  //test - inserisco qui l'inizio del fps?
+     	  clock_gettime(CLOCK_MONOTONIC, &tv);
+     	  before = tv.tv_sec*1000 + tv.tv_nsec;
+          resync = before;
+     	  printf("Starting fps evaluation (start_f=%lu)...\n", before);
+
+     	  printf("Waiting for RTP frames...\n");
+	  }
+
 
 	  const unsigned char *packet;
 	  int size;
