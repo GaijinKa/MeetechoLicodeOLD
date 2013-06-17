@@ -5,12 +5,6 @@
 #include <ogg/ogg.h>
 #include "MediaDefinitions.h"
 
-AVCodecContext *dec_context;	/* FFmpeg decoding context */
-AVCodec *dec_codec;		/* FFmpeg decoding codec */
-AVFormatContext *fctx;
-AVStream *vStream;
-AVCodec *vCodec;
-AVFrame *frame;
 
 typedef struct {
   ogg_stream_state *stream;

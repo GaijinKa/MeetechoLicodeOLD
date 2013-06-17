@@ -19,6 +19,14 @@
 #include <signal.h>
 
 /******VIDEO RECORDING******/
+
+AVCodecContext *dec_context;	/* FFmpeg decoding context */
+AVCodec *dec_codec;		/* FFmpeg decoding codec */
+AVFormatContext *fctx;
+AVStream *vStream;
+AVCodec *vCodec;
+AVFrame *frame;
+
 /* WebRTC stuff (VP8) */
 #if defined(__ppc__) || defined(__ppc64__)
 	# define swap2(d)  \
