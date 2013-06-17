@@ -15,20 +15,20 @@
 /* Create WebM context and file */
 int create_webm(int fps) {
 	/* WebM output */
-	fctx = avformat_alloc_context();
-	if(fctx == NULL) {
+	erizo::fctx = avformat_alloc_context();
+	if(erizo::fctx == NULL) {
 		printf("Error allocating context\n");
 		return -1;
 	}
-	//~ fctx->oformat = guess_format("webm", NULL, NULL);
-	fctx->oformat = av_guess_format("webm", NULL, NULL);
-	if(fctx->oformat == NULL) {
+	//~ erizo::fctx->oformat = guess_format("webm", NULL, NULL);
+	erizo::fctx->oformat = av_guess_format("webm", NULL, NULL);
+	if(erizo::fctx->oformat == NULL) {
 		printf("Error guessing format\n");
 		return -1;
 	}
-	snprintf(fctx->filename, sizeof(fctx->filename), "rtpdump-src.webm");
-	//~ vStream = av_new_stream(fctx, 0);
-	vStream = avformat_new_stream(fctx, 0);
+	snprintf(erizo::fctx->filename, sizeof(erizo::fctx->filename), "rtpdump-src.webm");
+	//~ vStream = av_new_stream(erizo::fctx, 0);
+	vStream = avformat_new_stream(erizo::fctx, 0);
 	if(vStream == NULL) {
 		printf("Error adding stream\n");
 		return -1;
@@ -42,20 +42,20 @@ int create_webm(int fps) {
 	vStream->codec->width = 320;
 	vStream->codec->height = 240;
 	vStream->codec->pix_fmt = PIX_FMT_YUV420P;
-	if (fctx->flags & AVFMT_GLOBALHEADER)
+	if (erizo::fctx->flags & AVFMT_GLOBALHEADER)
 		vStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
-	//~ fctx->timestamp = 0;
-	//~ if(url_fopen(&fctx->pb, fctx->filename, URL_WRONLY) < 0) {
-	if(avio_open(&fctx->pb, fctx->filename, AVIO_FLAG_WRITE) < 0) {
+	//~ erizo::fctx->timestamp = 0;
+	//~ if(url_fopen(&erizo::fctx->pb, erizo::fctx->filename, URL_WRONLY) < 0) {
+	if(avio_open(&erizo::fctx->pb, erizo::fctx->filename, AVIO_FLAG_WRITE) < 0) {
 		printf("Error opening file for output\n");
 		return -1;
 	}
 	//~ memset(&parameters, 0, sizeof(AVFormatParameters));
-	//~ av_set_parameters(fctx, &parameters);
-	//~ fctx->preload = (int)(0.5 * AV_TIME_BASE);
-	//~ fctx->max_delay = (int)(0.7 * AV_TIME_BASE);
-	//~ if(av_write_header(fctx) < 0) {
-	if(avformat_write_header(fctx, NULL) < 0) {
+	//~ av_set_parameters(erizo::fctx, &parameters);
+	//~ erizo::fctx->preload = (int)(0.5 * AV_TIME_BASE);
+	//~ erizo::fctx->max_delay = (int)(0.7 * AV_TIME_BASE);
+	//~ if(av_write_header(erizo::fctx) < 0) {
+	if(avformat_write_header(erizo::fctx, NULL) < 0) {
 		printf("Error writing header\n");
 		return -1;
 	}
@@ -64,18 +64,18 @@ int create_webm(int fps) {
 
 /* Close WebM file */
 void close_webm() {
-	if(fctx != NULL)
-		av_write_trailer(fctx);
+	if(erizo::fctx != NULL)
+		av_write_trailer(erizo::fctx);
 	if(vStream->codec != NULL)
 		avcodec_close(vStream->codec);
-	if(fctx->streams[0] != NULL) {
-		av_free(fctx->streams[0]->codec);
-		av_free(fctx->streams[0]);
+	if(erizo::fctx->streams[0] != NULL) {
+		av_free(erizo::fctx->streams[0]->codec);
+		av_free(erizo::fctx->streams[0]);
 	}
-	if(fctx != NULL) {
-		//~ url_fclose(fctx->pb);
-		avio_close(fctx->pb);
-		av_free(fctx);
+	if(erizo::fctx != NULL) {
+		//~ url_fclose(erizo::fctx->pb);
+		avio_close(erizo::fctx->pb);
+		av_free(erizo::fctx);
 	}
 }
 
@@ -638,8 +638,8 @@ namespace erizo {
 				  printf(" ### Writing frame to file...\n");
 				  packet.dts = AV_NOPTS_VALUE;
 				  packet.pts = AV_NOPTS_VALUE;
-				  if(fctx) {
-					  if(av_write_frame(fctx, &packet) < 0)
+				  if(erizo::fctx) {
+					  if(av_write_frame(erizo::fctx, &packet) < 0)
 						  fprintf(stderr, "Error writing video frame to file...");
 					  else
 						  printf(" ### ### frame written (pts=%lu)...\n", packet.pts);
