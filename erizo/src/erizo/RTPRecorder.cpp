@@ -560,7 +560,7 @@ namespace erizo {
 
 		  lastSeq = rtp_v.seq;
 		  printf("VIDEO copying packet in buffer...");
-		  memcpy(&buffer, &packet, size); //Attenzione Sto copiando già i dati privi di header!
+		  memcpy(buffer, packet, size); //Attenzione Sto copiando già i dati privi di header RTP!
 		  printf("VIDEO packet copied in buffer\n");
 		  //First VP8 Header Line
 		  int skipped = 1;
@@ -657,6 +657,7 @@ namespace erizo {
 		  }
 		  /* Frame manipulation */
 		  printf("VIDEO End of all reading, Starting Frame Manipulation..\n");
+
 		  memcpy(received_frame + frameLen, buffer, size);
 		  frameLen += size;
 		  if(rtp_v.mark) {	/* Marker bit is set, the frame is complete */
