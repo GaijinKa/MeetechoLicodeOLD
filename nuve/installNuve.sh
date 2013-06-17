@@ -28,4 +28,13 @@ cd ../nuveClient/tools
 
 echo [nuve] Done, nuve.js compiled
 
+echo [nuve] Setup lynckia files
+
 cd $CURRENT_DIR
+
+sudo dos2unix lynckia/scripts/initMeetechoNode.sh
+sudo chmod 755 lynckia/scripts/initMeetechoNode.sh
+
+sudo mkdir lynckia/recorded
+
+echo [nuve] Lynckia Setted-Up
