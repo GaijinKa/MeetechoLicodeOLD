@@ -11,6 +11,13 @@
 #include <libavformat/avformat.h>	/* FFmpeg libavformat */
 #include "MediaDefinitions.h"
 
+AVCodecContext *dec_context;	/* FFmpeg decoding context */
+AVCodec *dec_codec;		/* FFmpeg decoding codec */
+AVFormatContext *fctx;
+AVStream *vStream;
+AVCodec *vCodec;
+AVFrame *frame;
+
 typedef struct {
   ogg_stream_state *stream;
   FILE *out;
@@ -98,12 +105,6 @@ private:
 	unsigned long int lastSeq, now, before, resync;
 	struct timeval tv;
 
-	AVCodecContext *dec_context;	/* FFmpeg decoding context */
-	AVCodec *dec_codec;		/* FFmpeg decoding codec */
-	AVFormatContext *fctx;
-	AVStream *vStream;
-	AVCodec *vCodec;
-	AVFrame *frame;
 	};
 }
 #endif /* RTPRECORDER_H_ */
