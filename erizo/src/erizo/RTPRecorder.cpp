@@ -35,7 +35,7 @@ int create_webm(int fps) {
 	}
 	//~ avcodec_get_context_defaults2(vStream->codec, CODEC_TYPE_VIDEO);
 	avcodec_get_context_defaults2(vStream->codec, AVMEDIA_TYPE_VIDEO);
-	vStream->codec->codec_id = AV_CODEC_ID_VP8;
+	vStream->codec->codec_id = AVCODEC_ID_VP8;
 	//~ vStream->codec->codec_type = CODEC_TYPE_VIDEO;
 	vStream->codec->codec_type = AVMEDIA_TYPE_VIDEO;
 	vStream->codec->time_base = (AVRational){1, fps};

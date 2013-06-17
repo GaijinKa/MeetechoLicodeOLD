@@ -2,7 +2,6 @@
 #define RTPRECORDER_H_
 
 #include <string>
-#include <time.h>
 #include <ogg/ogg.h>
 #ifndef INT64_C
 #define INT64_C(c) (c ## LL)
