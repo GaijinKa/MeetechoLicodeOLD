@@ -3,6 +3,7 @@
 
 #include <string>
 #include <ogg/ogg.h>
+
 #include <libavcodec/avcodec.h>	/* FFmpeg libavcodec */
 #include <libavformat/avformat.h>	/* FFmpeg libavformat */
 #include "MediaDefinitions.h"
