@@ -103,7 +103,7 @@ private:
 	int frameLen, dec_errors, have_more, marker, frames, fps, step, vp8gotFirstKey, keyFrame, vp8w, vp8h, numBytes;
 	uint32_t video_ts, video_lastTs;
 	unsigned long int lastSeq, now, before, resync;
-	struct timeval tv;
+	struct timespec tv;
 
 	};
 }

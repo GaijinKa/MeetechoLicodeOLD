@@ -4,6 +4,7 @@
  * che identifica lo stream, e questo fa sempre scattare il bundle con i dati.
  */
 #include <cstdio>
+#include <ctime>
 #include <cstring>
 #include <cstdlib>
 #include <netinet/in.h>
@@ -394,8 +395,8 @@ namespace erizo {
      	  memset(buffer, 0, 10000);
 
      	  //test - inserisco qui l'inizio del fps?
-     	  gettimeofday(&tv, NULL);
-     	  before = tv.tv_sec*1000 + tv.tv_usec/1000;
+     	  std::clock_gettime(CLOCK_MONOTONIC, &tv);
+     	  before = tv.tv_sec*1000 + tv.tv_nsec;
           resync = before;
      	  printf("Starting fps evaluation (start_f=%lu)...\n", before);
 
@@ -648,10 +649,10 @@ namespace erizo {
 				  }
 				  /* Try evaluating the incoming FPS */
 				  frames++;
-				  gettimeofday(&tv, NULL);
-				  now = tv.tv_sec*1000 + tv.tv_usec/1000;
+		     	  std::clock_gettime(CLOCK_MONOTONIC, &tv);
+		     	  before = tv.tv_sec*1000 + tv.tv_nsec;
 				  if((now-before) >= 1000) {	/* Evaluate every second */
-					  printf("fps=%d (in %hu ms)\n", frames, now-before);
+					  printf("fps=%d (in %lu ms)\n", frames, now-before);
 					  if(fps == 0) {
 						  /* Adapt framerate: this is just an evaluation (FIXME) */
 						  if(frames > 27)
