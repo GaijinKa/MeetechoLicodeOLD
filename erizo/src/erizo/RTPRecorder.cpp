@@ -560,7 +560,7 @@ namespace erizo {
 			  printf("VIDEO unexpected seq (%d, should have been %lu)!\n", rtp_v.seq, lastSeq);
 
 		  lastSeq = rtp_v.seq;
-		  memcpy(buffer, buf, size); //Attenzione Sto copiando già i dati privi di header!
+		  memcpy(buffer, packet, size); //Attenzione Sto copiando già i dati privi di header!
 		  printf("VIDEO buf copied in buffer\n");
 		  //First VP8 Header Line
 		  int skipped = 1;
