@@ -662,6 +662,7 @@ namespace erizo {
 		  printf("VIDEO End of all reading, Starting Frame Manipulation..\n");
 		  printf("VIDEO frameLen %i\n", frameLen);
 		  printf("VIDEO received_frame %lu\n", received_frame);
+		  printf("VIDEO size %d\n", size);
 		  memcpy(&(received_frame)+frameLen, buffer, size);
 		  frameLen += size;
 		  if(rtp_v.mark) {	/* Marker bit is set, the frame is complete */
