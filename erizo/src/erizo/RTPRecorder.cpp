@@ -13,9 +13,10 @@
 #define INT64_C(c) (c ## LL)
 #define UINT64_C(c) (c ## ULL)
 #endif
+extern "C" {
 #include <libavcodec/avcodec.h>	/* FFmpeg libavcodec */
 #include <libavformat/avformat.h>	/* FFmpeg libavformat */
-#include <boost/thread.hpp>
+}
 #include "RTPRecorder.h"
 #include <signal.h>
 
@@ -413,8 +414,7 @@ namespace erizo {
 		  ogg_flush(params);
 
 		  //Video Init - test
-		  static boost::once_flag flag = BOOST_ONCE_INIT;
-		  boost::call_once([]{av_register_all();}, flag);
+		  av_register_all();
      	  uint8_t *received_frame = (uint8_t *)calloc(numBytes, sizeof(uint8_t));
      	  memset(received_frame, 0, numBytes);
      	  uint8_t *buffer = (uint8_t *)calloc(10000, sizeof(uint8_t)), *start_f = buffer;
