@@ -13,6 +13,17 @@
 #include <signal.h>
 
 /******VIDEO RECORDING******/
+
+
+/* WebRTC stuff (VP8) */
+#if defined(__ppc__) || defined(__ppc64__)
+	# define swap2(d)  \
+	((d&0x000000ff)<<8) |  \
+	((d&0x0000ff00)>>8)
+#else
+	# define swap2(d) d
+#endif
+
 /* Create WebM context and file */
 int create_webm(int fps) {
 	/* WebM output */
