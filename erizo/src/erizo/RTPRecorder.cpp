@@ -340,7 +340,7 @@ namespace erizo {
     videoReceiver_ = NULL;
     audioReceiver_ = NULL;
 	lastSeq = 0;
- 	numBytes = 320*240*3, frameLen = 0, have_more = 1, wlen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
+ 	numBytes = 320*240*3, frameLen = 0, have_more = 1, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
    	frame = NULL;
    	video_ts = 0, video_lastTs=0;
    	now = 0, before = 0, resync = 0;
@@ -673,21 +673,16 @@ namespace erizo {
 					  before = now;
 				  }
 			  }
-			  ts += step;	/* FIXME was 4500, but this implied fps=20 at max */
+			  video_ts += step;	/* FIXME was 4500, but this implied fps=20 at max */
 		  }
 		  if(size == 0)
-			  break;
+			  return size;
 
 	  } else {//restart collection and dump previous buffer on file
 		  video_lastTs = rtp_v.time;
-
-
 		  keyFrame = 0;
 		  frameLen = 0;
 		  have_more = 1;
-		  m = NULL;
-		  mlen = 0;
-		  wlen = 0;
 
 	  }
 
