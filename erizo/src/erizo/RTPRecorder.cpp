@@ -339,10 +339,10 @@ namespace erizo {
     bundle_ = false;
     videoReceiver_ = NULL;
     audioReceiver_ = NULL;
-	firstSeq = 0, lastSeq = 0;
- 	numBytes = 320*240*3, frameLen = 0, err = 0, have_more = 1, mlen = 0, wlen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
-   	*frame = NULL;
-   	ts = 0, video_lastTs=0;
+	lastSeq = 0;
+ 	numBytes = 320*240*3, frameLen = 0, have_more = 1, wlen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
+   	frame = NULL;
+   	video_ts = 0, video_lastTs=0;
    	now = 0, before = 0, resync = 0;
   }
 
@@ -530,7 +530,7 @@ namespace erizo {
 	  video_ts = rtp_v.time;
 	  if (video_ts==video_lastTs) { 	//continue encoding
 		  if((rtp_v.seq-lastSeq) > 1)
-			  printf("VIDEO unexpected seq (%lu, should have been %lu)!\n", rtp_v.seq, lastSeq);
+			  printf("VIDEO unexpected seq (%d, should have been %d)!\n", rtp_v.seq, lastSeq);
 
 		  lastSeq = rtp_v.seq;
 		  memcpy(buffer, buf, size); //Attenzione Sto copiando già i dati privi di header!
@@ -621,7 +621,7 @@ namespace erizo {
 		  memcpy(received_frame + frameLen, buffer, size);
 		  frameLen += size;
 		  if(rtp_v.mark) {	/* Marker bit is set, the frame is complete */
-			  video_lastTs = rtp_v.time
+			  video_lastTs = rtp_v.time;
 			  if(frameLen > 0) {
 				  memset(received_frame + frameLen, 0, FF_INPUT_BUFFER_PADDING_SIZE);
 				  frame = avcodec_alloc_frame();
