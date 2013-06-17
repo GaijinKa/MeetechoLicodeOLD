@@ -554,14 +554,14 @@ namespace erizo {
 	    }
 
 	  //1: capire se il Ts è lo stesso dei pacchetti precedenti
-	  video_ts = rtp_v.time;
+	  //video_ts = rtp_v.time;
 //	  if (video_ts==video_lastTs) { 	//continue encoding
 		  if((rtp_v.seq-lastSeq) > 1)
 			  printf("VIDEO unexpected seq (%d, should have been %lu)!\n", rtp_v.seq, lastSeq);
 
 		  lastSeq = rtp_v.seq;
 		  memcpy(buffer, buf, size); //Attenzione Sto copiando già i dati privi di header!
-
+		  printf("VIDEO buf copied in buffer\n");
 		  //First VP8 Header Line
 		  int skipped = 1;
 		  size--;
@@ -571,10 +571,13 @@ namespace erizo {
 		  uint8_t nbit = (vp8pd & 0x20);
 		  uint8_t sbit = (vp8pd & 0x10);
 		  uint8_t partid = (vp8pd & 0x0F);
+		  printf("VIDEO first VP8 Header Readed\n");
 
 		  if(!xbit) {	// Just skip the first byte
 			  buffer++;
+			  printf("VIDEO Xbit not marked -> go ahead\n");
 		  } else {   // XLine
+			  printf("VIDEO Xbit marked -> reading..\n");
 			  buffer++;
 			  size--;
 			  skipped++;
@@ -584,6 +587,7 @@ namespace erizo {
 			  uint8_t tbit = (vp8pd & 0x20);
 			  uint8_t kbit = (vp8pd & 0x10);
 			  if(ibit) {	// Read the PictureID octet
+				  printf("VIDEO Ibit marked -> reading..\n");
 				  buffer++;
 				  size--;
 				  skipped++;
@@ -591,6 +595,7 @@ namespace erizo {
 				  uint16_t picid = vp8pd, wholepicid = picid;
 				  uint8_t mbit = (vp8pd & 0x80);
 				  if(mbit) {
+					  printf("VIDEO Mbit marked -> reading..\n");
 					  memcpy(&picid, buffer, sizeof(uint16_t));
 					  wholepicid = ntohs(picid);
 					  picid = (wholepicid & 0x7FFF);
@@ -600,21 +605,26 @@ namespace erizo {
 				  }
 			  }
 			  if(lbit) {	// Read the TL0PICIDX octec
+				  printf("VIDEO Lbit marked -> reading..\n");
 				  buffer++;
 				  size--;
 				  skipped++;
 				  vp8pd = *buffer;
 			  }
 			  if(tbit || kbit) { // Read the TID/KEYIDX octec
+				  printf("VIDEO Tbit or Kbit marked -> reading..\n");
 				  buffer++;
 				  size--;
 				  skipped++;
 				  vp8pd = *buffer;
 			  }
 			  buffer++;	// Now we're in the payload
+			  printf("VIDEO Now we're in payload\n");
 			  if(sbit) {
+				  printf("VIDEO Sbit marked -> reading..\n");
 				  unsigned long int vp8ph = 0;
 				  memcpy(&vp8ph, buffer, 4);
+				  printf("VIDEO Buffer copied in vp8ph (Vp8 Payload Header?)\n");
 				  vp8ph = ntohl(vp8ph);
 				  uint8_t size0 = ((vp8ph & 0xE0000000) >> 29);
 				  uint8_t hbit = ((vp8ph & 0x10000000) >> 28);
@@ -624,6 +634,7 @@ namespace erizo {
 				  uint8_t size2 = ((vp8ph & 0x0000FF00) >> 8);
 				  int fpSize = size0 + 8 * size1 + 2048 * size2;
 				  if(!pbit) {
+					  printf("VIDEO Pbit not marked! is a KeyFrame? -> reading..\n");
 					  vp8gotFirstKey = 1;
 					  keyFrame = 1;
 					  // Get resolution
@@ -645,11 +656,14 @@ namespace erizo {
 			  }
 		  }
 		  /* Frame manipulation */
+		  printf("VIDEO End of all reading, Starting Frame Manipulation..\n");
 		  memcpy(received_frame + frameLen, buffer, size);
 		  frameLen += size;
 		  if(rtp_v.mark) {	/* Marker bit is set, the frame is complete */
-			  video_lastTs = rtp_v.time;
+			  printf("VIDEO MarkBit marked (!!!) -> start dumping..\n");
+			  //video_lastTs = rtp_v.time;
 			  if(frameLen > 0) {
+				  printf("VIDEO the frame is not null -> go ahead..\n");
 				  memset(received_frame + frameLen, 0, FF_INPUT_BUFFER_PADDING_SIZE);
 				  frame = avcodec_alloc_frame();
 
@@ -667,7 +681,7 @@ namespace erizo {
 				  packet.pts = AV_NOPTS_VALUE;
 				  if(fctx) {
 					  if(av_write_frame(fctx, &packet) < 0)
-						  fprintf(stderr, "Error writing video frame to file...");
+						  printf("Error writing video frame to file...");
 					  else
 						  printf(" ### ### frame written (pts=%d)...\n", packet.pts);
 				  } else {
@@ -699,19 +713,20 @@ namespace erizo {
 					  frames = 0;
 					  before = now;
 				  }
-				  video_lastTs = rtp_v.time;
+
+				  printf("VIDEO Resetting all 4 next cycle of reading\n");
+				  //video_lastTs = rtp_v.time;
 				  keyFrame = 0;
 				  frameLen = 0;
 				  have_more = 1;
 			  }
-			  video_ts += step;	/* FIXME was 4500, but this implied fps=20 at max */
+			  //video_ts += step;	/* FIXME was 4500, but this implied fps=20 at max */
 		  }
 		  if(size == 0)
 			  return size;
 //	  }
 
-
-
+		  return 0;
   }
 
   void RTPRecorder::setBundle(int bund) {
