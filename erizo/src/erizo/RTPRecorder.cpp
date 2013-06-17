@@ -15,6 +15,7 @@
 #endif
 #include <libavcodec/avcodec.h>	/* FFmpeg libavcodec */
 #include <libavformat/avformat.h>	/* FFmpeg libavformat */
+#include <boost/thread.hpp>
 #include "RTPRecorder.h"
 #include <signal.h>
 
