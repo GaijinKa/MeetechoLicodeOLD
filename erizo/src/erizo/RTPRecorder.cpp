@@ -574,7 +574,7 @@ namespace erizo {
 		  printf("VIDEO first VP8 Header Readed\n");
 
 		  if(!xbit) {	// Just skip the first byte
-			  buffer++;
+			 // buffer++;
 			  printf("VIDEO Xbit not marked -> go ahead\n");
 		  } else {   // XLine
 			  printf("VIDEO Xbit marked -> reading..\n");
@@ -657,8 +657,9 @@ namespace erizo {
 		  }
 		  /* Frame manipulation */
 		  printf("VIDEO End of all reading, Starting Frame Manipulation..\n");
-
-		  memcpy(&received_frame + frameLen, buffer, size);
+		  printf("VIDEO frameLen %i\n", frameLen);
+		  printf("VIDEO received_frame %i\n", received_frame);
+		  memcpy(&received_frame+frameLen, &buffer, size);
 		  frameLen += size;
 		  if(rtp_v.mark) {	/* Marker bit is set, the frame is complete */
 			  printf("VIDEO MarkBit marked (!!!) -> start dumping..\n");
