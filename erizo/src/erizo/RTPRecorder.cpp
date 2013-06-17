@@ -666,11 +666,14 @@ namespace erizo {
 			  //video_lastTs = rtp_v.time;
 			  if(frameLen > 0) {
 				  printf("VIDEO the frame is not null -> go ahead..\n");
-				  memset(received_frame + frameLen, 0, FF_INPUT_BUFFER_PADDING_SIZE);
+				  memset(&(received_frame)+frameLen, 0, FF_INPUT_BUFFER_PADDING_SIZE);
+				  printf("VIDEO memset called correctly -> go ahead..\n");
 				  frame = avcodec_alloc_frame();
+				  printf("VIDEO Allocated Frame, configuring AVPacket\n");
 
 				  AVPacket packet;
 				  av_init_packet(&packet);
+				  printf("VIDEO AVPacket initialized... ");
 				  packet.stream_index = 0;
 				  packet.data = received_frame;
 				  packet.size = frameLen;
@@ -681,6 +684,8 @@ namespace erizo {
 				  printf(" ### Writing frame to file...\n");
 				  packet.dts = AV_NOPTS_VALUE;
 				  packet.pts = AV_NOPTS_VALUE;
+				  printf("VIDEO AVPacket SettedUp");
+
 				  if(fctx) {
 					  if(av_write_frame(fctx, &packet) < 0)
 						  printf("Error writing video frame to file...");
