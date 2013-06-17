@@ -367,9 +367,9 @@ namespace erizo {
     videoReceiver_ = NULL;
     audioReceiver_ = NULL;
 	lastSeq = 0;
- 	numBytes = 320*240*3, frameLen = 0, have_more = 1, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
+ 	numBytes = 320*240*3, frameLen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
    	frame = NULL;
-   	video_ts = 0, video_lastTs=0;
+   //	video_ts = 0, video_lastTs=0;
    	now = 0, before = 0, resync = 0;
   }
 
@@ -684,11 +684,11 @@ namespace erizo {
 				  printf(" ### Writing frame to file...\n");
 				  packet.dts = AV_NOPTS_VALUE;
 				  packet.pts = AV_NOPTS_VALUE;
-				  printf("VIDEO AVPacket SettedUp");
+				  printf("VIDEO AVPacket SettedUp\n");
 
 				  if(fctx) {
 					  if(av_write_frame(fctx, &packet) < 0)
-						  printf("Error writing video frame to file...");
+						  printf("Error writing video frame to file...\n");
 					  else
 						  printf(" ### ### frame written (pts=%d)...\n", packet.pts);
 				  } else {
@@ -725,14 +725,13 @@ namespace erizo {
 				  //video_lastTs = rtp_v.time;
 				  keyFrame = 0;
 				  frameLen = 0;
-				  have_more = 1;
 			  }
 			  //video_ts += step;	/* FIXME was 4500, but this implied fps=20 at max */
 		  }
-		  if(size == 0)
-			  return size;
+//		  if(size == 0)
+//			  return size;
 //	  }
-
+		  printf("VIDEO Returning Video Receive Function");
 		  return 0;
   }
 
