@@ -553,15 +553,15 @@ namespace erizo {
 	      return len;
 	    }
 
-	  //1: capire se il Ts è lo stesso dei pacchetti precedenti
 	  //video_ts = rtp_v.time;
 //	  if (video_ts==video_lastTs) { 	//continue encoding
 		  if((rtp_v.seq-lastSeq) > 1)
 			  printf("VIDEO unexpected seq (%d, should have been %lu)!\n", rtp_v.seq, lastSeq);
 
 		  lastSeq = rtp_v.seq;
-		  memcpy(buffer, packet, size); //Attenzione Sto copiando già i dati privi di header!
-		  printf("VIDEO buf copied in buffer\n");
+		  printf("VIDEO copying packet in buffer...");
+		  memcpy(&buffer, &packet, size); //Attenzione Sto copiando già i dati privi di header!
+		  printf("VIDEO packet copied in buffer\n");
 		  //First VP8 Header Line
 		  int skipped = 1;
 		  size--;
