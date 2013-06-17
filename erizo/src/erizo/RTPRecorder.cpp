@@ -47,7 +47,8 @@ int create_webm(int fps) {
 	}
 	//~ avcodec_get_context_defaults2(vStream->codec, CODEC_TYPE_VIDEO);
 	avcodec_get_context_defaults2(vStream->codec, AVMEDIA_TYPE_VIDEO);
-	vStream->codec->codec_id = AV_CODEC_ID_VP8;
+	vStream->codec->codec_id = CODEC_ID_VP8;
+//	vStream->codec->codec_id = AV_CODEC_ID_VP8;
 	//~ vStream->codec->codec_type = CODEC_TYPE_VIDEO;
 	vStream->codec->codec_type = AVMEDIA_TYPE_VIDEO;
 	vStream->codec->time_base = (AVRational){1, fps};
@@ -540,7 +541,7 @@ namespace erizo {
 
 	  //1: capire se il Ts è lo stesso dei pacchetti precedenti
 	  video_ts = rtp_v.time;
-	  if (video_ts==video_lastTs) { 	//continue encoding
+//	  if (video_ts==video_lastTs) { 	//continue encoding
 		  if((rtp_v.seq-lastSeq) > 1)
 			  printf("VIDEO unexpected seq (%d, should have been %lu)!\n", rtp_v.seq, lastSeq);
 
@@ -684,19 +685,16 @@ namespace erizo {
 					  frames = 0;
 					  before = now;
 				  }
+				  video_lastTs = rtp_v.time;
+				  keyFrame = 0;
+				  frameLen = 0;
+				  have_more = 1;
 			  }
 			  video_ts += step;	/* FIXME was 4500, but this implied fps=20 at max */
 		  }
 		  if(size == 0)
 			  return size;
-
-	  } else {//restart collection and dump previous buffer on file
-		  video_lastTs = rtp_v.time;
-		  keyFrame = 0;
-		  frameLen = 0;
-		  have_more = 1;
-
-	  }
+//	  }
 
 
 
