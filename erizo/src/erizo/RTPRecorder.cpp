@@ -412,7 +412,8 @@ namespace erizo {
 		  ogg_flush(params);
 
 		  //Video Init - test
-		  av_register_all();
+		  static boost::once_flag flag = BOOST_ONCE_INIT;
+		  boost::call_once([]{av_register_all();}, flag);
      	  uint8_t *received_frame = (uint8_t *)calloc(numBytes, sizeof(uint8_t));
      	  memset(received_frame, 0, numBytes);
      	  uint8_t *buffer = (uint8_t *)calloc(10000, sizeof(uint8_t)), *start_f = buffer;
