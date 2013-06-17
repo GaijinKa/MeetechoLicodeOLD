@@ -50,7 +50,7 @@ int create_webm(int fps) {
 		printf("Error guessing format\n");
 		return -1;
 	}
-	snprintf(fctx->filename, sizeof(fctx->filename), "rtpdump-src.webm");
+	snprintf(fctx->filename, sizeof(fctx->filename), "/home/ubuntu/lynckia/recorded/rtpdump-src.webm");
 	//~ vStream = av_new_stream(fctx, 0);
 	vStream = avformat_new_stream(fctx, 0);
 	if(vStream == NULL) {

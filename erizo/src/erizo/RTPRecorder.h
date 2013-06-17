@@ -81,7 +81,7 @@ private:
 	int bundle_;
 	MediaReceiver* audioReceiver_;
 	MediaReceiver* videoReceiver_;
-
+	char *ID;
 	//audio
 	state* params;
 	ogg_packet *op;
