@@ -13,11 +13,6 @@
 #include <signal.h>
 
 /******VIDEO RECORDING******/
-
-#ifndef INT64_C
-#define INT64_C(c) (c ## LL)
-#define UINT64_C(c) (c ## ULL)
-#endif
 /* WebRTC stuff (VP8) */
 #if defined(__ppc__) || defined(__ppc64__)
 	# define swap2(d)  \

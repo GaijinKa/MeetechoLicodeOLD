@@ -3,7 +3,10 @@
 
 #include <string>
 #include <ogg/ogg.h>
-
+#ifndef INT64_C
+#define extern INT64_C(c) (c ## LL)
+#define extern UINT64_C(c) (c ## ULL)
+#endif
 #include <libavcodec/avcodec.h>	/* FFmpeg libavcodec */
 #include <libavformat/avformat.h>	/* FFmpeg libavformat */
 #include "MediaDefinitions.h"
