@@ -66,8 +66,8 @@ int create_webm(int fps) {
 	//~ vStream->codec->codec_type = CODEC_TYPE_VIDEO;
 	vStream->codec->codec_type = AVMEDIA_TYPE_VIDEO;
 	vStream->codec->time_base = (AVRational){1, fps};
-	vStream->codec->width = 320;
-	vStream->codec->height = 240;
+	vStream->codec->width = 640;
+	vStream->codec->height = 480;
 	vStream->codec->pix_fmt = PIX_FMT_YUV420P;
 	if (fctx->flags & AVFMT_GLOBALHEADER)
 		vStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
@@ -367,7 +367,7 @@ namespace erizo {
     videoReceiver_ = NULL;
     audioReceiver_ = NULL;
 	lastSeq = 0;
- 	numBytes = 320*240*3, frameLen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
+ 	numBytes = 640*480*3, frameLen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
    	frame = NULL;
    //	video_ts = 0, video_lastTs=0;
    	now = 0, before = 0, resync = 0;
