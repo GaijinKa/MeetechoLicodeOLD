@@ -731,7 +731,7 @@ namespace erizo {
 //		  if(size == 0)
 //			  return size;
 //	  }
-		  printf("VIDEO Returning Video Receive Function");
+		  printf("VIDEO Returning Video Receive Function\n\n\n");
 		  return 0;
   }
 

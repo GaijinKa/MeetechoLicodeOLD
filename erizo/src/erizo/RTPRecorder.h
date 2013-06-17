@@ -88,9 +88,9 @@ private:
 
 	//video
 	uint8_t *received_frame, *buffer, *start_f;
-	int frameLen, dec_errors, marker, frames, fps, step, vp8gotFirstKey, keyFrame, vp8w, vp8h, numBytes;
+	int frameLen, dec_errors, marker, frames, fps, step, vp8gotFirstKey, keyFrame, vp8w, vp8h, numBytes, lastSeq;
 //	uint32_t video_ts, video_lastTs;
-	unsigned long int lastSeq, now, before, resync;
+	unsigned long int now, before, resync;
 	struct timespec tv;
 
 	};
