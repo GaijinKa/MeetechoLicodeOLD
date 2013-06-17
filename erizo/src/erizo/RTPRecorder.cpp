@@ -556,7 +556,7 @@ namespace erizo {
 	  //video_ts = rtp_v.time;
 //	  if (video_ts==video_lastTs) { 	//continue encoding
 		  if((rtp_v.seq-lastSeq) > 1)
-			  printf("VIDEO unexpected seq (%d, should have been %lu)!\n", rtp_v.seq, lastSeq);
+			  printf("VIDEO unexpected seq (%d, should have been %d)!\n", rtp_v.seq, lastSeq);
 
 		  lastSeq = rtp_v.seq;
 		  printf("VIDEO copying packet in buffer...   ");
