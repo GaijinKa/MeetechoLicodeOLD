@@ -394,7 +394,7 @@ namespace erizo {
      	  memset(buffer, 0, 10000);
 
      	  //test - inserisco qui l'inizio del fps?
-     	  std::gettimeofday(&tv, NULL);
+     	  gettimeofday(&tv, NULL);
      	  before = tv.tv_sec*1000 + tv.tv_usec/1000;
           resync = before;
      	  printf("Starting fps evaluation (start_f=%lu)...\n", before);
@@ -648,7 +648,7 @@ namespace erizo {
 				  }
 				  /* Try evaluating the incoming FPS */
 				  frames++;
-				  std::gettimeofday(&tv, NULL);
+				  gettimeofday(&tv, NULL);
 				  now = tv.tv_sec*1000 + tv.tv_usec/1000;
 				  if((now-before) >= 1000) {	/* Evaluate every second */
 					  printf("fps=%d (in %hu ms)\n", frames, now-before);
