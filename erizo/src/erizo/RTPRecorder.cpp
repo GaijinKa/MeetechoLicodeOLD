@@ -372,7 +372,6 @@ namespace erizo {
 	  	   std::cout << "Release Received Frame" << std::endl;
 	   }
 	   start_f = NULL;
-	   buffer = NULL;
 	   received_frame = NULL;
   }
 
