@@ -365,10 +365,14 @@ namespace erizo {
 	   std::free(params);
 
 	   close_webm();
-	   if(buffer)
+	   if(buffer) {
 		   std::free(buffer);
-	   if(received_frame)
-		   std::free(received_frame);
+		   std::cout << "Release Buffer" << std::endl;
+	   }
+	   if(received_frame){
+	  	   std::free(received_frame);
+	  	   std::cout << "Release Received Frame" << std::endl;
+	   }
 	   start_f = NULL;
 	   buffer = NULL;
 	   received_frame = NULL;
