@@ -5,7 +5,7 @@
  */
 #include <iostream>
 #include <cstdio>
-#include <ctime>
+#include <sys/time.h>
 #include <cstring>
 #include <cstdlib>
 #include <netinet/in.h>
