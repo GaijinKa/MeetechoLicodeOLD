@@ -341,7 +341,7 @@ namespace erizo {
 
   bool RTPRecorder::initVideo(std::string path, std::string name) {
 
-	  std::cout << "Init Video Recorder" << std:endl;
+	  std::cout << "Init Video Recorder" << std::endl;
 
 	  av_register_all();
       received_frame = (uint8_t *)calloc(numBytes, sizeof(uint8_t));
