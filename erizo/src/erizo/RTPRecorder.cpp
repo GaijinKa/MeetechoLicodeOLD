@@ -564,7 +564,7 @@ namespace erizo {
 				  unsigned long int vp8ph = 0;
 				  memcpy(&vp8ph, start_f, 4);
 //				  std::cout << "VIDEO start_f copied in vp8ph (Vp8 Payload Header?)" << std::endl;
-				  vp8ph = ntohl(vp8ph);
+				 // vp8ph = ntohl(vp8ph); //FIXME
 				  uint8_t size0 = ((vp8ph & 0xE0000000) >> 29);
 				  uint8_t hbit = ((vp8ph & 0x10000000) >> 28);
 				  uint8_t ver = ((vp8ph & 0x0E000000) >> 25);
@@ -583,9 +583,9 @@ namespace erizo {
 						  std::cout << "First 3-bytes after header not what they're supposed to be?" << std::endl;
 
 					  vp8w = swap2(*(unsigned short*)(c+3))&0x3fff;
-					  int vp8ws = swap2(*(unsigned short*)(c+3))>>14;
+//					  int vp8ws = swap2(*(unsigned short*)(c+3))>>14;
 					  vp8h = swap2(*(unsigned short*)(c+5))&0x3fff;
-					  int vp8hs = swap2(*(unsigned short*)(c+5))>>14;
+//					  int vp8hs = swap2(*(unsigned short*)(c+5))>>14;
 //					  std::cout << "VP8 source: " << vp8w << "x" << vp8h << std::endl;
 				  }
 			  }
