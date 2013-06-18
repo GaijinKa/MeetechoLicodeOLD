@@ -316,6 +316,7 @@ namespace erizo {
 			printf("Couldn't initialize Ogg stream state.\n");
 			return false;
 		}
+		std::string point_file = path.c_str()+"/"+name.c_str()+".opus";
 		params->out = fopen(path.c_str(), "w+");
 		if (!params->out) {
 			printf("Couldn't open output file.\n");
