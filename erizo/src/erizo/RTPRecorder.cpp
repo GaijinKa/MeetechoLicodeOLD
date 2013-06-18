@@ -13,6 +13,10 @@
 #define INT64_C(c) (c ## LL)
 #define UINT64_C(c) (c ## ULL)
 #endif
+extern "C" {
+#include <libavcodec/avcodec.h>	/* FFmpeg libavcodec */
+#include <libavformat/avformat.h>	/* FFmpeg libavformat */
+}
 #include "RTPRecorder.h"
 #include <signal.h>
 

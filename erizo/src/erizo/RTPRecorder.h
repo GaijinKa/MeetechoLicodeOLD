@@ -4,10 +4,7 @@
 #include <string>
 #include <ogg/ogg.h>
 #include "MediaDefinitions.h"
-extern "C" {
-#include <libavcodec/avcodec.h>	/* FFmpeg libavcodec */
-#include <libavformat/avformat.h>	/* FFmpeg libavformat */
-}
+
 
 typedef struct {
   ogg_stream_state *stream;
