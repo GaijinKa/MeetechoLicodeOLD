@@ -102,8 +102,8 @@ private:
 	uint8_t *received_frame, *buffer, *start_f;
 	int frameLen, dec_errors, marker, frames, fps, step, vp8gotFirstKey, keyFrame, vp8w, vp8h, numBytes, lastSeq;
 	unsigned long int now, before, resync;
-	struct timespec tv;
-
+	//struct timespec tv;
+	struct timeval tv;
 	AVFormatContext *fctx;
 	AVStream *vStream;
 	AVCodec *vCodec;

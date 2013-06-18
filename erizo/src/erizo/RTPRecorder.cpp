@@ -463,8 +463,8 @@ namespace erizo {
 
 	  if (resync==0) {
     	  //test - inserisco qui l'inizio del fps?
-     	  clock_gettime(CLOCK_MONOTONIC, &tv);
-     	  before = tv.tv_sec*1000 + tv.tv_nsec;
+		  gettimeofday(&tv, NULL);
+		  before = tv.tv_sec*1000 + tv.tv_usec/1000;
           resync = before;
      	  std::cout << "Starting fps evaluation - before="<<before<< std::endl;
      	  std::cout << "Waiting for RTP frames..." << std::endl;
@@ -639,8 +639,8 @@ namespace erizo {
 				  }
 				  /* Try evaluating the incoming FPS */
 				  frames++;
-		     	  clock_gettime(CLOCK_MONOTONIC, &tv);
-		     	  before = tv.tv_sec*1000 + tv.tv_nsec;
+				  gettimeofday(&tv, NULL);
+				  now = tv.tv_sec*1000 + tv.tv_usec/1000;
 				  if((now-before) >= 1000) {	/* Evaluate every second */
 					  std::cout << "fps=" << frames << " (in " << (now-before) <<" ms" << std::endl;
 					  if(fps == 0) {
@@ -671,8 +671,8 @@ namespace erizo {
 			  }
 			  //video_ts += step;	/* FIXME was 4500, but this implied fps=20 at max */
 		  }
-//		  if(size == 0)
-//			  return size;
+		  if(size == 0)
+			  return size;
 //	  }
 		  std::cout << "VIDEO Returning Video Receive Function\n\n" << std::endl;
 		  return 0;
