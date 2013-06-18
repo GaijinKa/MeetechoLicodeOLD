@@ -573,7 +573,7 @@ namespace erizo {
 				  uint8_t size2 = ((vp8ph & 0x0000FF00) >> 8);
 				  int fpSize = size0 + 8 * size1 + 2048 * size2;
 				  if(!pbit) {
-//					  std::cout << "VIDEO Pbit not marked! is a KeyFrame? -> reading.." << std::endl;
+					  std::cout << "VIDEO Pbit not marked! is a KeyFrame? -> reading.." << std::endl;
 					  vp8gotFirstKey = 1;
 					  keyFrame = 1;
 					  // Get resolution
