@@ -610,26 +610,26 @@ namespace erizo {
 				  frame = avcodec_alloc_frame();
 				  std::cout << "VIDEO Allocated Frame, configuring AVPacket" << std::endl;
 
-				  AVPacket packet;
-				  av_init_packet(&packet);
+				  AVPacket apacket;
+				  av_init_packet(&apacket);
 				  std::cout << "VIDEO AVPacket initialized... " << std::endl;
-				  packet.stream_index = 0;
-				  packet.data = received_frame;
-				  packet.size = frameLen;
+				  apacket.stream_index = 0;
+				  apacket.data = received_frame;
+				  apacket.size = frameLen;
 				  if(keyFrame)
 					  packet.flags |= AV_PKT_FLAG_KEY;
 
 				  /* First we save to the file... */
 				  std::cout << " ### Writing frame to file..." << std::endl;
-				  packet.dts = AV_NOPTS_VALUE;
-				  packet.pts = AV_NOPTS_VALUE;
-				  std::cout << "VIDEO AVPacket SettedUp" << std::endl;
+				  apacket.dts = AV_NOPTS_VALUE;
+				  apacket.pts = AV_NOPTS_VALUE;
+				  std::cout << "VIDEO AVPacket SetUp" << std::endl;
 
 				  if(fctx) {
-					  if(av_write_frame(fctx, &packet) < 0)
+					  if(av_write_frame(fctx, &apacket) < 0)
 						  std::cout << "Error writing video frame to file..." << std::endl;
 					  else
-						  std::cout << " ### ### frame written pts=" << packet.pts  << std::endl;
+						  std::cout << " ### ### frame written pts=" << apacket.pts  << std::endl;
 				  } else {
 					  std::cout << "Still waiting for fps evaluation to create the file..." << std::endl;
 				  }
