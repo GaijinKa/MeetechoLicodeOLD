@@ -717,8 +717,11 @@ namespace erizo {
   	vStream->codec->height = 480;
   	std::cout << "VIDEO defined codec id" << std::endl;
   	vStream->codec->pix_fmt = PIX_FMT_YUV420P;
-  	if (fctx->flags & AVFMT_GLOBALHEADER)
+
+  	if (fctx->flags & AVFMT_GLOBALHEADER) {
+  		std::cout << "Writing Global header (??)" << std::endl;
   		vStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
+  	}
   	//~ fctx->timestamp = 0;
   	//~ if(url_fopen(&fctx->pb, fctx->filename, URL_WRONLY) < 0) {
   	if(avio_open(&fctx->pb, fctx->filename, AVIO_FLAG_WRITE) < 0) {
