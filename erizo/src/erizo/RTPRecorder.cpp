@@ -718,7 +718,7 @@ namespace erizo {
   	std::cout << "VIDEO defined codec id" << std::endl;
   	vStream->codec->pix_fmt = PIX_FMT_YUV420P;
 
-  	if (fctx->oFormat->flags & AVFMT_GLOBALHEADER) {
+  	if (fctx->oformat->flags & AVFMT_GLOBALHEADER) {
   		std::cout << "Writing Global header (??)" << std::endl;
   		vStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
   	}
