@@ -99,7 +99,7 @@ private:
 	ogg_packet *op;
 
 	//video
-	uint8_t *received_frame, *buffer, *start_f;
+	uint8_t *received_frame, *start_f;
 	int frameLen, dec_errors, marker, frames, fps, step, vp8gotFirstKey, keyFrame, vp8w, vp8h, numBytes, lastSeq;
 	unsigned long int now, before, resync;
 	//struct timespec tv;

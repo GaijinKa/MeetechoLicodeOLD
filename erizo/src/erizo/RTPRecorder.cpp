@@ -367,10 +367,6 @@ namespace erizo {
 	   close_webm();
 	   std::cout << "Freeing memory" << std::endl;
 
-	   if(buffer) {
-		   std::free(buffer);
-		   std::cout << "Release Buffer" << std::endl;
-	   }
 	   if(received_frame){
 	  	   std::free(received_frame);
 	  	   std::cout << "Release Received Frame" << std::endl;
