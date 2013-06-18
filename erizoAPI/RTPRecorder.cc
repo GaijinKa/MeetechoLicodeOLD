@@ -14,7 +14,8 @@ void RTPRecorder::Init(Handle<Object> target) {
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
   // Prototype
   tpl->PrototypeTemplate()->Set(String::NewSymbol("close"), FunctionTemplate::New(close)->GetFunction());
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("init"), FunctionTemplate::New(init)->GetFunction());
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("initVideo"), FunctionTemplate::New(initVideo)->GetFunction());
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("initAudio"), FunctionTemplate::New(initAudio)->GetFunction());
   tpl->PrototypeTemplate()->Set(String::NewSymbol("start"), FunctionTemplate::New(start)->GetFunction());
   tpl->PrototypeTemplate()->Set(String::NewSymbol("stop"), FunctionTemplate::New(stop)->GetFunction());
 
@@ -47,17 +48,38 @@ Handle<Value> RTPRecorder::close(const Arguments& args) {
   return scope.Close(Null());
 }
 
-Handle<Value> RTPRecorder::init(const Arguments& args) {
+Handle<Value> RTPRecorder::initVideo(const Arguments& args) {
   HandleScope scope;
 
   RTPRecorder* obj = ObjectWrap::Unwrap<RTPRecorder>(args.This());
   erizo::RTPRecorder *me = obj->me;
 
   v8::String::Utf8Value param(args[0]->ToString());
+  v8::String::Utf8Value param2(args[1]->ToString());
 
 // convert it to string
   std::string path = std::string(*param);
-  me->init(path);
+  std::string name = std::string(*param2);
+
+  me->initVideo(path, name);
+
+  return scope.Close(Null());
+}
+
+Handle<Value> RTPRecorder::initAudio(const Arguments& args) {
+  HandleScope scope;
+
+  RTPRecorder* obj = ObjectWrap::Unwrap<RTPRecorder>(args.This());
+  erizo::RTPRecorder *me = obj->me;
+
+  v8::String::Utf8Value param(args[0]->ToString());
+  v8::String::Utf8Value param2(args[1]->ToString());
+
+// convert it to string
+  std::string path = std::string(*param);
+  std::string name = std::string(*param2);
+
+  me->initAudio(path, name);
 
   return scope.Close(Null());
 }

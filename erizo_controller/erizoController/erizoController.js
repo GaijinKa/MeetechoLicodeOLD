@@ -309,14 +309,14 @@ var listen = function () {
         //Gets 'record' messages on the socket in order add a recorder to a determined stream (to).
         socket.on('startrec', function (to) {
 
-            if (socket.room.streams[to] === undefined) {
+            if (socket.room.streams[to.id] === undefined) {
                 return;
             }
 
-            if (socket.room.streams[to].hasAudio() || socket.room.streams[to].hasVideo()) {
+            if (socket.room.streams[to.id].hasAudio() || socket.room.streams[to.id].hasVideo()) {
                 console.log("Socket gets recorder message correctly");
-            	socket.room.webRtcController.addRecorder(to, function () {
-            		console.log("STUB : Recorder instantiate correctly to "+to);
+            	socket.room.webRtcController.addRecorder(to.id, to.name, socket.room.streams[to.id].hasVideo(), socket.room.streams[to.id].hasAudio(), function () {
+            		console.log("STUB : Recorder instantiate correctly to "+to.name);
             	});
             }
 
