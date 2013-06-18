@@ -286,7 +286,7 @@ namespace erizo {
     videoReceiver_ = NULL;
     audioReceiver_ = NULL;
 	lastSeq = 0;
- 	numBytes = 640*480*3, frameLen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
+ 	numBytes = 320*240*3, frameLen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
    	frame = NULL;
    	now = 0, before = 0, resync = 0;
   }
@@ -318,6 +318,7 @@ namespace erizo {
 		}
 		std::string point_file = path+"/"+name+".opus";
 		params->out = fopen(point_file.c_str(), "w+");
+		std::free(point_file);
 		if (!params->out) {
 			std::cout << "AUDIO Couldn't open output file." << std::endl;
 			return false;
@@ -365,11 +366,9 @@ namespace erizo {
 	   std::free(params);
 
 	   close_webm();
-	   std::cout << "Freeing memory" << std::endl;
 
 	   if(received_frame){
 	  	   std::free(received_frame);
-	  	   std::cout << "Release Received Frame" << std::endl;
 	   }
 	   start_f = NULL;
 	   received_frame = NULL;
@@ -708,19 +707,15 @@ namespace erizo {
   	avcodec_get_context_defaults2(vStream->codec, AVMEDIA_TYPE_VIDEO);
   	std::cout << "VIDEO get context" << std::endl;
   	vStream->codec->codec_id = CODEC_ID_VP8;
-  	std::cout << "VIDEO defined codec id" << std::endl;
   //	vStream->codec->codec_id = AV_CODEC_ID_VP8;
   	//~ vStream->codec->codec_type = CODEC_TYPE_VIDEO;
   	vStream->codec->codec_type = AVMEDIA_TYPE_VIDEO;
-  	std::cout << "VIDEO defined codec id" << std::endl;
   	vStream->codec->time_base = (AVRational){1, fps};
-  	vStream->codec->width = 640;
-  	vStream->codec->height = 480;
-  	std::cout << "VIDEO defined codec id" << std::endl;
+  	vStream->codec->width = 320;
+  	vStream->codec->height = 240;
   	vStream->codec->pix_fmt = PIX_FMT_YUV420P;
 
   	if (fctx->oformat->flags & AVFMT_GLOBALHEADER) {
-  		std::cout << "Writing Global header (??)" << std::endl;
   		vStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
   	}
   	//~ fctx->timestamp = 0;
@@ -748,11 +743,9 @@ namespace erizo {
   		av_write_trailer(fctx);
   	}
   	if(vStream->codec != NULL) {
-  		std::cout << "Closing Codec" << std::endl;
   		avcodec_close(vStream->codec);
   	}
   	if(fctx->streams[0] != NULL) {
-  		std::cout << "Releasing streams (?)" << std::endl;
   		av_free(fctx->streams[0]->codec);
   		av_free(fctx->streams[0]);
   	}
