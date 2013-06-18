@@ -34,10 +34,15 @@ class RTPRecorder : public node::ObjectWrap {
       */
      static v8::Handle<v8::Value> close(const v8::Arguments& args);
      /*
-      * Inits the Recorder.
+      * Inits the Recorder 4 Audio.
       * Returns true if the initialization success.
       */
-     static v8::Handle<v8::Value> init(const v8::Arguments& args);
+     static v8::Handle<v8::Value> initAudio(const v8::Arguments& args);
+     /*
+      * Inits the Recorder 4 Video.
+      * Returns true if the initialization success.
+      */
+     static v8::Handle<v8::Value> initVideo(const v8::Arguments& args);
      /*
       * Starts the Recorder.
       * Return true if recorder starts correctly
