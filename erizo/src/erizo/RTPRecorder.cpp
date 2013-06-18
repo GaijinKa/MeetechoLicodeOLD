@@ -4,6 +4,7 @@
  * che identifica lo stream, e questo fa sempre scattare il bundle con i dati.
  */
 #include <iostream>
+#include <cstdio>
 #include <ctime>
 #include <cstring>
 #include <cstdlib>
@@ -319,7 +320,7 @@ namespace erizo {
 		std::string point_file = path+"/"+name+".opus";
 		params->out = fopen(path.c_str(), "w+");
 		if (!params->out) {
-			std::cout << "Couldn't open output file." << std::endl;
+			std::cout << "AUDIO Couldn't open output file." << std::endl;
 			return false;
 		} else {
 			std::cout << "File opened in " << path.c_str() << std::endl;
@@ -596,7 +597,7 @@ namespace erizo {
 		  std::cout << "VIDEO frameLen " << frameLen  << std::endl;
 		  std::cout << "VIDEO received_frame " << received_frame  << std::endl;
 		  std::cout << "VIDEO size " << size  << std::endl;
-		  memcpy(&(received_frame)+frameLen, start_f, size);
+		  memcpy(received_frame+frameLen, start_f, size);
 		  frameLen += size;
 //		  start_f = buffer;
 		  if(rtp_v.mark) {	/* Marker bit is set, the frame is complete */
