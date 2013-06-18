@@ -742,15 +742,21 @@ namespace erizo {
 
   /* Close WebM file */
   void RTPRecorder::close_webm() {
-  	if(fctx != NULL)
+  	if(fctx != NULL){
+  		std::cout << "Writing trailer" << std::endl;
   		av_write_trailer(fctx);
-  	if(vStream->codec != NULL)
+  	}
+  	if(vStream->codec != NULL) {
+  		std::cout << "Closing Codec" << std::endl;
   		avcodec_close(vStream->codec);
+  	}
   	if(fctx->streams[0] != NULL) {
+  		std::cout << "Releasing streams (?)" << std::endl;
   		av_free(fctx->streams[0]->codec);
   		av_free(fctx->streams[0]);
   	}
   	if(fctx != NULL) {
+  		std::cout << "avio close and free" << std::endl;
   		//~ url_fclose(fctx->pb);
   		avio_close(fctx->pb);
   		av_free(fctx);
