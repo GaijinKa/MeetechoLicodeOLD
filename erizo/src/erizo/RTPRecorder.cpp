@@ -13,21 +13,11 @@
 #define INT64_C(c) (c ## LL)
 #define UINT64_C(c) (c ## ULL)
 #endif
-extern "C" {
-#include <libavcodec/avcodec.h>	/* FFmpeg libavcodec */
-#include <libavformat/avformat.h>	/* FFmpeg libavformat */
-}
 #include "RTPRecorder.h"
 #include <signal.h>
 
 /******VIDEO RECORDING******/
 
-AVCodecContext *dec_context;	/* FFmpeg decoding context */
-AVCodec *dec_codec;		/* FFmpeg decoding codec */
-AVFormatContext *fctx;
-AVStream *vStream;
-AVCodec *vCodec;
-AVFrame *frame;
 
 /* WebRTC stuff (VP8) */
 #if defined(__ppc__) || defined(__ppc64__)
@@ -37,75 +27,6 @@ AVFrame *frame;
 #else
 	# define swap2(d) d
 #endif
-
-/* Create WebM context and file */
-int create_webm(int fps) {
-	/* WebM output */
-	fctx = avformat_alloc_context();
-	if(fctx == NULL) {
-		printf("Error allocating context\n");
-		return -1;
-	}
-	//~ fctx->oformat = guess_format("webm", NULL, NULL);
-	fctx->oformat = av_guess_format("webm", NULL, NULL);
-	if(fctx->oformat == NULL) {
-		printf("Error guessing format\n");
-		return -1;
-	}
-	snprintf(fctx->filename, sizeof(fctx->filename), "/home/ubuntu/lynckia/recorded/rtpdump-src.webm");
-	//~ vStream = av_new_stream(fctx, 0);
-	vStream = avformat_new_stream(fctx, 0);
-	if(vStream == NULL) {
-		printf("Error adding stream\n");
-		return -1;
-	}
-	//~ avcodec_get_context_defaults2(vStream->codec, CODEC_TYPE_VIDEO);
-	avcodec_get_context_defaults2(vStream->codec, AVMEDIA_TYPE_VIDEO);
-	vStream->codec->codec_id = CODEC_ID_VP8;
-//	vStream->codec->codec_id = AV_CODEC_ID_VP8;
-	//~ vStream->codec->codec_type = CODEC_TYPE_VIDEO;
-	vStream->codec->codec_type = AVMEDIA_TYPE_VIDEO;
-	vStream->codec->time_base = (AVRational){1, fps};
-	vStream->codec->width = 640;
-	vStream->codec->height = 480;
-	vStream->codec->pix_fmt = PIX_FMT_YUV420P;
-	if (fctx->flags & AVFMT_GLOBALHEADER)
-		vStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
-	//~ fctx->timestamp = 0;
-	//~ if(url_fopen(&fctx->pb, fctx->filename, URL_WRONLY) < 0) {
-	if(avio_open(&fctx->pb, fctx->filename, AVIO_FLAG_WRITE) < 0) {
-		printf("Error opening file for output\n");
-		return -1;
-	}
-	//~ memset(&parameters, 0, sizeof(AVFormatParameters));
-	//~ av_set_parameters(fctx, &parameters);
-	//~ fctx->preload = (int)(0.5 * AV_TIME_BASE);
-	//~ fctx->max_delay = (int)(0.7 * AV_TIME_BASE);
-	//~ if(av_write_header(fctx) < 0) {
-	if(avformat_write_header(fctx, NULL) < 0) {
-		printf("Error writing header\n");
-		return -1;
-	}
-	return 0;
-}
-
-/* Close WebM file */
-void close_webm() {
-	if(fctx != NULL)
-		av_write_trailer(fctx);
-	if(vStream->codec != NULL)
-		avcodec_close(vStream->codec);
-	if(fctx->streams[0] != NULL) {
-		av_free(fctx->streams[0]->codec);
-		av_free(fctx->streams[0]);
-	}
-	if(fctx != NULL) {
-		//~ url_fclose(fctx->pb);
-		avio_close(fctx->pb);
-		av_free(fctx);
-	}
-}
-
 
 
 
@@ -563,7 +484,7 @@ namespace erizo {
 
 		  lastSeq = rtp_v.seq;
 		  printf("VIDEO lastSeq setted to %d \nVIDEO copying packet in buffer...   ",lastSeq);
-		  memcpy(&buffer, &packet, size); //Attenzione Sto copiando già i dati privi di header RTP!
+		  memcpy(&buffer, packet, size); //Attenzione Sto copiando già i dati privi di header RTP!
 		  printf("VIDEO packet copied in buffer\n");
 		  //First VP8 Header Line
 		  int skipped = 1;
@@ -745,5 +666,78 @@ namespace erizo {
 	  printf("setting recorder bundle to %d \n", bund);
 	  bundle_ = bund;
   }
+  /* Create WebM context and file */
+  int create_webm(int fps) {
+  	/* WebM output */
+  	fctx = avformat_alloc_context();
+  	if(fctx == NULL) {
+  		printf("Error allocating context\n");
+  		return -1;
+  	}
+  	//~ fctx->oformat = guess_format("webm", NULL, NULL);
+  	fctx->oformat = av_guess_format("webm", NULL, NULL);
+  	if(fctx->oformat == NULL) {
+  		printf("Error guessing format\n");
+  		return -1;
+  	}
+  	snprintf(fctx->filename, sizeof(fctx->filename), "/home/ubuntu/lynckia/recorded/rtpdump-src.webm");
+  	//~ vStream = av_new_stream(fctx, 0);
+  	vStream = avformat_new_stream(fctx, 0);
+  	if(vStream == NULL) {
+  		printf("Error adding stream\n");
+  		return -1;
+  	}
+  	//~ avcodec_get_context_defaults2(vStream->codec, CODEC_TYPE_VIDEO);
+  	avcodec_get_context_defaults2(vStream->codec, AVMEDIA_TYPE_VIDEO);
+  	printf("VIDEO get context");
+  	vStream->codec->codec_id = CODEC_ID_VP8;
+  	printf("VIDEO defined codec id");
+  //	vStream->codec->codec_id = AV_CODEC_ID_VP8;
+  	//~ vStream->codec->codec_type = CODEC_TYPE_VIDEO;
+  	vStream->codec->codec_type = AVMEDIA_TYPE_VIDEO;
+  	printf("VIDEO defined codec id");
+  	vStream->codec->time_base = (AVRational){1, fps};
+  	vStream->codec->width = 640;
+  	vStream->codec->height = 480;
+  	printf("VIDEO defined codec id");
+  	vStream->codec->pix_fmt = PIX_FMT_YUV420P;
+  	if (fctx->flags & AVFMT_GLOBALHEADER)
+  		vStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
+  	//~ fctx->timestamp = 0;
+  	//~ if(url_fopen(&fctx->pb, fctx->filename, URL_WRONLY) < 0) {
+  	if(avio_open(&fctx->pb, fctx->filename, AVIO_FLAG_WRITE) < 0) {
+  		printf("Error opening file for output\n");
+  		return -1;
+  	}
+  	//~ memset(&parameters, 0, sizeof(AVFormatParameters));
+  	//~ av_set_parameters(fctx, &parameters);
+  	//~ fctx->preload = (int)(0.5 * AV_TIME_BASE);
+  	//~ fctx->max_delay = (int)(0.7 * AV_TIME_BASE);
+  	//~ if(av_write_header(fctx) < 0) {
+  	if(avformat_write_header(fctx, NULL) < 0) {
+  		printf("Error writing header\n");
+  		return -1;
+  	}
+  	return 0;
+  }
+
+  /* Close WebM file */
+  void close_webm() {
+  	if(fctx != NULL)
+  		av_write_trailer(fctx);
+  	if(vStream->codec != NULL)
+  		avcodec_close(vStream->codec);
+  	if(fctx->streams[0] != NULL) {
+  		av_free(fctx->streams[0]->codec);
+  		av_free(fctx->streams[0]);
+  	}
+  	if(fctx != NULL) {
+  		//~ url_fclose(fctx->pb);
+  		avio_close(fctx->pb);
+  		av_free(fctx);
+  	}
+  }
+
+
 
 }

@@ -4,7 +4,10 @@
 #include <string>
 #include <ogg/ogg.h>
 #include "MediaDefinitions.h"
-
+extern "C" {
+#include <libavcodec/avcodec.h>	/* FFmpeg libavcodec */
+#include <libavformat/avformat.h>	/* FFmpeg libavformat */
+}
 
 typedef struct {
   ogg_stream_state *stream;
@@ -77,6 +80,9 @@ public:
 	 */
 	void setVideoReceiver(MediaReceiver *receiv);
 
+	int create_webm(int fps);
+	void close_webm();
+
 private:
 	int bundle_;
 	MediaReceiver* audioReceiver_;
@@ -92,6 +98,14 @@ private:
 //	uint32_t video_ts, video_lastTs;
 	unsigned long int now, before, resync;
 	struct timespec tv;
+
+
+	AVCodecContext *dec_context;	/* FFmpeg decoding context */
+	AVCodec *dec_codec;		/* FFmpeg decoding codec */
+	AVFormatContext *fctx;
+	AVStream *vStream;
+	AVCodec *vCodec;
+	AVFrame *frame;
 
 	};
 }
