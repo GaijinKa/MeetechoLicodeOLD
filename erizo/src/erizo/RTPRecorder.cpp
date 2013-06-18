@@ -675,7 +675,7 @@ namespace erizo {
   }
 
   /* Create WebM context and file */
-  int create_webm(int fps) {
+  int RTPRecorder::create_webm(int fps) {
   	/* WebM output */
   	fctx = avformat_alloc_context();
   	if(fctx == NULL) {
@@ -730,7 +730,7 @@ namespace erizo {
   }
 
   /* Close WebM file */
-  void close_webm() {
+  void RTPRecorder::close_webm() {
   	if(fctx != NULL)
   		av_write_trailer(fctx);
   	if(vStream->codec != NULL)

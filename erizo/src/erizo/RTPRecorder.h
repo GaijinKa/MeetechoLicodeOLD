@@ -39,14 +39,6 @@ namespace erizo {
 class RTPRecorder: public MediaReceiver {
 public:
 
-
-	AVCodecContext *dec_context;	/* FFmpeg decoding context */
-	AVCodec *dec_codec;		/* FFmpeg decoding codec */
-	AVFormatContext *fctx;
-	AVStream *vStream;
-	AVCodec *vCodec;
-	AVFrame *frame;
-
 	/**
 	 * Constructor.
 	 * Constructs an empty RTPRecorder without any configuration.
@@ -112,6 +104,12 @@ private:
 	unsigned long int now, before, resync;
 	struct timespec tv;
 
+	AVCodecContext *dec_context;	/* FFmpeg decoding context */
+	AVCodec *dec_codec;		/* FFmpeg decoding codec */
+	AVFormatContext *fctx;
+	AVStream *vStream;
+	AVCodec *vCodec;
+	AVFrame *frame;
 
 	};
 }
