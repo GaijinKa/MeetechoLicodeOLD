@@ -595,7 +595,7 @@ namespace erizo {
 		  /* Frame manipulation */
 		  std::cout << "VIDEO End of all reading, Starting Frame Manipulation.." << std::endl;
 		  std::cout << "VIDEO frameLen " << frameLen  << std::endl;
-		  std::cout << "VIDEO received_frame " << received_frame  << std::endl;
+		  std::cout << "VIDEO received_frame " << (void *)received_frame << std::endl;
 		  std::cout << "VIDEO size " << size  << std::endl;
 		  memcpy(received_frame+frameLen, start_f, size);
 		  frameLen += size;
@@ -605,7 +605,7 @@ namespace erizo {
 			  //video_lastTs = rtp_v.time;
 			  if(frameLen > 0) {
 				  std::cout << "VIDEO the frame is not null -> go ahead.." << std::endl;
-				  memset(&(received_frame)+frameLen, 0, FF_INPUT_BUFFER_PADDING_SIZE);
+				  memset(received_frame+frameLen, 0, FF_INPUT_BUFFER_PADDING_SIZE);
 				  std::cout << "VIDEO memset called correctly -> go ahead.." << std::endl;
 				  frame = avcodec_alloc_frame();
 				  std::cout << "VIDEO Allocated Frame, configuring AVPacket" << std::endl;
