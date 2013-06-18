@@ -344,6 +344,11 @@ namespace erizo {
 	  std::cout << "Init Video Recorder" << std::endl;
 
 	  av_register_all();
+	  fctx = NULL;
+	  vStream = NULL;
+		vCodec = NULL;
+		frame = NULL;
+
       received_frame = (uint8_t *)calloc(numBytes, sizeof(uint8_t));
       memset(received_frame, 0, numBytes);
 //    buffer = (uint8_t *)calloc(10000, sizeof(uint8_t));
@@ -652,8 +657,6 @@ namespace erizo {
 							  fps = 10;
 						  else if(frames > 2)
 							  fps = 5;
-						  else //TEST PER VEDERE SE IL PROB E' QUI
-							  fps = 15;
 						  std::cout << "Creating WebM file: " << fps  << " fps" << std::endl;
 						  create_webm(fps);
 					  }
