@@ -72,7 +72,7 @@ exports.WebRtcController = function () {
     };
 
     
-    initWebRtpRecorder = function (rtcrec, name, callback) {
+    initWebRtpRecorder = function (rtcrec, audio, video, name, callback) {
     	if (audio)
     		rtcrec.initAudio(config.erizo.recorderpath, name);
     	if (video)
