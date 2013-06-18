@@ -288,7 +288,6 @@ namespace erizo {
 	lastSeq = 0;
  	numBytes = 640*480*3, frameLen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
    	frame = NULL;
-   //	video_ts = 0, video_lastTs=0;
    	now = 0, before = 0, resync = 0;
   }
 
@@ -318,7 +317,7 @@ namespace erizo {
 			return false;
 		}
 		std::string point_file = path+"/"+name+".opus";
-		params->out = fopen(path.c_str(), "w+");
+		params->out = fopen(point_file.c_str(), "w+");
 		if (!params->out) {
 			std::cout << "AUDIO Couldn't open output file." << std::endl;
 			return false;
