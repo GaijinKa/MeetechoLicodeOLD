@@ -428,8 +428,7 @@ namespace erizo {
 	     }
 
 
-	    if (bundle_){
-	    	std::cout << "Recorder for Bundle Communication" << std::endl;
+
 	    	if (len <= 10) {
 	    		std::cout << "Packet length < 10" << std::endl;
 	    		return len;
@@ -447,10 +446,6 @@ namespace erizo {
 	    	  if (size < rtp.payload_size) {
 	    	    std::cout << "!! truncated" << (rtp.payload_size - size) << "uncaptured bytes" << std::endl;
 	    	  }
-	    } else {
-	    	std::cout << "Not Bundle" << std::endl;
-	    		//Missing
-	    }
 
 	  return 0;
 
@@ -458,7 +453,7 @@ namespace erizo {
 
   int RTPRecorder::receiveVideoData(char* buf, int len) {
 
-	  std::cout << "Incoming video data: " << len << " bytes" << std::endl;
+//	  std::cout << "Incoming video data: " << len << " bytes" << std::endl;
 
 	  if (resync==0) {
     	  //test - inserisco qui l'inizio del fps?
@@ -604,7 +599,7 @@ namespace erizo {
 		  frameLen += size;
 //		  start_f = buffer;
 		  if(rtp_v.mark) {	/* Marker bit is set, the frame is complete */
-			  std::cout << "VIDEO MarkBit marked (!!!) -> start dumping.." << std::endl;
+//			  std::cout << "VIDEO MarkBit marked (!!!) -> start dumping.." << std::endl;
 			  //video_lastTs = rtp_v.time;
 			  if(frameLen > 0) {
 //				  std::cout << "VIDEO the frame is not null -> go ahead.." << std::endl;
@@ -634,17 +629,17 @@ namespace erizo {
 					  else
 						  std::cout << " ### ### frame written pts=" << apacket.pts  << std::endl;
 				  } else {
-					  std::cout << "Still waiting for fps evaluation to create the file..." << std::endl;
+//					  std::cout << "Still waiting for fps evaluation to create the file..." << std::endl;
 				  }
 				  /* Try evaluating the incoming FPS */
 				  frames++;
 				  gettimeofday(&tv, NULL);
 				  now = tv.tv_sec*1000 + tv.tv_usec/1000;
 				  if((now-before) >= 1000) {	/* Evaluate every second */
-					  std::cout << "fps=" << frames << " (in " << (now-before) <<" ms" << std::endl;
+					  std::cout << "fps=" << frames << " (in " << (now-before) <<" ms)" << std::endl;
 					  if(fps == 0) {
 						  /* Adapt framerate: this is just an evaluation (FIXME) */
-						  if(frames > 27)
+						  if(frames > 26)
 							  fps = 30;
 						  else if(frames > 22)
 							  fps = 25;
