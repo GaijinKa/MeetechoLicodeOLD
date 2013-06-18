@@ -296,8 +296,12 @@ namespace erizo {
   }
 
 
-  bool RTPRecorder::init(std::string path) {
-	    printf("initializing RTPRecorder");
+  bool RTPRecorder::initAudio(std::string path, std::string name) {
+
+		struct timespec tsp;
+		clock_gettime(CLOCK_MONOTONIC, &tsp);
+
+	    printf("initializing RTPRecorder at %d\n",);
 		params = (state *)malloc(sizeof(state));
 		if (!params) {
 			printf("Couldn't allocate param struct.\n");
@@ -331,14 +335,17 @@ namespace erizo {
 		  op_free(op);
 		  ogg_flush(params);
 
-		  //Video Init - test
-		  av_register_all();
-     	  received_frame = (uint8_t *)calloc(numBytes, sizeof(uint8_t));
-     	  memset(received_frame, 0, numBytes);
-     	  buffer = (uint8_t *)calloc(10000, sizeof(uint8_t));
-     	  memset(buffer, 0, 10000);
-
 		return true;
+  }
+
+  bool RTPRecorder::initVideo(std::string path, std::string name) {
+	  av_register_all();
+      received_frame = (uint8_t *)calloc(numBytes, sizeof(uint8_t));
+      memset(received_frame, 0, numBytes);
+      buffer = (uint8_t *)calloc(10000, sizeof(uint8_t));
+      memset(buffer, 0, 10000);
+
+      return true;
   }
 
   void RTPRecorder::close() {

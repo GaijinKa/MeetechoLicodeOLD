@@ -51,7 +51,8 @@ public:
 	 * Inits the RTPRecorder Interacting with filsystem.
 	 * @return True if the file opens correctly.
 	 */
-	bool init(const std::string path);
+	bool initAudio(const std::string path, const std::string name);
+	bool initVideo(const std::string path, const std::string name);
 	/**
 	 * Closes the RTPRecorder.
 	 * The object cannot be used after this call.
