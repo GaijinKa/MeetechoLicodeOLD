@@ -100,13 +100,6 @@ private:
 	struct timespec tv;
 
 
-	AVCodecContext *dec_context;	/* FFmpeg decoding context */
-	AVCodec *dec_codec;		/* FFmpeg decoding codec */
-	AVFormatContext *fctx;
-	AVStream *vStream;
-	AVCodec *vCodec;
-	AVFrame *frame;
-
 	};
 }
 #endif /* RTPRECORDER_H_ */

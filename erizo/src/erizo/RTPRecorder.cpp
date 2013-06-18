@@ -292,6 +292,13 @@ namespace erizo {
    	frame = NULL;
    //	video_ts = 0, video_lastTs=0;
    	now = 0, before = 0, resync = 0;
+
+	AVCodecContext *dec_context;	/* FFmpeg decoding context */
+	AVCodec *dec_codec;		/* FFmpeg decoding codec */
+	AVFormatContext *fctx;
+	AVStream *vStream;
+	AVCodec *vCodec;
+	AVFrame *frame;
   }
 
   RTPRecorder::~RTPRecorder() {
@@ -336,9 +343,9 @@ namespace erizo {
 
 		  //Video Init - test
 		  av_register_all();
-     	  uint8_t *received_frame = (uint8_t *)calloc(numBytes, sizeof(uint8_t));
+     	  received_frame = (uint8_t *)calloc(numBytes, sizeof(uint8_t));
      	  memset(received_frame, 0, numBytes);
-     	  uint8_t *buffer = (uint8_t *)calloc(10000, sizeof(uint8_t)), *start_f = buffer;
+     	  buffer = (uint8_t *)calloc(10000, sizeof(uint8_t));
      	  memset(buffer, 0, 10000);
 
 		return true;
@@ -352,6 +359,10 @@ namespace erizo {
 	   std::free(params);
 
 	   close_webm();
+	   std::free(buffer);
+	   std::free(received_frame);
+
+
   }
 
   void RTPRecorder::start() {
@@ -666,6 +677,7 @@ namespace erizo {
 	  printf("setting recorder bundle to %d \n", bund);
 	  bundle_ = bund;
   }
+
   /* Create WebM context and file */
   int create_webm(int fps) {
   	/* WebM output */
