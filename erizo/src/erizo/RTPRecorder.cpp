@@ -492,7 +492,7 @@ namespace erizo {
 
 	  //video_ts = rtp_v.time;
 //	  if (video_ts==video_lastTs) { 	//continue encoding
-	    if((rtp_v.seq-lastSeq) > 1)
+	    if((rtp_v.seq-lastSeq) > 1 && lastSeq!=0)
 			  std::cout << "VIDEO unexpected seq - " << rtp_v.seq << ", should have been " << lastSeq << std::endl;
 
 		  lastSeq = rtp_v.seq;
@@ -661,6 +661,7 @@ namespace erizo {
 //				  std::cout << "VIDEO Resetting all 4 next cycle of reading" << std::endl;
 				  keyFrame = 0;
 				  frameLen = 0;
+				  lastSeq = 0;
 			  }
 			  //video_ts += step;	/* FIXME was 4500, but this implied fps=20 at max */
 		  }
