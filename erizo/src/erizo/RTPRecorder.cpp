@@ -318,7 +318,6 @@ namespace erizo {
 		}
 		std::string point_file = path+"/"+name+".opus";
 		params->out = fopen(point_file.c_str(), "w+");
-		std::free(point_file);
 		if (!params->out) {
 			std::cout << "AUDIO Couldn't open output file." << std::endl;
 			return false;
