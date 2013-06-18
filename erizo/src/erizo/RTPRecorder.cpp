@@ -17,7 +17,12 @@
 #include <signal.h>
 
 /******VIDEO RECORDING******/
-
+	AVCodecContext *dec_context;	/* FFmpeg decoding context */
+	AVCodec *dec_codec;		/* FFmpeg decoding codec */
+	AVFormatContext *fctx;
+	AVStream *vStream;
+	AVCodec *vCodec;
+	AVFrame *frame;
 
 /* WebRTC stuff (VP8) */
 #if defined(__ppc__) || defined(__ppc64__)
@@ -292,13 +297,6 @@ namespace erizo {
    	frame = NULL;
    //	video_ts = 0, video_lastTs=0;
    	now = 0, before = 0, resync = 0;
-
-	AVCodecContext *dec_context;	/* FFmpeg decoding context */
-	AVCodec *dec_codec;		/* FFmpeg decoding codec */
-	AVFormatContext *fctx;
-	AVStream *vStream;
-	AVCodec *vCodec;
-	AVFrame *frame;
   }
 
   RTPRecorder::~RTPRecorder() {

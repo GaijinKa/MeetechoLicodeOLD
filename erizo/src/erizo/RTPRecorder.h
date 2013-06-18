@@ -99,7 +99,6 @@ private:
 	unsigned long int now, before, resync;
 	struct timespec tv;
 
-
 	};
 }
 #endif /* RTPRECORDER_H_ */
