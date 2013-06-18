@@ -3,7 +3,7 @@
  * Note per ora è usata la divisione tra bundle_ e not bundle_ ma credo che non ce ne sia bisogno anche perchè noi passiamo l'attributo name
  * che identifica lo stream, e questo fa sempre scattare il bundle con i dati.
  */
-#include <cstdio>
+#include <iostream>
 #include <ctime>
 #include <cstring>
 #include <cstdlib>
@@ -29,8 +29,6 @@
 
 /******AUDIO RECORDING******/
 #define OPUS_PAYLOAD_TYPE 111
-
-namespace erizo {
 
 /* helper, write a little-endian 32 bit int to memory */
 void le32(unsigned char *p, int v)
@@ -279,7 +277,7 @@ int opus_samples(const unsigned char *packet, int size)
   return samples*frames;
 }
 
-
+namespace erizo {
 
   RTPRecorder::RTPRecorder(){
     std::cout << "RTPRecorder constructor called" << std::endl;
