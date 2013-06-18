@@ -497,7 +497,7 @@ namespace erizo {
 
 		  lastSeq = rtp_v.seq;
 		  printf("VIDEO lastSeq setted to %d \nVIDEO copying packet in buffer...   ",lastSeq);
-		  memcpy(buffer, packet, size); //Attenzione Sto copiando già i dati privi di header RTP!
+		  memcpy(buffer, packet, size);
 		  printf("VIDEO packet copied in buffer\n");
 		  //First VP8 Header Line
 		  int skipped = 1;
@@ -511,7 +511,7 @@ namespace erizo {
 		  printf("VIDEO first VP8 Header Readed\n");
 
 		  if(!xbit) {	// Just skip the first byte
-			 // buffer++;
+			  buffer++;
 			  printf("VIDEO Xbit not marked -> go ahead\n");
 		  } else {   // XLine
 			  printf("VIDEO Xbit marked -> reading..\n");
