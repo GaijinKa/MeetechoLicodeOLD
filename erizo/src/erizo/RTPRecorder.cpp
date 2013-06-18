@@ -502,11 +502,11 @@ namespace erizo {
 			  std::cout << "VIDEO unexpected seq - " << rtp_v.seq << ", should have been " << lastSeq << std::endl;
 
 		  lastSeq = rtp_v.seq;
-		  std::cout << "VIDEO lastSeq set to " << lastSeq << std::endl;
+//		  std::cout << "VIDEO lastSeq set to " << lastSeq << std::endl;
 		  start_f = (uint8_t *)packet;
-		  std::cout << "VIDEO copying packet in buffer... " << (void*)start_f << " <-- " << (void*)packet << " (" << size << ")" << std::endl;
+//		  std::cout << "VIDEO copying packet in buffer... " << (void*)start_f << " <-- " << (void*)packet << " (" << size << ")" << std::endl;
 //		  memcpy(start_f, packet, size);
-		  std::cout << "VIDEO packet copied in start_f" << std::endl;
+//		  std::cout << "VIDEO packet copied in start_f" << std::endl;
 		  //First VP8 Header Line
 		  int skipped = 1;
 		  size--;
@@ -516,13 +516,13 @@ namespace erizo {
 		  uint8_t nbit = (vp8pd & 0x20);
 		  uint8_t sbit = (vp8pd & 0x10);
 		  uint8_t partid = (vp8pd & 0x0F);
-		  std::cout << "VIDEO first VP8 Header Readed" << std::endl;
+//		  std::cout << "VIDEO first VP8 Header Readed" << std::endl;
 
 		  if(!xbit) {	// Just skip the first byte
 			  start_f++;
-			  std::cout << "VIDEO Xbit not marked -> go ahead" << std::endl;
+//			  std::cout << "VIDEO Xbit not marked -> go ahead" << std::endl;
 		  } else {   // XLine
-			  std::cout << "VIDEO Xbit marked -> reading.." << std::endl;
+//			  std::cout << "VIDEO Xbit marked -> reading.." << std::endl;
 			  start_f++;
 			  size--;
 			  skipped++;
@@ -532,7 +532,7 @@ namespace erizo {
 			  uint8_t tbit = (vp8pd & 0x20);
 			  uint8_t kbit = (vp8pd & 0x10);
 			  if(ibit) {	// Read the PictureID octet
-				  std::cout << "VIDEO Ibit marked -> reading.." << std::endl;
+//				  std::cout << "VIDEO Ibit marked -> reading.." << std::endl;
 				  start_f++;
 				  size--;
 				  skipped++;
@@ -540,7 +540,7 @@ namespace erizo {
 				  uint16_t picid = vp8pd, wholepicid = picid;
 				  uint8_t mbit = (vp8pd & 0x80);
 				  if(mbit) {
-					  std::cout << "VIDEO Mbit marked -> reading.." << std::endl;
+//					  std::cout << "VIDEO Mbit marked -> reading.." << std::endl;
 					  memcpy(&picid, start_f, sizeof(uint16_t));
 					  wholepicid = ntohs(picid);
 					  picid = (wholepicid & 0x7FFF);
@@ -550,26 +550,26 @@ namespace erizo {
 				  }
 			  }
 			  if(lbit) {	// Read the TL0PICIDX octec
-				  std::cout << "VIDEO Lbit marked -> reading.." << std::endl;
+//				  std::cout << "VIDEO Lbit marked -> reading.." << std::endl;
 				  start_f++;
 				  size--;
 				  skipped++;
 				  vp8pd = *start_f;
 			  }
 			  if(tbit || kbit) { // Read the TID/KEYIDX octec
-				  std::cout << "VIDEO Tbit or Kbit marked -> reading.." << std::endl;
+//				  std::cout << "VIDEO Tbit or Kbit marked -> reading.." << std::endl;
 				  start_f++;
 				  size--;
 				  skipped++;
 				  vp8pd = *start_f;
 			  }
 			  start_f++;	// Now we're in the payload
-			  std::cout << "VIDEO Now we're in payload" << std::endl;
+//			  std::cout << "VIDEO Now we're in payload" << std::endl;
 			  if(sbit) {
-				  std::cout << "VIDEO Sbit marked -> reading.." << std::endl;
+//				  std::cout << "VIDEO Sbit marked -> reading.." << std::endl;
 				  unsigned long int vp8ph = 0;
 				  memcpy(&vp8ph, start_f, 4);
-				  std::cout << "VIDEO start_f copied in vp8ph (Vp8 Payload Header?)" << std::endl;
+//				  std::cout << "VIDEO start_f copied in vp8ph (Vp8 Payload Header?)" << std::endl;
 				  vp8ph = ntohl(vp8ph);
 				  uint8_t size0 = ((vp8ph & 0xE0000000) >> 29);
 				  uint8_t hbit = ((vp8ph & 0x10000000) >> 28);
@@ -579,7 +579,7 @@ namespace erizo {
 				  uint8_t size2 = ((vp8ph & 0x0000FF00) >> 8);
 				  int fpSize = size0 + 8 * size1 + 2048 * size2;
 				  if(!pbit) {
-					  std::cout << "VIDEO Pbit not marked! is a KeyFrame? -> reading.." << std::endl;
+//					  std::cout << "VIDEO Pbit not marked! is a KeyFrame? -> reading.." << std::endl;
 					  vp8gotFirstKey = 1;
 					  keyFrame = 1;
 					  // Get resolution
@@ -592,15 +592,15 @@ namespace erizo {
 					  int vp8ws = swap2(*(unsigned short*)(c+3))>>14;
 					  vp8h = swap2(*(unsigned short*)(c+5))&0x3fff;
 					  int vp8hs = swap2(*(unsigned short*)(c+5))>>14;
-					  std::cout << "VP8 source: " << vp8w << "x" << vp8h << std::endl;
+//					  std::cout << "VP8 source: " << vp8w << "x" << vp8h << std::endl;
 				  }
 			  }
 		  }
 		  /* Frame manipulation */
-		  std::cout << "VIDEO End of all reading, Starting Frame Manipulation.." << std::endl;
-		  std::cout << "VIDEO frameLen " << frameLen  << std::endl;
-		  std::cout << "VIDEO received_frame " << (void *)received_frame << std::endl;
-		  std::cout << "VIDEO size " << size  << std::endl;
+//		  std::cout << "VIDEO End of all reading, Starting Frame Manipulation.." << std::endl;
+//		  std::cout << "VIDEO frameLen " << frameLen  << std::endl;
+//		  std::cout << "VIDEO received_frame " << (void *)received_frame << std::endl;
+//		  std::cout << "VIDEO size " << size  << std::endl;
 		  memcpy(received_frame+frameLen, start_f, size);
 		  frameLen += size;
 //		  start_f = buffer;
@@ -608,15 +608,15 @@ namespace erizo {
 			  std::cout << "VIDEO MarkBit marked (!!!) -> start dumping.." << std::endl;
 			  //video_lastTs = rtp_v.time;
 			  if(frameLen > 0) {
-				  std::cout << "VIDEO the frame is not null -> go ahead.." << std::endl;
+//				  std::cout << "VIDEO the frame is not null -> go ahead.." << std::endl;
 				  memset(received_frame+frameLen, 0, FF_INPUT_BUFFER_PADDING_SIZE);
-				  std::cout << "VIDEO memset called correctly -> go ahead.." << std::endl;
+//				  std::cout << "VIDEO memset called correctly -> go ahead.." << std::endl;
 				  frame = avcodec_alloc_frame();
-				  std::cout << "VIDEO Allocated Frame, configuring AVPacket" << std::endl;
+//				  std::cout << "VIDEO Allocated Frame, configuring AVPacket" << std::endl;
 
 				  AVPacket apacket;
 				  av_init_packet(&apacket);
-				  std::cout << "VIDEO AVPacket initialized... " << std::endl;
+//				  std::cout << "VIDEO AVPacket initialized... " << std::endl;
 				  apacket.stream_index = 0;
 				  apacket.data = received_frame;
 				  apacket.size = frameLen;
@@ -624,10 +624,10 @@ namespace erizo {
 					  apacket.flags |= AV_PKT_FLAG_KEY;
 
 				  /* First we save to the file... */
-				  std::cout << " ### Writing frame to file..." << std::endl;
+//				  std::cout << " ### Writing frame to file..." << std::endl;
 				  apacket.dts = AV_NOPTS_VALUE;
 				  apacket.pts = AV_NOPTS_VALUE;
-				  std::cout << "VIDEO AVPacket SetUp" << std::endl;
+//				  std::cout << "VIDEO AVPacket SetUp" << std::endl;
 
 				  if(fctx) {
 					  if(av_write_frame(fctx, &apacket) < 0)
@@ -664,8 +664,7 @@ namespace erizo {
 					  before = now;
 				  }
 
-				  std::cout << "VIDEO Resetting all 4 next cycle of reading" << std::endl;
-				  //video_lastTs = rtp_v.time;
+//				  std::cout << "VIDEO Resetting all 4 next cycle of reading" << std::endl;
 				  keyFrame = 0;
 				  frameLen = 0;
 			  }
@@ -674,7 +673,7 @@ namespace erizo {
 		  if(size == 0)
 			  return size;
 //	  }
-		  std::cout << "VIDEO Returning Video Receive Function\n\n" << std::endl;
+//		  std::cout << "VIDEO Returning Video Receive Function\n\n" << std::endl;
 		  return 0;
   }
 
