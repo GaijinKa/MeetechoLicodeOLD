@@ -340,12 +340,15 @@ namespace erizo {
   }
 
   bool RTPRecorder::initVideo(std::string path, std::string name) {
+
+	  std::cout << "Init Video Recorder" << std:endl;
+
 	  av_register_all();
       received_frame = (uint8_t *)calloc(numBytes, sizeof(uint8_t));
       memset(received_frame, 0, numBytes);
-      buffer = (uint8_t *)calloc(10000, sizeof(uint8_t));
-      memset(buffer, 0, 10000);
-      start_f = buffer;
+//    buffer = (uint8_t *)calloc(10000, sizeof(uint8_t));
+//    memset(buffer, 0, 10000);
+      start_f = NULL; // FIXME was buffer;
       return true;
   }
 
@@ -357,8 +360,10 @@ namespace erizo {
 	   std::free(params);
 
 	   close_webm();
-	   std::free(buffer);
-	   std::free(received_frame);
+	   if(buffer)
+		   std::free(buffer);
+	   if(received_frame)
+		   std::free(received_frame);
 	   start_f = NULL;
 	   buffer = NULL;
 	   received_frame = NULL;
@@ -449,6 +454,8 @@ namespace erizo {
 
   int RTPRecorder::receiveVideoData(char* buf, int len) {
 
+	  std::cout << "Incoming video data: " << len << " bytes" << std::endl;
+
 	  if (resync==0) {
     	  //test - inserisco qui l'inizio del fps?
      	  clock_gettime(CLOCK_MONOTONIC, &tv);
@@ -490,8 +497,10 @@ namespace erizo {
 			  std::cout << "VIDEO unexpected seq - " << rtp_v.seq << ", should have been " << lastSeq << std::endl;
 
 		  lastSeq = rtp_v.seq;
-		  std::cout << "VIDEO lastSeq set to " << lastSeq << std::endl << "VIDEO copying packet in buffer...   " << std::endl;
-		  memcpy(start_f, packet, size);
+		  std::cout << "VIDEO lastSeq set to " << lastSeq << std::endl;
+		  start_f = (uint8_t *)packet;
+		  std::cout << "VIDEO copying packet in buffer... " << (void*)start_f << " <-- " << (void*)packet << " (" << size << ")" << std::endl;
+//		  memcpy(start_f, packet, size);
 		  std::cout << "VIDEO packet copied in start_f" << std::endl;
 		  //First VP8 Header Line
 		  int skipped = 1;
@@ -585,12 +594,12 @@ namespace erizo {
 		  /* Frame manipulation */
 		  std::cout << "VIDEO End of all reading, Starting Frame Manipulation.." << std::endl;
 		  std::cout << "VIDEO frameLen " << frameLen  << std::endl;
-		  std::cout << "VIDEO received_frame " <<received_frame  << std::endl;
+		  std::cout << "VIDEO received_frame " << received_frame  << std::endl;
 		  std::cout << "VIDEO size " << size  << std::endl;
 		  memcpy(&(received_frame)+frameLen, start_f, size);
 		  frameLen += size;
+//		  start_f = buffer;
 		  if(rtp_v.mark) {	/* Marker bit is set, the frame is complete */
-			  start_f = buffer;
 			  std::cout << "VIDEO MarkBit marked (!!!) -> start dumping.." << std::endl;
 			  //video_lastTs = rtp_v.time;
 			  if(frameLen > 0) {
