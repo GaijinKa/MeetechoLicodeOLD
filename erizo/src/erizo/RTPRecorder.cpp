@@ -9,24 +9,12 @@
 #include <cstdlib>
 #include <netinet/in.h>
 #include <opus/opus.h>
-#ifndef INT64_C
-#define INT64_C(c) (c ## LL)
-#define UINT64_C(c) (c ## ULL)
-#endif
-extern "C" {
-#include <libavcodec/avcodec.h>	/* FFmpeg libavcodec */
-#include <libavformat/avformat.h>	/* FFmpeg libavformat */
-}
+
 #include "RTPRecorder.h"
 #include <signal.h>
 
 /******VIDEO RECORDING******/
-	AVCodecContext *dec_context;	/* FFmpeg decoding context */
-	AVCodec *dec_codec;		/* FFmpeg decoding codec */
-	AVFormatContext *fctx;
-	AVStream *vStream;
-	AVCodec *vCodec;
-	AVFrame *frame;
+
 
 /* WebRTC stuff (VP8) */
 #if defined(__ppc__) || defined(__ppc64__)
@@ -460,7 +448,6 @@ namespace erizo {
      	  before = tv.tv_sec*1000 + tv.tv_nsec;
           resync = before;
      	  printf("Starting fps evaluation (start_f=%lu)...\n", before);
-
      	  printf("Waiting for RTP frames...\n");
 	  }
 

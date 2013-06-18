@@ -4,7 +4,14 @@
 #include <string>
 #include <ogg/ogg.h>
 #include "MediaDefinitions.h"
-
+#ifndef INT64_C
+#define INT64_C(c) (c ## LL)
+#define UINT64_C(c) (c ## ULL)
+#endif
+extern "C" {
+#include <libavcodec/avcodec.h>	/* FFmpeg libavcodec */
+#include <libavformat/avformat.h>	/* FFmpeg libavformat */
+}
 
 typedef struct {
   ogg_stream_state *stream;
@@ -92,9 +99,15 @@ private:
 	//video
 	uint8_t *received_frame, *buffer, *start_f;
 	int frameLen, dec_errors, marker, frames, fps, step, vp8gotFirstKey, keyFrame, vp8w, vp8h, numBytes, lastSeq;
-//	uint32_t video_ts, video_lastTs;
 	unsigned long int now, before, resync;
 	struct timespec tv;
+
+	AVCodecContext *dec_context;	/* FFmpeg decoding context */
+	AVCodec *dec_codec;		/* FFmpeg decoding codec */
+	AVFormatContext *fctx;
+	AVStream *vStream;
+	AVCodec *vCodec;
+	AVFrame *frame;
 
 	};
 }
