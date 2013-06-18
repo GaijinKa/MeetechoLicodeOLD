@@ -617,7 +617,7 @@ namespace erizo {
 				  apacket.data = received_frame;
 				  apacket.size = frameLen;
 				  if(keyFrame)
-					  packet.flags |= AV_PKT_FLAG_KEY;
+					  apacket.flags |= AV_PKT_FLAG_KEY;
 
 				  /* First we save to the file... */
 				  std::cout << " ### Writing frame to file..." << std::endl;
