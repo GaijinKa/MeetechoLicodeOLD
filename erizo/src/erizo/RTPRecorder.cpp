@@ -30,6 +30,8 @@
 /******AUDIO RECORDING******/
 #define OPUS_PAYLOAD_TYPE 111
 
+namespace erizo {
+
 /* helper, write a little-endian 32 bit int to memory */
 void le32(unsigned char *p, int v)
 {
@@ -70,11 +72,11 @@ ogg_packet *op_opushead(void)
   ogg_packet *op = (ogg_packet *)malloc(sizeof(*op));
 
   if (!data) {
-    cout << "Couldn't allocate data buffer." << endl;
+    std::cout << "Couldn't allocate data buffer." << std::endl;
     return NULL;
   }
   if (!op) {
-    cout << "Couldn't allocate Ogg packet." << endl;
+    std::cout << "Couldn't allocate Ogg packet." << std::endl;
     return NULL;
   }
 
@@ -116,11 +118,11 @@ ogg_packet *op_opustags(void)
   ogg_packet *op = (ogg_packet *)malloc(sizeof(*op));
 
   if (!data) {
-    cout << "Couldn't allocate data buffer." << endl;
+    std::cout << "Couldn't allocate data buffer." << std::endl;
     return NULL;
   }
   if (!op) {
-    cout << "Couldn't allocate Ogg packet." << endl;
+    std::cout << "Couldn't allocate Ogg packet." << std::endl;
     return NULL;
   }
 
@@ -143,7 +145,7 @@ ogg_packet *op_from_pkt(const unsigned char *pkt, int len)
 {
   ogg_packet *op = (ogg_packet *)malloc(sizeof(*op));
   if (!op) {
-    cout << "Couldn't allocate Ogg packet." << endl;
+    std::cout << "Couldn't allocate Ogg packet." << std::endl;
     return NULL;
   }
 
@@ -168,12 +170,12 @@ int ogg_write(state *params)
   while (ogg_stream_pageout(params->stream, &page)) {
     written = fwrite(page.header, 1, page.header_len, params->out);
     if (written != (size_t)page.header_len) {
-      cout << "Error writing Ogg page header" << endl;
+      std::cout << "Error writing Ogg page header" << std::endl;
       return -2;
     }
     written = fwrite(page.body, 1, page.body_len, params->out);
     if (written != (size_t)page.body_len) {
-      cout << "Error writing Ogg page body" << endl;
+      std::cout << "Error writing Ogg page body" << std::endl;
       return -3;
     }
   }
@@ -190,19 +192,19 @@ int ogg_flush(state *params)
   size_t written;
 
   if (!params || !params->stream || !params->out) {
-	cout << "Error ogg_flush" << endl;
+	std::cout << "Error ogg_flush" << std::endl;
     return -1;
   }
 
   while (ogg_stream_flush(params->stream, &page)) {
     written = fwrite(page.header, 1, page.header_len, params->out);
     if (written != (size_t)page.header_len) {
-      cout << "Error writing Ogg page header" << endl;
+      std::cout << "Error writing Ogg page header" << std::endl;
       return -2;
     }
     written = fwrite(page.body, 1, page.body_len, params->out);
     if (written != (size_t)page.body_len) {
-      cout << "Error writing Ogg page body" << endl;
+      std::cout << "Error writing Ogg page body" << std::endl;
       return -3;
     }
   }
@@ -242,7 +244,7 @@ int parse_rtp_header(const unsigned char *packet, int size, rtp_header *rtp)
     return -2;
   }
   if (size < RTP_HEADER_MIN) {
-    cout << "Packet too short for rtp" << endl;
+    std::cout << "Packet too short for rtp" << std::endl;
     return -1;
   }
   rtp->version = (packet[0] >> 6) & 3;
@@ -259,7 +261,7 @@ int parse_rtp_header(const unsigned char *packet, int size, rtp_header *rtp)
   rtp->ssrc = rbe32(packet + 8);
   rtp->csrc = NULL;
   if (size < rtp->header_size) {
-    cout << "Packet too short for RTP header" << endl;
+    std::cout << "Packet too short for RTP header" << std::endl;
     return -1;
   }
 
@@ -277,10 +279,10 @@ int opus_samples(const unsigned char *packet, int size)
   return samples*frames;
 }
 
-namespace erizo {
+
 
   RTPRecorder::RTPRecorder(){
-    cout << "RTPRecorder constructor called" << endl;
+    std::cout << "RTPRecorder constructor called" << std::endl;
     bundle_ = false;
     videoReceiver_ = NULL;
     audioReceiver_ = NULL;
@@ -301,28 +303,28 @@ namespace erizo {
 		struct timespec tsp;
 		clock_gettime(CLOCK_MONOTONIC, &tsp);
 
-	    cout << "initializing RTPRecorder " << endl;
+	    std::cout << "initializing RTPRecorder " << std::endl;
 		params = (state *)malloc(sizeof(state));
 		if (!params) {
-			cout << "Couldn't allocate param struct." << endl;
+			std::cout << "Couldn't allocate param struct." << std::endl;
 			return false;
 		}
 		params->stream = (ogg_stream_state *)malloc(sizeof(ogg_stream_state));
 		if (!params->stream) {
-			cout << "Couldn't allocate stream struct." << endl;
+			std::cout << "Couldn't allocate stream struct." << std::endl;
 			return false;
 		}
 		if (ogg_stream_init(params->stream, rand()) < 0) {
-			cout << "Couldn't initialize Ogg stream state." << endl;
+			std::cout << "Couldn't initialize Ogg stream state." << std::endl;
 			return false;
 		}
 		std::string point_file = path+"/"+name+".opus";
 		params->out = fopen(path.c_str(), "w+");
 		if (!params->out) {
-			cout << "Couldn't open output file." << endl;
+			std::cout << "Couldn't open output file." << std::endl;
 			return false;
 		} else {
-			cout << "File opened in " << path.c_str() << endl;
+			std::cout << "File opened in " << path.c_str() << std::endl;
 		}
 		  params->seq = 0;
 		  params->granulepos = 0;
@@ -389,40 +391,40 @@ namespace erizo {
 	  size = len;
 
 	  if (parse_rtp_header(packet, size, &rtp)) {
-	      cout << "error parsing rtp header" << endl;
+	      std::cout << "error parsing rtp header" << std::endl;
 	      return len;
 	    }
-//	    cout << " AUDIO rtp 0x%08x %d %d %d",
+//	    std::cout << " AUDIO rtp 0x%08x %d %d %d",
 //	            rtp.ssrc, rtp.type, rtp.seq, rtp.time);
-//	    cout << "  v%d %s%s%s CC %d", rtp.version,
+//	    std::cout << "  v%d %s%s%s CC %d", rtp.version,
 //	            rtp.pad ? "P":".", rtp.ext ? "X":".",
 //	            rtp.mark ? "M":".", rtp.cc);
-//	    cout << " %5d bytes\n", rtp.payload_size);
+//	    std::cout << " %5d bytes\n", rtp.payload_size);
 
 	    packet += rtp.header_size;
 	    size -= rtp.header_size;
 
 	    if (size < 0) {
-	      cout << "AUDIO skipping short packet" << endl;
+	      std::cout << "AUDIO skipping short packet" << std::endl;
 	      return len;
 	    }
 
 	    if (rtp.seq < params->seq) {
-	      cout << "skipping out-of-sequence packet" << endl;
+	      std::cout << "skipping out-of-sequence packet" << std::endl;
 	      return len;
 	    }
 	    params->seq = rtp.seq;
 
 	    if (rtp.type != OPUS_PAYLOAD_TYPE) {
-	       cout << "skipping non-opus packet" << endl;
+	       std::cout << "skipping non-opus packet" << std::endl;
 	       return len;
 	     }
 
 
 	    if (bundle_){
-	    	cout << "Recorder for Bundle Communication" << endl;
+	    	std::cout << "Recorder for Bundle Communication" << std::endl;
 	    	if (len <= 10) {
-	    		cout << "Packet length < 10" << endl;
+	    		std::cout << "Packet length < 10" << std::endl;
 	    		return len;
 	    	}
 
@@ -436,10 +438,10 @@ namespace erizo {
 	    	  ogg_write(params);
 
 	    	  if (size < rtp.payload_size) {
-	    	    cout << "!! truncated" << (rtp.payload_size - size) << "uncaptured bytes" << endl;
+	    	    std::cout << "!! truncated" << (rtp.payload_size - size) << "uncaptured bytes" << std::endl;
 	    	  }
 	    } else {
-	    	cout << "Not Bundle" << endl;
+	    	std::cout << "Not Bundle" << std::endl;
 	    		//Missing
 	    }
 
@@ -454,8 +456,8 @@ namespace erizo {
      	  clock_gettime(CLOCK_MONOTONIC, &tv);
      	  before = tv.tv_sec*1000 + tv.tv_nsec;
           resync = before;
-     	  cout << "Starting fps evaluation - before="<<before<< endl;
-     	  cout << "Waiting for RTP frames..." << endl;
+     	  std::cout << "Starting fps evaluation - before="<<before<< std::endl;
+     	  std::cout << "Waiting for RTP frames..." << std::endl;
 	  }
 
 
@@ -466,33 +468,33 @@ namespace erizo {
 	  size = len;
 
 	  if (parse_rtp_header(packet, size, &rtp_v)) {
-	      cout << "VIDEO error parsing rtp header" << endl;
+	      std::cout << "VIDEO error parsing rtp header" << std::endl;
 	      return len;
 	    }
-//	    cout << " VIDEO rtp 0x%08x %d %d %d",
+//	    std::cout << " VIDEO rtp 0x%08x %d %d %d",
 //	    		rtp_v.ssrc, rtp_v.type, rtp_v.seq, rtp_v.time);
-//	    cout << "  v%d %s%s%s CC %d", rtp_v.version,
+//	    std::cout << "  v%d %s%s%s CC %d", rtp_v.version,
 //	    		rtp_v.pad ? "P":".", rtp_v.ext ? "X":".",
 //	    		rtp_v.mark ? "M":".", rtp_v.cc);
-//	    cout << " %5d bytes\n", rtp_v.payload_size);
+//	    std::cout << " %5d bytes\n", rtp_v.payload_size);
 
 	    packet += rtp_v.header_size;
 	    size -= rtp_v.header_size;
 
 	    if (size < 0) {
-	      cout << "VIDEO skipping short packet" << endl;
+	      std::cout << "VIDEO skipping short packet" << std::endl;
 	      return len;
 	    }
 
 	  //video_ts = rtp_v.time;
 //	  if (video_ts==video_lastTs) { 	//continue encoding
 	    if((rtp_v.seq-lastSeq) > 1)
-			  cout << "VIDEO unexpected seq - " << rtp_v.seq << ", should have been " << lastSeq << endl;
+			  std::cout << "VIDEO unexpected seq - " << rtp_v.seq << ", should have been " << lastSeq << std::endl;
 
 		  lastSeq = rtp_v.seq;
-		  cout << "VIDEO lastSeq set to " << lastSeq << endl << "VIDEO copying packet in buffer...   " << endl;
+		  std::cout << "VIDEO lastSeq set to " << lastSeq << std::endl << "VIDEO copying packet in buffer...   " << std::endl;
 		  memcpy(start_f, packet, size);
-		  cout << "VIDEO packet copied in start_f" << endl;
+		  std::cout << "VIDEO packet copied in start_f" << std::endl;
 		  //First VP8 Header Line
 		  int skipped = 1;
 		  size--;
@@ -502,13 +504,13 @@ namespace erizo {
 		  uint8_t nbit = (vp8pd & 0x20);
 		  uint8_t sbit = (vp8pd & 0x10);
 		  uint8_t partid = (vp8pd & 0x0F);
-		  cout << "VIDEO first VP8 Header Readed" << endl;
+		  std::cout << "VIDEO first VP8 Header Readed" << std::endl;
 
 		  if(!xbit) {	// Just skip the first byte
 			  start_f++;
-			  cout << "VIDEO Xbit not marked -> go ahead" << endl;
+			  std::cout << "VIDEO Xbit not marked -> go ahead" << std::endl;
 		  } else {   // XLine
-			  cout << "VIDEO Xbit marked -> reading.." << endl;
+			  std::cout << "VIDEO Xbit marked -> reading.." << std::endl;
 			  start_f++;
 			  size--;
 			  skipped++;
@@ -518,7 +520,7 @@ namespace erizo {
 			  uint8_t tbit = (vp8pd & 0x20);
 			  uint8_t kbit = (vp8pd & 0x10);
 			  if(ibit) {	// Read the PictureID octet
-				  cout << "VIDEO Ibit marked -> reading.." << endl;
+				  std::cout << "VIDEO Ibit marked -> reading.." << std::endl;
 				  start_f++;
 				  size--;
 				  skipped++;
@@ -526,7 +528,7 @@ namespace erizo {
 				  uint16_t picid = vp8pd, wholepicid = picid;
 				  uint8_t mbit = (vp8pd & 0x80);
 				  if(mbit) {
-					  cout << "VIDEO Mbit marked -> reading.." << endl;
+					  std::cout << "VIDEO Mbit marked -> reading.." << std::endl;
 					  memcpy(&picid, start_f, sizeof(uint16_t));
 					  wholepicid = ntohs(picid);
 					  picid = (wholepicid & 0x7FFF);
@@ -536,26 +538,26 @@ namespace erizo {
 				  }
 			  }
 			  if(lbit) {	// Read the TL0PICIDX octec
-				  cout << "VIDEO Lbit marked -> reading.." << endl;
+				  std::cout << "VIDEO Lbit marked -> reading.." << std::endl;
 				  start_f++;
 				  size--;
 				  skipped++;
 				  vp8pd = *start_f;
 			  }
 			  if(tbit || kbit) { // Read the TID/KEYIDX octec
-				  cout << "VIDEO Tbit or Kbit marked -> reading.." << endl;
+				  std::cout << "VIDEO Tbit or Kbit marked -> reading.." << std::endl;
 				  start_f++;
 				  size--;
 				  skipped++;
 				  vp8pd = *start_f;
 			  }
 			  start_f++;	// Now we're in the payload
-			  cout << "VIDEO Now we're in payload" << endl;
+			  std::cout << "VIDEO Now we're in payload" << std::endl;
 			  if(sbit) {
-				  cout << "VIDEO Sbit marked -> reading.." << endl;
+				  std::cout << "VIDEO Sbit marked -> reading.." << std::endl;
 				  unsigned long int vp8ph = 0;
 				  memcpy(&vp8ph, start_f, 4);
-				  cout << "VIDEO start_f copied in vp8ph (Vp8 Payload Header?)" << endl;
+				  std::cout << "VIDEO start_f copied in vp8ph (Vp8 Payload Header?)" << std::endl;
 				  vp8ph = ntohl(vp8ph);
 				  uint8_t size0 = ((vp8ph & 0xE0000000) >> 29);
 				  uint8_t hbit = ((vp8ph & 0x10000000) >> 28);
@@ -565,44 +567,44 @@ namespace erizo {
 				  uint8_t size2 = ((vp8ph & 0x0000FF00) >> 8);
 				  int fpSize = size0 + 8 * size1 + 2048 * size2;
 				  if(!pbit) {
-					  cout << "VIDEO Pbit not marked! is a KeyFrame? -> reading.." << endl;
+					  std::cout << "VIDEO Pbit not marked! is a KeyFrame? -> reading.." << std::endl;
 					  vp8gotFirstKey = 1;
 					  keyFrame = 1;
 					  // Get resolution
 					  unsigned char *c = start_f+3;
 					  // vet via sync code
 					  if(c[0]!=0x9d||c[1]!=0x01||c[2]!=0x2a)
-						  cout << "First 3-bytes after header not what they're supposed to be?" << endl;
+						  std::cout << "First 3-bytes after header not what they're supposed to be?" << std::endl;
 
 					  vp8w = swap2(*(unsigned short*)(c+3))&0x3fff;
 					  int vp8ws = swap2(*(unsigned short*)(c+3))>>14;
 					  vp8h = swap2(*(unsigned short*)(c+5))&0x3fff;
 					  int vp8hs = swap2(*(unsigned short*)(c+5))>>14;
-					  cout << "VP8 source: " << vp8w << "x" << vp8h << endl;
+					  std::cout << "VP8 source: " << vp8w << "x" << vp8h << std::endl;
 				  }
 			  }
 		  }
 		  /* Frame manipulation */
-		  cout << "VIDEO End of all reading, Starting Frame Manipulation.." << endl;
-		  cout << "VIDEO frameLen " << frameLen  << endl;
-		  cout << "VIDEO received_frame " <<received_frame  << endl;
-		  cout << "VIDEO size " << size  << endl;
+		  std::cout << "VIDEO End of all reading, Starting Frame Manipulation.." << std::endl;
+		  std::cout << "VIDEO frameLen " << frameLen  << std::endl;
+		  std::cout << "VIDEO received_frame " <<received_frame  << std::endl;
+		  std::cout << "VIDEO size " << size  << std::endl;
 		  memcpy(&(received_frame)+frameLen, start_f, size);
 		  frameLen += size;
 		  if(rtp_v.mark) {	/* Marker bit is set, the frame is complete */
 			  start_f = buffer;
-			  cout << "VIDEO MarkBit marked (!!!) -> start dumping.." << endl;
+			  std::cout << "VIDEO MarkBit marked (!!!) -> start dumping.." << std::endl;
 			  //video_lastTs = rtp_v.time;
 			  if(frameLen > 0) {
-				  cout << "VIDEO the frame is not null -> go ahead.." << endl;
+				  std::cout << "VIDEO the frame is not null -> go ahead.." << std::endl;
 				  memset(&(received_frame)+frameLen, 0, FF_INPUT_BUFFER_PADDING_SIZE);
-				  cout << "VIDEO memset called correctly -> go ahead.." << endl;
+				  std::cout << "VIDEO memset called correctly -> go ahead.." << std::endl;
 				  frame = avcodec_alloc_frame();
-				  cout << "VIDEO Allocated Frame, configuring AVPacket" << endl;
+				  std::cout << "VIDEO Allocated Frame, configuring AVPacket" << std::endl;
 
 				  AVPacket packet;
 				  av_init_packet(&packet);
-				  cout << "VIDEO AVPacket initialized... " << endl;
+				  std::cout << "VIDEO AVPacket initialized... " << std::endl;
 				  packet.stream_index = 0;
 				  packet.data = received_frame;
 				  packet.size = frameLen;
@@ -610,25 +612,25 @@ namespace erizo {
 					  packet.flags |= AV_PKT_FLAG_KEY;
 
 				  /* First we save to the file... */
-				  cout << " ### Writing frame to file..." << endl;
+				  std::cout << " ### Writing frame to file..." << std::endl;
 				  packet.dts = AV_NOPTS_VALUE;
 				  packet.pts = AV_NOPTS_VALUE;
-				  cout << "VIDEO AVPacket SettedUp" << endl;
+				  std::cout << "VIDEO AVPacket SettedUp" << std::endl;
 
 				  if(fctx) {
 					  if(av_write_frame(fctx, &packet) < 0)
-						  cout << "Error writing video frame to file..." << endl;
+						  std::cout << "Error writing video frame to file..." << std::endl;
 					  else
-						  cout << " ### ### frame written pts=" << packet.pts  << endl;
+						  std::cout << " ### ### frame written pts=" << packet.pts  << std::endl;
 				  } else {
-					  cout << "Still waiting for fps evaluation to create the file..." << endl;
+					  std::cout << "Still waiting for fps evaluation to create the file..." << std::endl;
 				  }
 				  /* Try evaluating the incoming FPS */
 				  frames++;
 		     	  clock_gettime(CLOCK_MONOTONIC, &tv);
 		     	  before = tv.tv_sec*1000 + tv.tv_nsec;
 				  if((now-before) >= 1000) {	/* Evaluate every second */
-					  cout << "fps=" << frames << " (in " << (now-before) <<" ms" << endl;
+					  std::cout << "fps=" << frames << " (in " << (now-before) <<" ms" << std::endl;
 					  if(fps == 0) {
 						  /* Adapt framerate: this is just an evaluation (FIXME) */
 						  if(frames > 27)
@@ -645,14 +647,14 @@ namespace erizo {
 							  fps = 5;
 						  else //TEST PER VEDERE SE IL PROB E' QUI
 							  fps = 15;
-						  cout << "Creating WebM file: " << fps  << " fps" << endl;
+						  std::cout << "Creating WebM file: " << fps  << " fps" << std::endl;
 						  create_webm(fps);
 					  }
 					  frames = 0;
 					  before = now;
 				  }
 
-				  cout << "VIDEO Resetting all 4 next cycle of reading" << endl;
+				  std::cout << "VIDEO Resetting all 4 next cycle of reading" << std::endl;
 				  //video_lastTs = rtp_v.time;
 				  keyFrame = 0;
 				  frameLen = 0;
@@ -662,12 +664,12 @@ namespace erizo {
 //		  if(size == 0)
 //			  return size;
 //	  }
-		  cout << "VIDEO Returning Video Receive Function\n\n" << endl;
+		  std::cout << "VIDEO Returning Video Receive Function\n\n" << std::endl;
 		  return 0;
   }
 
   void RTPRecorder::setBundle(int bund) {
-	  cout << "setting recorder bundle to " << bund << endl;
+	  std::cout << "setting recorder bundle to " << bund << std::endl;
 	  bundle_ = bund;
   }
 
@@ -676,42 +678,42 @@ namespace erizo {
   	/* WebM output */
   	fctx = avformat_alloc_context();
   	if(fctx == NULL) {
-  		cout << "Error allocating context" << endl;
+  		std::cout << "Error allocating context" << std::endl;
   		return -1;
   	}
   	//~ fctx->oformat = guess_format("webm", NULL, NULL);
   	fctx->oformat = av_guess_format("webm", NULL, NULL);
   	if(fctx->oformat == NULL) {
-  		cout << "Error guessing format" << endl;
+  		std::cout << "Error guessing format" << std::endl;
   		return -1;
   	}
   	snprintf(fctx->filename, sizeof(fctx->filename), "/home/ubuntu/lynckia/recorded/rtpdump-src.webm");
   	//~ vStream = av_new_stream(fctx, 0);
   	vStream = avformat_new_stream(fctx, 0);
   	if(vStream == NULL) {
-  		cout << "Error adding stream" << endl;
+  		std::cout << "Error adding stream" << std::endl;
   		return -1;
   	}
   	//~ avcodec_get_context_defaults2(vStream->codec, CODEC_TYPE_VIDEO);
   	avcodec_get_context_defaults2(vStream->codec, AVMEDIA_TYPE_VIDEO);
-  	cout << "VIDEO get context" << endl;
+  	std::cout << "VIDEO get context" << std::endl;
   	vStream->codec->codec_id = CODEC_ID_VP8;
-  	cout << "VIDEO defined codec id" << endl;
+  	std::cout << "VIDEO defined codec id" << std::endl;
   //	vStream->codec->codec_id = AV_CODEC_ID_VP8;
   	//~ vStream->codec->codec_type = CODEC_TYPE_VIDEO;
   	vStream->codec->codec_type = AVMEDIA_TYPE_VIDEO;
-  	cout << "VIDEO defined codec id" << endl;
+  	std::cout << "VIDEO defined codec id" << std::endl;
   	vStream->codec->time_base = (AVRational){1, fps};
   	vStream->codec->width = 640;
   	vStream->codec->height = 480;
-  	cout << "VIDEO defined codec id" << endl;
+  	std::cout << "VIDEO defined codec id" << std::endl;
   	vStream->codec->pix_fmt = PIX_FMT_YUV420P;
   	if (fctx->flags & AVFMT_GLOBALHEADER)
   		vStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
   	//~ fctx->timestamp = 0;
   	//~ if(url_fopen(&fctx->pb, fctx->filename, URL_WRONLY) < 0) {
   	if(avio_open(&fctx->pb, fctx->filename, AVIO_FLAG_WRITE) < 0) {
-  		cout << "Error opening file for output" << endl;
+  		std::cout << "Error opening file for output" << std::endl;
   		return -1;
   	}
   	//~ memset(&parameters, 0, sizeof(AVFormatParameters));
@@ -720,7 +722,7 @@ namespace erizo {
   	//~ fctx->max_delay = (int)(0.7 * AV_TIME_BASE);
   	//~ if(av_write_header(fctx) < 0) {
   	if(avformat_write_header(fctx, NULL) < 0) {
-  		cout << "Error writing header" << endl;
+  		std::cout << "Error writing header" << std::endl;
   		return -1;
   	}
   	return 0;
