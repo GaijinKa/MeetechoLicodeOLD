@@ -301,7 +301,7 @@ namespace erizo {
 		struct timespec tsp;
 		clock_gettime(CLOCK_MONOTONIC, &tsp);
 
-	    printf("initializing RTPRecorder at %d\n",);
+	    printf("initializing RTPRecorder \n");
 		params = (state *)malloc(sizeof(state));
 		if (!params) {
 			printf("Couldn't allocate param struct.\n");
