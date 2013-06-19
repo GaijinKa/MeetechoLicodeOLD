@@ -293,7 +293,6 @@ namespace erizo {
  	numBytes = 320*240*3, frameLen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
    	frame = NULL;
    	now = 0, before = 0, resync = 0;
-   	globalpath = NULL;
   }
 
   RTPRecorder::~RTPRecorder() {
@@ -727,7 +726,7 @@ namespace erizo {
   		std::cout << "Error guessing format" << std::endl;
   		return -1;
   	}
-  	snprintf(fctx->filename, sizeof(fctx->filename), globalpath);
+  	snprintf(fctx->filename, sizeof(fctx->filename), globalpath.c_str());
   	//~ vStream = av_new_stream(fctx, 0);
   	vStream = avformat_new_stream(fctx, 0);
   	if(vStream == NULL) {
