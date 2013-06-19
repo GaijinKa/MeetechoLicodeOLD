@@ -325,9 +325,9 @@ namespace erizo {
 		path += "/"+room+"/";
 		struct stat st = {0};
 
-		if (stat(path, &st) == -1) {
+		if (stat(path.c_str(), &st) == -1) {
 			std::cout << "AUDIO directory " << path << " not exist, creating... " << std::endl;
-		    mkdir(path, 0755);
+		    mkdir(path.c_str(), 0755);
 		}
 		std::string point_file = path+"/"+name+".opus";
 		params->out = fopen(point_file.c_str(), "w+");
