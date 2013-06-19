@@ -10,7 +10,9 @@
 #include <cstdlib>
 #include <netinet/in.h>
 #include <opus/opus.h>
-#include <boost/filesystem.hpp>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "RTPRecorder.h"
 #include <signal.h>
 
@@ -321,9 +323,11 @@ namespace erizo {
 
 		//AGGIUNGERE CHECK E CREAZIONE CARTELLA
 		path += "/"+room+"/";
-		if (!boost::filesystem::is_directory(path)) {
+		struct stat st = {0};
+
+		if (stat(path, &st) == -1) {
 			std::cout << "AUDIO directory " << path << " not exist, creating... " << std::endl;
-			boost::filesystem::create_directories(path);
+		    mkdir(path, 0755);
 		}
 		std::string point_file = path+"/"+name+".opus";
 		params->out = fopen(point_file.c_str(), "w+");
