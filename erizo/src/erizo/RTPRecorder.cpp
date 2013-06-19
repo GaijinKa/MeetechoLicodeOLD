@@ -304,13 +304,10 @@ namespace erizo {
 
 		struct timeval tv2;
 		gettimeofday(&tv2, NULL);
-		unsigned long int timestmp = tv2.tv_sec*1000 + tv2.tv_usec/1000
+		unsigned long int timestmp = tv2.tv_sec*1000 + tv2.tv_usec/1000;
 		const int n = snprintf(NULL, 0, "%lu", timestmp);
-		assert(n > 0);
 		char timstmp_string[n+1];
 		int c = snprintf(timstmp_string, n+1, "%lu", timestmp);
-		assert(timstmp_string[n] == '\0');
-		assert(c == n);
 
 	    std::cout << "initializing Audio Recorder " << std::endl;
 		params = (state *)malloc(sizeof(state));
@@ -736,7 +733,7 @@ namespace erizo {
 
 	struct timeval tv2;
 	gettimeofday(&tv2, NULL);
-	unsigned long int timestmp = tv2.tv_sec*1000 + tv2.tv_usec/1000
+	unsigned long int timestmp = tv2.tv_sec*1000 + tv2.tv_usec/1000;
 	const int n = snprintf(NULL, 0, "%lu", timestmp);
 	assert(n > 0);
 	char timstmp_string[n+1];
