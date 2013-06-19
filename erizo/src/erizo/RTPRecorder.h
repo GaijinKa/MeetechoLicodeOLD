@@ -109,7 +109,7 @@ private:
 	AVStream *vStream;
 	AVCodec *vCodec;
 	AVFrame *frame;
-	std:string composedpath;
+	std::string composedpath;
 	};
 }
 #endif /* RTPRECORDER_H_ */
