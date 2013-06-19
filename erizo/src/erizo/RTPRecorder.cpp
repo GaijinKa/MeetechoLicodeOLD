@@ -322,7 +322,7 @@ namespace erizo {
 		//AGGIUNGERE CHECK E CREAZIONE CARTELLA
 		path += "/"+room+"/";
 		if (!boost::filesystem::is_directory(path)) {
-			std::cout << "AUDIO directory " << path << " not exist, creating... " << endl;
+			std::cout << "AUDIO directory " << path << " not exist, creating... " << std::endl;
 			boost::filesystem::create_directories(path);
 		}
 		std::string point_file = path+"/"+name+".opus";
