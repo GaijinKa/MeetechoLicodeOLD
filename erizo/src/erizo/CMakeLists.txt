@@ -23,7 +23,7 @@ include_directories(${GLIB_INCLUDE_DIRS})
 target_link_libraries(erizo ${GLIB_LIBRARIES})
 
 # BOOST
-set (BOOST_LIBS filesystem system thread regex)
+set (BOOST_LIBS system thread regex)
 find_package(Boost COMPONENTS ${BOOST_LIBS} REQUIRED)
 target_link_libraries(erizo ${Boost_LIBRARIES})
 find_library(SRTP srtp)
