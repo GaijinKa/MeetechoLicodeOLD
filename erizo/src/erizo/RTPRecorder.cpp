@@ -571,7 +571,7 @@ namespace erizo {
 				  unsigned long int vp8ph = 0;
 				  memcpy(&vp8ph, start_f, 4);
 //				  std::cout << "VIDEO start_f copied in vp8ph (Vp8 Payload Header?)" << std::endl;
-				  vp8ph = ntohl(vp8ph);
+				  //vp8ph = ntohl(vp8ph);
 				  uint8_t size0 = ((vp8ph & 0xE0000000) >> 29);
 				  uint8_t hbit = ((vp8ph & 0x10000000) >> 28);
 				  uint8_t ver = ((vp8ph & 0x0E000000) >> 25);
