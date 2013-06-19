@@ -104,7 +104,7 @@ Handle<Value> RTPRecorder::stop(const Arguments& args) {
 
   return scope.Close(Null());
 }
-Handle<Value> WebRtcConnection::getCurrentState(const Arguments& args) {
+Handle<Value> RTPRecorder::getCurrentState(const Arguments& args) {
   HandleScope scope;
 
   WebRtcConnection* obj = ObjectWrap::Unwrap<WebRtcConnection>(args.This());
