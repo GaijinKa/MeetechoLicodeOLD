@@ -31,9 +31,8 @@ exports.WebRtcController = function () {
             var intervarId = setInterval(function () {
 
                 var state = wrtc.getCurrentState();
-
+                console.log("Sended Fir? the state is ", state);
                 if (state > 2) {
-
                     publishers[to].sendFIR();
                     clearInterval(intervarId);
                 }
