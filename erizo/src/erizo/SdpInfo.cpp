@@ -190,7 +190,8 @@ namespace erizo {
       sdp << "a=ice-pwd:" << icePassword_ << endl;
       sdp << "a=ice-options:google-ice" <<endl;
       sdp << "a=sendrecv" << endl;
-      sdp << "a=mid:video\n";
+      sdp << "a=mid:video" << endl;
+      sdp << "a=rtcp-fb:* ccm fir\n"
       if (isRtcpMux) 
         sdp << "a=rtcp-mux\n";
       for (unsigned int it = 0; it < cryptoVector_.size(); it++) {

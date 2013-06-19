@@ -30,6 +30,7 @@
 
 /******AUDIO RECORDING******/
 #define OPUS_PAYLOAD_TYPE 111
+#define VP8_PAYLOAD_TYPE 100
 
 /* helper, write a little-endian 32 bit int to memory */
 void le32(unsigned char *p, int v)
@@ -453,7 +454,7 @@ namespace erizo {
 
   int RTPRecorder::receiveVideoData(char* buf, int len) {
 
-//	  std::cout << "Incoming video data: " << len << " bytes" << std::endl;
+	  std::cout << "Incoming video data: " << len << " bytes" << std::endl;
 
 	  if (resync==0) {
     	  //test - inserisco qui l'inizio del fps?
@@ -482,8 +483,14 @@ namespace erizo {
 //	    		rtp_v.mark ? "M":".", rtp_v.cc);
 //	    std::cout << " %5d bytes\n", rtp_v.payload_size);
 
+	  std::cout << "PT: " << rtp_v.type << std::endl;
 	    packet += rtp_v.header_size;
 	    size -= rtp_v.header_size;
+
+	    if (rtp_v.type != VP8_PAYLOAD_TYPE) {
+	       std::cout << "skipping non-vp8 packet" << std::endl;
+	       return len;
+	     }
 
 	    if (size < 0) {
 	      std::cout << "VIDEO skipping short packet" << std::endl;
@@ -564,7 +571,7 @@ namespace erizo {
 				  unsigned long int vp8ph = 0;
 				  memcpy(&vp8ph, start_f, 4);
 //				  std::cout << "VIDEO start_f copied in vp8ph (Vp8 Payload Header?)" << std::endl;
-				 // vp8ph = ntohl(vp8ph); //FIXME
+				  vp8ph = ntohl(vp8ph);
 				  uint8_t size0 = ((vp8ph & 0xE0000000) >> 29);
 				  uint8_t hbit = ((vp8ph & 0x10000000) >> 28);
 				  uint8_t ver = ((vp8ph & 0x0E000000) >> 25);
@@ -586,7 +593,7 @@ namespace erizo {
 //					  int vp8ws = swap2(*(unsigned short*)(c+3))>>14;
 					  vp8h = swap2(*(unsigned short*)(c+5))&0x3fff;
 //					  int vp8hs = swap2(*(unsigned short*)(c+5))>>14;
-//					  std::cout << "VP8 source: " << vp8w << "x" << vp8h << std::endl;
+					  std::cout << "VP8 source: " << vp8w << "x" << vp8h << std::endl;
 				  }
 			  }
 		  }
