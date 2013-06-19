@@ -735,13 +735,10 @@ namespace erizo {
 	gettimeofday(&tv2, NULL);
 	unsigned long int timestmp = tv2.tv_sec*1000 + tv2.tv_usec/1000;
 	const int n = snprintf(NULL, 0, "%lu", timestmp);
-	assert(n > 0);
 	char timstmp_string[n+1];
 	int c = snprintf(timstmp_string, n+1, "%lu", timestmp);
-	assert(timstmp_string[n] == '\0');
-	assert(c == n);
 
-	globalpath += "_"+timstmp_string+".webm";
+	globalpath = globalpath +"_"+timstmp_string+".webm";
   	snprintf(fctx->filename, sizeof(fctx->filename), globalpath.c_str());
   	//~ vStream = av_new_stream(fctx, 0);
   	vStream = avformat_new_stream(fctx, 0);
