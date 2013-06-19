@@ -107,8 +107,8 @@ Handle<Value> RTPRecorder::stop(const Arguments& args) {
 Handle<Value> RTPRecorder::getCurrentState(const Arguments& args) {
   HandleScope scope;
 
-  WebRtcConnection* obj = ObjectWrap::Unwrap<WebRtcConnection>(args.This());
-  erizo::WebRtcConnection *me = obj->me;
+  RTPRecorder* obj = ObjectWrap::Unwrap<RTPRecorder>(args.This());
+  erizo::RTPRecorder *me = obj->me;
 
   int state = me->getCurrentState();
 
