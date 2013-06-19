@@ -302,8 +302,15 @@ namespace erizo {
 
   bool RTPRecorder::initAudio(std::string path, std::string name, std::string room) {
 
-		struct timespec tsp;
-		clock_gettime(CLOCK_MONOTONIC, &tsp);
+		struct timeval tv2;
+		gettimeofday(&tv2, NULL);
+		unsigned long int timestmp = tv2.tv_sec*1000 + tv2.tv_usec/1000
+		const int n = snprintf(NULL, 0, "%lu", timestmp);
+		assert(n > 0);
+		char timstmp_string[n+1];
+		int c = snprintf(timstmp_string, n+1, "%lu", timestmp);
+		assert(timstmp_string[n] == '\0');
+		assert(c == n);
 
 	    std::cout << "initializing Audio Recorder " << std::endl;
 		params = (state *)malloc(sizeof(state));
@@ -331,7 +338,7 @@ namespace erizo {
 			std::cout << "AUDIO directory " << path << " not exist, creating... " << std::endl;
 		    mkdir(path.c_str(), 0755);
 		}
-		std::string point_file = path+"/"+name+".opus";
+		std::string point_file = path+"/"+name+"_"+timstmp_string+".opus";
 		params->out = fopen(point_file.c_str(), "w+");
 		if (!params->out) {
 			std::cout << "AUDIO Couldn't open output file." << std::endl;
@@ -375,7 +382,7 @@ namespace erizo {
     	  std::cout << "VIDEO directory " << path << " not exist, creating... " << std::endl;
 		  mkdir(path.c_str(), 0755);
       }
-      globalpath = path+name+".webm";
+      globalpath = path+name;
 
       return true;
   }
@@ -726,6 +733,18 @@ namespace erizo {
   		std::cout << "Error guessing format" << std::endl;
   		return -1;
   	}
+
+	struct timeval tv2;
+	gettimeofday(&tv2, NULL);
+	unsigned long int timestmp = tv2.tv_sec*1000 + tv2.tv_usec/1000
+	const int n = snprintf(NULL, 0, "%lu", timestmp);
+	assert(n > 0);
+	char timstmp_string[n+1];
+	int c = snprintf(timstmp_string, n+1, "%lu", timestmp);
+	assert(timstmp_string[n] == '\0');
+	assert(c == n);
+
+	globalpath += "_"+timstmp_string+".webm";
   	snprintf(fctx->filename, sizeof(fctx->filename), globalpath.c_str());
   	//~ vStream = av_new_stream(fctx, 0);
   	vStream = avformat_new_stream(fctx, 0);
