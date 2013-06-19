@@ -10,7 +10,7 @@
 #include <cstdlib>
 #include <netinet/in.h>
 #include <opus/opus.h>
-
+#include <boost/filesystem.hpp>
 #include "RTPRecorder.h"
 #include <signal.h>
 
@@ -298,7 +298,7 @@ namespace erizo {
   }
 
 
-  bool RTPRecorder::initAudio(std::string path, std::string name) {
+  bool RTPRecorder::initAudio(std::string path, std::string name, std::string room) {
 
 		struct timespec tsp;
 		clock_gettime(CLOCK_MONOTONIC, &tsp);
@@ -317,6 +317,13 @@ namespace erizo {
 		if (ogg_stream_init(params->stream, rand()) < 0) {
 			std::cout << "Couldn't initialize Ogg stream state." << std::endl;
 			return false;
+		}
+
+		//AGGIUNGERE CHECK E CREAZIONE CARTELLA
+		path += "/"+room+"/";
+		if (!boost::filesystem::is_directory(path)) {
+			std::cout << "AUDIO directory " << path << " not exist, creating... " << endl;
+			boost::filesystem::create_directories(path);
 		}
 		std::string point_file = path+"/"+name+".opus";
 		params->out = fopen(point_file.c_str(), "w+");
@@ -341,7 +348,7 @@ namespace erizo {
 		return true;
   }
 
-  bool RTPRecorder::initVideo(std::string path, std::string name) {
+  bool RTPRecorder::initVideo(std::string path, std::string name, std::string room) {
 
 	  std::cout << "Init Video Recorder" << std::endl;
 
