@@ -328,8 +328,8 @@ Erizo.Room = function (spec) {
     };
 
     // Start Recording
-    that.record = function (stream, name) {
-        sendMessageSocket('startrec', {id: stream.getID(), name: name}, function () {
+    that.record = function (stream, name, room) {
+        sendMessageSocket('startrec', {id: stream.getID(), name: name, room: room}, function () {
         	L.Logger.info("start recording correctly");
         }, function () {
         	L.Logger.error("start recording failed");

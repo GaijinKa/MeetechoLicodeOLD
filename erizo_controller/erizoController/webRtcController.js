@@ -71,11 +71,11 @@ exports.WebRtcController = function () {
     };
 
     
-    initWebRtpRecorder = function (rtcrec, audio, video, name, callback) {
+    initWebRtpRecorder = function (rtcrec, audio, video, name, room, callback) {
     	if (audio)
-    		rtcrec.initAudio(config.erizo.recorderpath, name);
+    		rtcrec.initAudio(config.erizo.recorderpath, name, room);
     	if (video)
-    		rtcrec.initVideo(config.erizo.recorderpath, name);    		
+    		rtcrec.initVideo(config.erizo.recorderpath, name, room);    		
         callback();
         
     };
@@ -178,7 +178,7 @@ exports.WebRtcController = function () {
      * This WebRtcConnection will be added to the subscribers list of the
      * OneToManyProcessor.
      */
-    that.addRecorder = function (to, name, audio, video, callback) {
+    that.addRecorder = function (to, name, room, audio, video, callback) {
 
     	if (publishers[to] !== undefined && recorder[to] === undefined) {
 
@@ -187,7 +187,7 @@ exports.WebRtcController = function () {
             recorder[to] = true;
             publishers[to].addRecorder(rtcrec);  //lo sto prima associando e poi inizializzando
             //E' questa funzione che ingrippa!!!!
-            initWebRtpRecorder(rtcrec, audio, video, name, function () {
+            initWebRtpRecorder(rtcrec, audio, video, name, room, function () {
             	console.log("recorder initialized correctly")
             });
 

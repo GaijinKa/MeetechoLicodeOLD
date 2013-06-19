@@ -57,12 +57,14 @@ Handle<Value> RTPRecorder::initVideo(const Arguments& args) {
 
   v8::String::Utf8Value param(args[0]->ToString());
   v8::String::Utf8Value param2(args[1]->ToString());
+  v8::String::Utf8Value param3(args[2]->ToString());
 
 // convert it to string
   std::string path = std::string(*param);
   std::string name = std::string(*param2);
+  std::string room = std::string(*param3);
 
-  me->initVideo(path, name);
+  me->initVideo(path, name, room);
 
   return scope.Close(Null());
 }
@@ -75,12 +77,14 @@ Handle<Value> RTPRecorder::initAudio(const Arguments& args) {
 
   v8::String::Utf8Value param(args[0]->ToString());
   v8::String::Utf8Value param2(args[1]->ToString());
+  v8::String::Utf8Value param3(args[2]->ToString());
 
 // convert it to string
   std::string path = std::string(*param);
   std::string name = std::string(*param2);
+  std::string room = std::string(*param3);
 
-  me->initAudio(path, name);
+  me->initVideo(path, name, room);
 
   return scope.Close(Null());
 }
