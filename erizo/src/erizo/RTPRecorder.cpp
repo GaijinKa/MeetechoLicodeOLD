@@ -293,6 +293,7 @@ namespace erizo {
  	numBytes = 320*240*3, frameLen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
    	frame = NULL;
    	now = 0, before = 0, resync = 0;
+   	globalpath = NULL;
   }
 
   RTPRecorder::~RTPRecorder() {
@@ -311,11 +312,13 @@ namespace erizo {
 			std::cout << "Couldn't allocate param struct." << std::endl;
 			return false;
 		}
+
 		params->stream = (ogg_stream_state *)malloc(sizeof(ogg_stream_state));
 		if (!params->stream) {
 			std::cout << "Couldn't allocate stream struct." << std::endl;
 			return false;
 		}
+
 		if (ogg_stream_init(params->stream, rand()) < 0) {
 			std::cout << "Couldn't initialize Ogg stream state." << std::endl;
 			return false;
@@ -359,14 +362,22 @@ namespace erizo {
 	  av_register_all();
 	  fctx = NULL;
 	  vStream = NULL;
-		vCodec = NULL;
-		frame = NULL;
+	  vCodec = NULL;
+	  frame = NULL;
 
       received_frame = (uint8_t *)calloc(numBytes, sizeof(uint8_t));
       memset(received_frame, 0, numBytes);
-//    buffer = (uint8_t *)calloc(10000, sizeof(uint8_t));
-//    memset(buffer, 0, 10000);
       start_f = NULL; // FIXME was buffer;
+
+      path += "/"+room+"/";
+      struct stat st = {0};
+
+      if (stat(path.c_str(), &st) == -1) {
+    	  std::cout << "VIDEO directory " << path << " not exist, creating... " << std::endl;
+		  mkdir(path.c_str(), 0755);
+      }
+      globalpath = path+name+".webm";
+
       return true;
   }
 
@@ -716,7 +727,7 @@ namespace erizo {
   		std::cout << "Error guessing format" << std::endl;
   		return -1;
   	}
-  	snprintf(fctx->filename, sizeof(fctx->filename), "/home/ubuntu/lynckia/recorded/rtpdump-src.webm");
+  	snprintf(fctx->filename, sizeof(fctx->filename), globalpath);
   	//~ vStream = av_new_stream(fctx, 0);
   	vStream = avformat_new_stream(fctx, 0);
   	if(vStream == NULL) {
