@@ -356,7 +356,6 @@ namespace erizo {
 //    buffer = (uint8_t *)calloc(10000, sizeof(uint8_t));
 //    memset(buffer, 0, 10000);
       start_f = NULL; // FIXME was buffer;
-      recorderState_ = 3;
       return true;
   }
 
@@ -663,6 +662,7 @@ namespace erizo {
 							  fps = 5;
 						  std::cout << "Creating WebM file: " << fps  << " fps" << std::endl;
 						  create_webm(fps);
+					      recorderState_ = 3;
 					  }
 					  frames = 0;
 					  before = now;
