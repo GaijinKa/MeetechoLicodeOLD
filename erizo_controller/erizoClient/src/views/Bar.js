@@ -39,6 +39,13 @@ Erizo.Bar = function (spec) {
     that.logo.setAttribute('style', 'width: 10%; height: 100%; max-width: 30px; position: absolute; top: 0; left: 2px;');
     that.logo.setAttribute('alt', 'Meetecho');
     that.logo.setAttribute('src', 'img/logo_mb.png');
+    
+    that.rec = document.createElement('img');
+    that.rec.setAttribute('style', 'width: 10%; height: 100%; max-width: 30px; position: absolute; top: 0; left: 2px;');
+    that.rec.setAttribute('alt', 'Recorder');
+    that.rec.setAttribute('src', 'img/recicon_red.png');
+    that.rec.setAttribute('id', 'rec_btn');
+    that.rec.setAttribute('data-rec', that.id);
 
     // Private functions
     show = function (displaying) {
@@ -65,7 +72,8 @@ Erizo.Bar = function (spec) {
     that.div.appendChild(that.bar);
     that.bar.appendChild(that.link);
     that.link.appendChild(that.logo);
-
+    that.div.appendChild(that.rec);
+    
     // Speaker component
     if (spec.options === undefined || spec.options.speaker === undefined || spec.options.speaker === true) {
         that.speaker = new Erizo.Speaker({elementID: 'subbar_' + that.id, id: that.id, video: spec.video});

@@ -31,7 +31,6 @@ exports.WebRtcController = function () {
             var intervarId = setInterval(function () {
 
                 var state = wrtc.getCurrentState();
-                console.log("Sended Fir? the state is ", state);
                 if (state > 2) {
                     publishers[to].sendFIR();
                     clearInterval(intervarId);
@@ -186,7 +185,7 @@ exports.WebRtcController = function () {
             var rtcrec = new addon.RTPRecorder();
             recorder[to] = true;
             publishers[to].addRecorder(rtcrec);  //lo sto prima associando e poi inizializzando
-            //E' questa funzione che ingrippa!!!!
+
             initWebRtpRecorder(rtcrec, audio, video, name, room, function () {
             	console.log("recorder initialized correctly")
             });
