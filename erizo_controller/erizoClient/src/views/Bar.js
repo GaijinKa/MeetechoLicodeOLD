@@ -44,7 +44,7 @@ Erizo.Bar = function (spec) {
     that.rec.setAttribute('style', 'width: 10%; height: 100%; max-width: 30px; position: absolute; top: 0; left: 2px;');
     that.rec.setAttribute('alt', 'Recorder');
     that.rec.setAttribute('src', 'img/recicon_red.png');
-    that.rec.setAttribute('id', 'rec_btn');
+    that.rec.setAttribute('class', 'rec_btn');
     that.rec.setAttribute('data-rec', that.id);
 
     // Private functions
