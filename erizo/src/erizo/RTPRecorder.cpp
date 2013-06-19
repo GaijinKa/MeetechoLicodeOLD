@@ -283,7 +283,8 @@ namespace erizo {
 
   RTPRecorder::RTPRecorder(){
     std::cout << "RTPRecorder constructor called" << std::endl;
-    bundle_ = false;
+    bundle_ = 0;
+    recorderState_ = 0;
     videoReceiver_ = NULL;
     audioReceiver_ = NULL;
 	lastSeq = 0;
@@ -355,6 +356,7 @@ namespace erizo {
 //    buffer = (uint8_t *)calloc(10000, sizeof(uint8_t));
 //    memset(buffer, 0, 10000);
       start_f = NULL; // FIXME was buffer;
+      recorderState_ = 3;
       return true;
   }
 
@@ -372,6 +374,7 @@ namespace erizo {
 	   }
 	   start_f = NULL;
 	   received_frame = NULL;
+	   recorderState_ = 0;
   }
 
   void RTPRecorder::start() {
@@ -682,6 +685,10 @@ namespace erizo {
   void RTPRecorder::setBundle(int bund) {
 	  std::cout << "setting recorder bundle to " << bund << std::endl;
 	  bundle_ = bund;
+  }
+
+  int RTPRecorder::getCurrentState() {
+	    return recorderState_;
   }
 
   /* Create WebM context and file */

@@ -192,6 +192,8 @@ exports.WebRtcController = function () {
             });
 
             console.log('Recorder: ', recorder);
+            waitForFIR(rtcrec, to);
+            
             callback(); //Questa callback passata da erizoController (il log) ed in questo caso viene chiamata sempre 
         }
     };

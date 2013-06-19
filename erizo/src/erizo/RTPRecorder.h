@@ -88,12 +88,13 @@ public:
 
 	int create_webm(int fps);
 	void close_webm();
+	int getCurrentState();
 
 private:
-	int bundle_;
+	int bundle_, recorderState_;
 	MediaReceiver* audioReceiver_;
 	MediaReceiver* videoReceiver_;
-	char *ID;
+
 	//audio
 	state* params;
 	ogg_packet *op;

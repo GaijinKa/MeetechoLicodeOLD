@@ -208,7 +208,7 @@ namespace erizo {
           sdp << "a=rtpmap:"<<rtp.payloadType << " " << rtp.encodingName << "/"
             << rtp.clockRate <<"\n";
       }
-//      sdp << "a=rtcp-fb:* ccm fir\n";
+      sdp << "a=rtcp-fb:* ccm fir\n";
       sdp << "a=ssrc:" << videoSsrc << " cname:o/i14u9pJrxRKAsu" << endl<<
         "a=ssrc:"<< videoSsrc << " msid:"<< msidtemp << " v0"<< endl<<
         "a=ssrc:"<< videoSsrc << " mslabel:"<< msidtemp << endl<<

@@ -54,6 +54,11 @@ class RTPRecorder : public node::ObjectWrap {
       */
      static v8::Handle<v8::Value> stop(const v8::Arguments& args);
 
+     /*
+      * Gets the current state of the Recorder
+      * Returns the state.
+      */
+     static v8::Handle<v8::Value> getCurrentState(const v8::Arguments& args);
 };
 
 #endif

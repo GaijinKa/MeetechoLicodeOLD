@@ -18,6 +18,7 @@ void RTPRecorder::Init(Handle<Object> target) {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("initAudio"), FunctionTemplate::New(initAudio)->GetFunction());
   tpl->PrototypeTemplate()->Set(String::NewSymbol("start"), FunctionTemplate::New(start)->GetFunction());
   tpl->PrototypeTemplate()->Set(String::NewSymbol("stop"), FunctionTemplate::New(stop)->GetFunction());
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("getCurrentState"), FunctionTemplate::New(getCurrentState)->GetFunction());
 
   Persistent<Function> constructor = Persistent<Function>::New(tpl->GetFunction());
   target->Set(String::NewSymbol("RTPRecorder"), constructor);
@@ -102,4 +103,14 @@ Handle<Value> RTPRecorder::stop(const Arguments& args) {
   me->stop();
 
   return scope.Close(Null());
+}
+Handle<Value> WebRtcConnection::getCurrentState(const Arguments& args) {
+  HandleScope scope;
+
+  WebRtcConnection* obj = ObjectWrap::Unwrap<WebRtcConnection>(args.This());
+  erizo::WebRtcConnection *me = obj->me;
+
+  int state = me->getCurrentState();
+
+  return scope.Close(Number::New(state));
 }
