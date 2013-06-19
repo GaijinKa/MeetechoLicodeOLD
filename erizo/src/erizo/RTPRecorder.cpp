@@ -303,7 +303,7 @@ namespace erizo {
 		struct timespec tsp;
 		clock_gettime(CLOCK_MONOTONIC, &tsp);
 
-	    std::cout << "initializing RTPRecorder " << std::endl;
+	    std::cout << "initializing Audio Recorder " << std::endl;
 		params = (state *)malloc(sizeof(state));
 		if (!params) {
 			std::cout << "Couldn't allocate param struct." << std::endl;

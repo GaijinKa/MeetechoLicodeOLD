@@ -84,7 +84,7 @@ Handle<Value> RTPRecorder::initAudio(const Arguments& args) {
   std::string name = std::string(*param2);
   std::string room = std::string(*param3);
 
-  me->initVideo(path, name, room);
+  me->initAudio(path, name, room);
 
   return scope.Close(Null());
 }

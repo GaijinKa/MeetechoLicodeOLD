@@ -195,6 +195,8 @@ exports.WebRtcController = function () {
             waitForFIR(rtcrec, to);
             
             callback(); //Questa callback passata da erizoController (il log) ed in questo caso viene chiamata sempre 
+        } else {
+        	console.log("error addRecorder!",publisher[to]," ",recorder[to]);
         }
     };
     

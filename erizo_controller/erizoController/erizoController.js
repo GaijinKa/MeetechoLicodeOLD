@@ -315,7 +315,8 @@ var listen = function () {
 
             if (socket.room.streams[to.id].hasAudio() || socket.room.streams[to.id].hasVideo()) {
                 console.log("Socket gets recorder message correctly");
-            	socket.room.webRtcController.addRecorder(to.id, to.name, to.room, socket.room.streams[to.id].hasVideo(), socket.room.streams[to.id].hasAudio(), function () {
+                console.log("to.id : ", to.id, " - to.name : ", to.name, " - to.room : ",to.room," - hasAudio : ", socket.room.streams[to.id].hasAudio(), " - hasVideo : ",socket.room.streams[to.id].hasVideo())
+            	socket.room.webRtcController.addRecorder(to.id, to.name, to.room, socket.room.streams[to.id].hasAudio(), socket.room.streams[to.id].hasVideo(), function () {
             		console.log("STUB : Recorder instantiate correctly to "+to.name+" for room "+to.room);
             	});
             }
