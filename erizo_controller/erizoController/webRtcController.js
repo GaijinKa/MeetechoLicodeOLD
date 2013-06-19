@@ -180,7 +180,7 @@ exports.WebRtcController = function () {
      */
     that.addRecorder = function (to, name, room, audio, video, callback) {
 
-    	if (publishers[to] !== undefined && (recorder[to] === undefined || recorder == false)) {
+    	if (publishers[to] !== undefined && (recorder[to] === undefined || recorder[to] == false)) {
 
             console.log("Adding recorder to ", name);
             var rtcrec = new addon.RTPRecorder();

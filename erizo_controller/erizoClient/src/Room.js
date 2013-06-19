@@ -328,21 +328,13 @@ Erizo.Room = function (spec) {
     };
 
     // Start Recording
-    that.record = function (stream, name, room) {
-        sendMessageSocket('startrec', {id: stream.getID(), name: name, room: room}, function () {
-        	L.Logger.info("start recording correctly");
-        }, function () {
-        	L.Logger.error("start recording failed");
-        });
+    that.record = function (stream, name, room, callback, errorCallback) {
+        sendMessageSocket('startrec', {id: stream.getID(), name: name, room: room}, callback, errorCallback);
     };
 
     // Stop Recording
-    that.stoprecord = function (stream) {
-        sendMessageSocket('stoprec', stream.getID(), function () {
-        	L.Logger.info("stop recording correctly");
-        }, function () {
-        	L.Logger.error("stop recording failed");
-        });
+    that.stoprecord = function (stream, callback, errorCallback) {
+        sendMessageSocket('stoprec', stream.getID(), callback, errorCallback);
     };
 
     //It searchs the streams that have "name" attribute with "value" value
