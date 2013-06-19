@@ -190,8 +190,7 @@ namespace erizo {
       sdp << "a=ice-pwd:" << icePassword_ << endl;
       sdp << "a=ice-options:google-ice" <<endl;
       sdp << "a=sendrecv" << endl;
-      sdp << "a=mid:video" << endl;
-      sdp << "a=rtcp-fb:* ccm fir\n"
+      sdp << "a=mid:video\n";
       if (isRtcpMux) 
         sdp << "a=rtcp-mux\n";
       for (unsigned int it = 0; it < cryptoVector_.size(); it++) {
@@ -209,7 +208,7 @@ namespace erizo {
           sdp << "a=rtpmap:"<<rtp.payloadType << " " << rtp.encodingName << "/"
             << rtp.clockRate <<"\n";
       }
-
+      sdp << "a=rtcp-fb:* ccm fir\n";
       sdp << "a=ssrc:" << videoSsrc << " cname:o/i14u9pJrxRKAsu" << endl<<
         "a=ssrc:"<< videoSsrc << " msid:"<< msidtemp << " v0"<< endl<<
         "a=ssrc:"<< videoSsrc << " mslabel:"<< msidtemp << endl<<
