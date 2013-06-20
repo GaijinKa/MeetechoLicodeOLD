@@ -72,7 +72,7 @@ Erizo.Bar = function (spec) {
     that.div.appendChild(that.bar);
     that.bar.appendChild(that.link);
     that.link.appendChild(that.logo);
-    that.div.appendChild(that.rec);
+    //that.div.appendChild(that.rec);
     
     // Speaker component
     if (spec.options === undefined || spec.options.speaker === undefined || spec.options.speaker === true) {
