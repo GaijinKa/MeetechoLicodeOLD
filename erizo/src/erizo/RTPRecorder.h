@@ -11,7 +11,6 @@
 extern "C" {
 #include <libavcodec/avcodec.h>	/* FFmpeg libavcodec */
 #include <libavformat/avformat.h>	/* FFmpeg libavformat */
-#include <libavformat/avio.h>	/* FFmpeg libavformat */
 }
 
 typedef struct {

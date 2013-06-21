@@ -740,8 +740,8 @@ namespace erizo {
 
 	globalpath = globalpath +"_"+timstmp_string+".webm";
   	snprintf(fctx->filename, sizeof(fctx->filename), globalpath.c_str());
-  	//~ vStream = av_new_stream(fctx, 0);
-  	vStream = avformat_new_stream(fctx, 0);
+  	vStream = av_new_stream(fctx, 0);
+  	//vStream = avformat_new_stream(fctx, 0);
   	if(vStream == NULL) {
   		std::cout << "Error adding stream" << std::endl;
   		return -1;
@@ -762,8 +762,8 @@ namespace erizo {
   		vStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
   	}
   	//~ fctx->timestamp = 0;
-  	//~ if(url_fopen(&fctx->pb, fctx->filename, URL_WRONLY) < 0) {
-  	if(avio_open(&fctx->pb, fctx->filename, AVIO_FLAG_WRITE) < 0) {
+    if(url_fopen(&fctx->pb, fctx->filename, URL_WRONLY) < 0) {
+  	//if(avio_open(&fctx->pb, fctx->filename, AVIO_FLAG_WRITE) < 0) {
   		std::cout << "Error opening file for output" << std::endl;
   		return -1;
   	}
@@ -771,8 +771,8 @@ namespace erizo {
   	//~ av_set_parameters(fctx, &parameters);
   	//~ fctx->preload = (int)(0.5 * AV_TIME_BASE);
   	//~ fctx->max_delay = (int)(0.7 * AV_TIME_BASE);
-  	//~ if(av_write_header(fctx) < 0) {
-  	if(avformat_write_header(fctx, NULL) < 0) {
+    if(av_write_header(fctx) < 0) {
+  	//if(avformat_write_header(fctx, NULL) < 0) {
   		std::cout << "Error writing header" << std::endl;
   		return -1;
   	}
@@ -794,8 +794,8 @@ namespace erizo {
   	}
   	if(fctx != NULL) {
   		std::cout << "avio close and free" << std::endl;
-  		//~ url_fclose(fctx->pb);
-  		avio_close(fctx->pb);
+  		url_fclose(fctx->pb);
+  		//avio_close(fctx->pb);
   		av_free(fctx);
   	}
   }
