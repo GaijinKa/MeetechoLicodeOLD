@@ -30,11 +30,14 @@ echo [nuve] Done, nuve.js compiled
 
 echo [nuve] Setup lynckia files
 
+
+cd $ROOT
+
+sudo chmod 755 lynckia/scripts/initMeetechoForever.sh
+
+sudo mkdir recorded/
+
+
 cd $CURRENT_DIR
-
-sudo dos2unix /home/ubuntu/lynckia/scripts/initMeetechoNode.sh
-sudo chmod 755 /home/ubuntu/lynckia/scripts/initMeetechoNode.sh
-
-sudo mkdir /home/ubuntu/lynckia/recorded
 
 echo [nuve] Lynckia Setted-Up
