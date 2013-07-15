@@ -211,10 +211,10 @@ namespace erizo {
            	sdp << "a=rtpmap:"<<rtp.payloadType << " " << rtp.encodingName << "/"
       			<< rtp.clockRate <<"\n";
         	if(rtp.payloadType == 100)
-          		sdp << "a=rtcp-fb:100 ccm fir\n" <<  "a=rtcp-fb:100 nack\n";
+          		sdp << "a=rtcp-fb:100 ccm fir\n" <<  "a=rtcp-fb:100 nack\n" << "a=rtcp-fb:100 goog-remb";
         }
       }
-      sdp << "a=rtcp-fb:* ccm fir\n" << "a=rtcp-fb:* nack\n";
+//      sdp << "a=rtcp-fb:* ccm fir\n" << "a=rtcp-fb:* nack\n";
       sdp << "a=ssrc:" << videoSsrc << " cname:o/i14u9pJrxRKAsu" << endl<<
         "a=ssrc:"<< videoSsrc << " msid:"<< msidtemp << " v0"<< endl<<
         "a=ssrc:"<< videoSsrc << " mslabel:"<< msidtemp << endl<<
