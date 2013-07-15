@@ -60,7 +60,8 @@ Erizo.LynckiaEvent = function (spec) {
 
     // Event type. Examples are: 'room-connected', 'stream-added', etc.
     that.type = spec.type;
-
+	if (spec.hasOwnProperty('error'))
+		that.error = spec.error;
     return that;
 };
 

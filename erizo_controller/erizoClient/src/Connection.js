@@ -16,12 +16,12 @@ Erizo.Connection = function (spec) {
 	    console.log("FcStack");
         L.Logger.error('Publish/subscribe video/audio streams not supported in erizofc yet');
         that = Erizo.FcStack(spec);
-    } else if (BrowserDetect.browser == "Chrome" && (BrowserDetect.version == "25"|| BrowserDetect.version== "26" || BrowserDetect.version=="27")) {
+    } else if (BrowserDetect.browser == "Chrome" && (BrowserDetect.version == "25"|| BrowserDetect.version== "26" || BrowserDetect.version=="27" || BrowserDetect.version=="28")) {
         // Google Chrome Stable.
         console.log("Stable!");
         that = Erizo.ChromeStableStack(spec);
         that.browser = "chrome-stable";
-    } else if (BrowserDetect.browser == "Chrome" && (BrowserDetect.version == "29"|| BrowserDetect.version== "28")) {
+    } else if (BrowserDetect.browser == "Chrome" && (BrowserDetect.version == "29"|| BrowserDetect.version== "30")) {
         // Google Chrome Canary.
         console.log("Canary!");
         that = Erizo.ChromeCanaryStack(spec);

@@ -91,12 +91,13 @@ Erizo.Room = function (spec) {
     // It connects to the server through socket.io
     connectSocket = function (token, callback, error) {
         // Once we have connected
-
-        var host = 'http://' + token.host;
-
+		
+//		var host = 'http://' + token.host;
+		var host = 'http://lynckia.conf.meetecho.com';
         delete io.sockets[host];
 
-        that.socket = io.connect(token.host, {reconnect: false, secure: false});
+//      that.socket = io.connect(token.host, {reconnect: false, secure: false, port: 843});
+        that.socket = io.connect('lynckia.conf.meetecho.com', {reconnect: false, secure: false, port: 80});
 
         // We receive an event with a new stream in the room.
         // type can be "media" or "data"
