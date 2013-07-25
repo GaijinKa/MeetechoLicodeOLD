@@ -76,7 +76,7 @@ Erizo.Stream = function (spec) {
                 that.dispatchEvent(streamEvent);
             }
         } catch (e) {
-            L.Logger.error("Error accessing to local media");
+            L.Logger.error("Error accessing to local media "+e);
         }
     };
 
@@ -103,7 +103,7 @@ Erizo.Stream = function (spec) {
                 that.player = player;
                 that.showing = true;
             }
-        }
+		}
     };
 
     that.hide = function () {

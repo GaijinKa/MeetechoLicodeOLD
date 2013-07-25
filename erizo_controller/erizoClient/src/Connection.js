@@ -23,13 +23,13 @@ Erizo.Connection = function (spec) {
         that.browser = "chrome-stable";
     } else if (BrowserDetect.browser == "Chrome" && (BrowserDetect.version == "29"|| BrowserDetect.version== "30")) {
         // Google Chrome Canary.
-        console.log("Canary!");
+        console.log("Canary!"+BrowserDetect.version);
         that = Erizo.ChromeCanaryStack(spec);
         that.browser = "chrome-canary";
     } else if (BrowserDetect.browser == "Bowser" && (BrowserDetect.version == "25"|| BrowserDetect.version== "28")) {
         // Bowser
         that.browser = "bowser";
-    } else if (BrowserDetect.browser == "Firefox" && (BrowserDetect.version == "20")) {
+    } else if (BrowserDetect.browser == "Firefox" && (BrowserDetect.version >= "20" || BrowserDetect.version == "21" || BrowserDetect.version == "22")) {
         // Firefox
 		console.log("Firefox!");
 		that = Erizo.FireFoxStack(spec);

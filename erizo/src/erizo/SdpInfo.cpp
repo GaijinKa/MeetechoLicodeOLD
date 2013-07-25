@@ -211,7 +211,7 @@ namespace erizo {
            	sdp << "a=rtpmap:"<<rtp.payloadType << " " << rtp.encodingName << "/"
       			<< rtp.clockRate <<"\n";
         	if(rtp.payloadType == 100)
-          		sdp << "a=rtcp-fb:100 ccm fir\n" <<  "a=rtcp-fb:100 nack\n" << "a=rtcp-fb:100 goog-remb";
+          		sdp << "a=rtcp-fb:100 ccm fir\n" <<  "a=rtcp-fb:100 nack\n" << "a=rtcp-fb:100 goog-remb\n" << "a=fmtp:100 x-google-max-bitrate=512000";
         }
       }
 //      sdp << "a=rtcp-fb:* ccm fir\n" << "a=rtcp-fb:* nack\n";

@@ -92,12 +92,12 @@ Erizo.Room = function (spec) {
     connectSocket = function (token, callback, error) {
         // Once we have connected
 		
-//		var host = 'http://' + token.host;
-		var host = 'http://lynckia.conf.meetecho.com';
+		var host = 'http://' + token.host;
+//		var host = 'http://lynckia.conf.meetecho.com';
         delete io.sockets[host];
 
-//      that.socket = io.connect(token.host, {reconnect: false, secure: false, port: 843});
-        that.socket = io.connect('lynckia.conf.meetecho.com', {reconnect: false, secure: false, port: 80});
+      that.socket = io.connect(token.host, {reconnect: true, secure: false});
+//      that.socket = io.connect('lynckia.conf.meetecho.com', {reconnect: false, secure: false, port: 80});
 
         // We receive an event with a new stream in the room.
         // type can be "media" or "data"
@@ -215,10 +215,10 @@ Erizo.Room = function (spec) {
 
     // It publishes the stream provided as argument. Once it is added it throws a 
     // StreamEvent("stream-added").
-    that.publish = function (stream) {
+    that.publish = function (stream, callbackSuccess) {
 
         // 1- If the stream is not local we do nothing.
-        if (stream.local && that.localStreams[stream.getID()] === undefined) {
+        if (stream!=undefined && stream.local && that.localStreams[stream.getID()] === undefined) {
 
             // 2- Publish Media Stream to Erizo-Controller
             if (stream.hasAudio() || stream.hasVideo()) {
@@ -237,6 +237,7 @@ Erizo.Room = function (spec) {
                             };
                             that.localStreams[id] = stream;
                             stream.room = that;
+							callbackSuccess();
                         };
                         stream.pc.processSignalingMessage(answer);
                     });
@@ -264,10 +265,11 @@ Erizo.Room = function (spec) {
     that.unpublish = function (stream) {
 
         // Unpublish stream from Erizo-Controller
-        if (stream.local) {
+        if (stream!=undefined && stream.local && that.localStreams[stream.getID()] !== undefined) {
             // Media stream
             sendMessageSocket('unpublish', stream.getID());
             stream.room = undefined;
+
             if (stream.hasAudio() || stream.hasVideo()) {
                 stream.pc.close();
                 stream.pc = undefined;
@@ -282,7 +284,7 @@ Erizo.Room = function (spec) {
     // It subscribe to a remote stream and draws it inside the HTML tag given by the ID='elementID'
     that.subscribe = function (stream) {
 
-        if (!stream.local) {
+        if (!stream.local && stream!=undefined) {
 
             if (stream.hasVideo() || stream.hasAudio()) {
                 // 1- Subscribe to Stream
