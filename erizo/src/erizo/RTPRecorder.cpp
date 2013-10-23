@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cstdio>
 #include <sys/time.h>
+#include <sys/timeb.h>
 #include <cstring>
 #include <cstdlib>
 #include <netinet/in.h>
@@ -15,9 +16,9 @@
 #include <unistd.h>
 #include "RTPRecorder.h"
 #include <signal.h>
-
+#include <math.h>
+#include <vector>
 /******VIDEO RECORDING******/
-
 
 /* WebRTC stuff (VP8) */
 #if defined(__ppc__) || defined(__ppc64__)
@@ -33,6 +34,7 @@
 /******AUDIO RECORDING******/
 #define OPUS_PAYLOAD_TYPE 111
 #define VP8_PAYLOAD_TYPE 100
+#define AVFMT_TS_NONSTRICT  0x2000
 
 /* helper, write a little-endian 32 bit int to memory */
 void le32(unsigned char *p, int v)
@@ -289,10 +291,12 @@ namespace erizo {
     recorderState_ = 0;
     videoReceiver_ = NULL;
     audioReceiver_ = NULL;
+	audioActive = false;
+	audioActive = false;
 	lastSeq = 0;
  	numBytes = 320*240*3, frameLen = 0, marker = 0, frames = 0, fps = 0, step = 0, vp8gotFirstKey = 0, keyFrame = 0, vp8w = 0, vp8h = 0;
    	frame = NULL;
-   	now = 0, before = 0, resync = 0;
+   	now = 0, initTime = 0, before = 0, resync = 0, lastOffset = 0;
   }
 
   RTPRecorder::~RTPRecorder() {
@@ -308,6 +312,7 @@ namespace erizo {
 		const int n = snprintf(NULL, 0, "%lu", timestmp);
 		char timstmp_string[n+1];
 		int c = snprintf(timstmp_string, n+1, "%lu", timestmp);
+		audioActive = true;
 
 	    std::cout << "initializing Audio Recorder " << std::endl;
 		params = (state *)malloc(sizeof(state));
@@ -362,11 +367,12 @@ namespace erizo {
 
 	  std::cout << "Init Video Recorder" << std::endl;
 
-	  av_register_all();
-	  fctx = NULL;
-	  vStream = NULL;
-	  vCodec = NULL;
-	  frame = NULL;
+      av_register_all();
+      fctx = NULL;
+      vStream = NULL;
+      vCodec = NULL;
+      frame = NULL;
+      videoActive = true;
 
       received_frame = (uint8_t *)calloc(numBytes, sizeof(uint8_t));
       memset(received_frame, 0, numBytes);
@@ -385,19 +391,23 @@ namespace erizo {
   }
 
   void RTPRecorder::close() {
-	   ogg_flush(params);
-	   /* clean up */
-	   fclose(params->out);
-	   ogg_stream_destroy(params->stream);
-	   std::free(params);
-
-	   close_webm();
-
-	   if(received_frame){
-	  	   std::free(received_frame);
+	   if (this->audioActive) {
+		ogg_flush(params);
+	  	 /* clean up */
+	  	 fclose(params->out);
+	  	 ogg_stream_destroy(params->stream);
+	  	 std::free(params);
 	   }
-	   start_f = NULL;
-	   received_frame = NULL;
+
+	   if (this->videoActive) {
+		   close_webm();
+		   std::cout << "CLOSING WEBM " << std::endl;
+		   if(received_frame){
+		  	   std::free(received_frame);
+		   }
+		   start_f = NULL;
+		   received_frame = NULL;
+	   }
 	   recorderState_ = 0;
   }
 
@@ -481,13 +491,13 @@ namespace erizo {
 
   int RTPRecorder::receiveVideoData(char* buf, int len) {
 
-	  std::cout << "Incoming video data: " << len << " bytes" << std::endl;
+	  //std::cout << "Incoming video data: " << len << " bytes" << std::endl;
 
 	  if (resync==0) {
     	  //test - inserisco qui l'inizio del fps?
-		  gettimeofday(&tv, NULL);
-		  before = tv.tv_sec*1000 + tv.tv_usec/1000;
-          resync = before;
+          //gettimeofday(&tv, NULL);
+	  //	  before = tv.tv_sec*1000 + tv.tv_usec/1000;
+          resync = 1;
      	  std::cout << "Starting fps evaluation - before="<<before<< std::endl;
      	  std::cout << "Waiting for RTP frames..." << std::endl;
 	  }
@@ -510,12 +520,12 @@ namespace erizo {
 //	    		rtp_v.mark ? "M":".", rtp_v.cc);
 //	    std::cout << " %5d bytes\n", rtp_v.payload_size);
 
-	  std::cout << "PT: " << rtp_v.type << std::endl;
+	  //std::cout << "PT: " << rtp_v.type << std::endl;
 	    packet += rtp_v.header_size;
 	    size -= rtp_v.header_size;
 
 	    if (rtp_v.type != VP8_PAYLOAD_TYPE) {
-	       std::cout << "skipping non-vp8 packet" << std::endl;
+	       //std::cout << "skipping non-vp8 packet" << std::endl;
 	       return len;
 	     }
 
@@ -524,8 +534,6 @@ namespace erizo {
 	      return len;
 	    }
 
-	  //video_ts = rtp_v.time;
-//	  if (video_ts==video_lastTs) { 	//continue encoding
 	    if((rtp_v.seq-lastSeq) > 1 && lastSeq!=0)
 			  std::cout << "VIDEO unexpected seq - " << rtp_v.seq << ", should have been " << lastSeq << std::endl;
 
@@ -634,10 +642,15 @@ namespace erizo {
 //		  start_f = buffer;
 		  if(rtp_v.mark) {	/* Marker bit is set, the frame is complete */
 //			  std::cout << "VIDEO MarkBit marked (!!!) -> start dumping.." << std::endl;
-			  //video_lastTs = rtp_v.time;
+			  //video_lastTs = rtp_v.tiWme;
+			  if (initTime == 0) initTime = rtp_v.time;
 			  if(frameLen > 0) {
+				  uint8_t * stored_frame = (uint8_t *)calloc(frameLen, sizeof(uint8_t));
+ 			          memset(stored_frame, 0, frameLen);
 //				  std::cout << "VIDEO the frame is not null -> go ahead.." << std::endl;
 				  memset(received_frame+frameLen, 0, FF_INPUT_BUFFER_PADDING_SIZE);
+                                  memcpy(stored_frame, received_frame, frameLen);
+
 //				  std::cout << "VIDEO memset called correctly -> go ahead.." << std::endl;
 				  frame = avcodec_alloc_frame();
 //				  std::cout << "VIDEO Allocated Frame, configuring AVPacket" << std::endl;
@@ -646,64 +659,61 @@ namespace erizo {
 				  av_init_packet(&apacket);
 //				  std::cout << "VIDEO AVPacket initialized... " << std::endl;
 				  apacket.stream_index = 0;
-				  apacket.data = received_frame;
+				  apacket.data = stored_frame;
 				  apacket.size = frameLen;
 				  if(keyFrame)
-					  apacket.flags |= AV_PKT_FLAG_KEY;
+					apacket.flags |= AV_PKT_FLAG_KEY;
 
 				  /* First we save to the file... */
-//				  std::cout << " ### Writing frame to file..." << std::endl;
-				  apacket.dts = AV_NOPTS_VALUE;
-				  apacket.pts = AV_NOPTS_VALUE;
-//				  std::cout << "VIDEO AVPacket SetUp" << std::endl;
+                                  apacket.dts = (rtp_v.time-initTime)/90;
+				  apacket.pts = (rtp_v.time-initTime)/90;
 
 				  if(fctx) {
-					  if(av_write_frame(fctx, &apacket) < 0)
+					  if(av_write_frame(fctx, &apacket) < 0) 
 						  std::cout << "Error writing video frame to file..." << std::endl;
-					  else
-						  std::cout << " ### ### frame written pts=" << apacket.pts  << std::endl;
+//					  else
+//						  std::cout << " ### ### frame written pts=" << apacket.pts  << std::endl;
 				  } else {
-//					  std::cout << "Still waiting for fps evaluation to create the file..." << std::endl;
+					  std::cout << "Still waiting for fps evaluation to create the file..." << std::endl;
 				  }
 				  /* Try evaluating the incoming FPS */
 				  frames++;
-				  gettimeofday(&tv, NULL);
-				  now = tv.tv_sec*1000 + tv.tv_usec/1000;
-				  if((now-before) >= 1000) {	/* Evaluate every second */
+				  //gettimeofday(&tv, NULL);
+				  now = rtp_v.time;//tv.tv_sec*1000 + tv.tv_usec/1000;
+				  if (before==0) {
+					before = rtp_v.time;
+				  }
+				  if((now-before) > (90000-lastOffset)) {	/* Evaluate every second */
 					  std::cout << "fps=" << frames << " (in " << (now-before) <<" ms)" << std::endl;
 					  if(fps == 0) {
 						  /* Adapt framerate: this is just an evaluation (FIXME) */
-						  if(frames > 26)
+						  if(frames > 28)
 							  fps = 30;
-						  else if(frames > 22)
+						  else if(frames > 23)
 							  fps = 25;
-						  else if(frames > 17)
+						  else if(frames > 18)
 							  fps = 20;
-						  else if(frames > 12)
+						  else if(frames > 13)
 							  fps = 15;
-						  else if(frames > 7)
+						  else if(frames > 8)
 							  fps = 10;
-						  else if(frames > 2)
+						  else if(frames > 3)
 							  fps = 5;
 						  std::cout << "Creating WebM file: " << fps  << " fps" << std::endl;
 						  create_webm(fps);
-					      recorderState_ = 3;
+					      	  recorderState_ = 3;
 					  }
+					  lastOffset = (fps!=0) ? floor(90000/frames) : 0; 
 					  frames = 0;
 					  before = now;
 				  }
-
-//				  std::cout << "VIDEO Resetting all 4 next cycle of reading" << std::endl;
 				  keyFrame = 0;
 				  frameLen = 0;
 				  lastSeq = 0;
 			  }
-			  //video_ts += step;	/* FIXME was 4500, but this implied fps=20 at max */
 		  }
 		  if(size == 0)
 			  return size;
-//	  }
-//		  std::cout << "VIDEO Returning Video Receive Function\n\n" << std::endl;
 		  return 0;
   }
 
@@ -730,15 +740,25 @@ namespace erizo {
   		std::cout << "Error guessing format" << std::endl;
   		return -1;
   	}
+  	fctx->oformat->flags |= AVFMT_TS_NONSTRICT;
 
-	struct timeval tv2;
-	gettimeofday(&tv2, NULL);
-	unsigned long int timestmp = tv2.tv_sec*1000 + tv2.tv_usec/1000;
-	const int n = snprintf(NULL, 0, "%lu", timestmp);
-	char timstmp_string[n+1];
-	int c = snprintf(timstmp_string, n+1, "%lu", timestmp);
 
-	globalpath = globalpath +"_"+timstmp_string+".webm";
+	struct timeb tmb;
+	ftime(&tmb);
+	unsigned long int timestmp_Sec =  tmb.time;
+	unsigned short int timestmp_Mill = tmb.millitm;
+	if (timestmp_Mill<100) timestmp_Mill += 99;
+        const int n1 = snprintf(NULL, 0, "%lu", timestmp_Sec);
+        char timestmp_string1[n1+1];
+        int c = snprintf(timestmp_string1, n1+1, "%lu", timestmp_Sec);
+
+	const int n2 = snprintf(NULL, 0, "%lu", timestmp_Mill);
+	char timestmp_string2[n2+1];
+	c = snprintf(timestmp_string2, n2+1, "%lu", timestmp_Mill);
+
+        std::cout << "TIMESTAMP??? timestmp " << timestmp_string1 << " " << timestmp_string2 << std::endl;
+
+	globalpath = globalpath +"_"+timestmp_string1+timestmp_string2+".webm";
   	snprintf(fctx->filename, sizeof(fctx->filename), globalpath.c_str());
   	vStream = av_new_stream(fctx, 0);
   	//vStream = avformat_new_stream(fctx, 0);

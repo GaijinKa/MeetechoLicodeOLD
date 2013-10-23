@@ -2,6 +2,7 @@
 #define RTPRECORDER_H_
 
 #include <string>
+#include <vector>
 #include <ogg/ogg.h>
 #include "MediaDefinitions.h"
 #ifndef INT64_C
@@ -101,10 +102,12 @@ private:
 
 	//video
 	uint8_t *received_frame, *start_f;
-	int frameLen, dec_errors, marker, frames, fps, step, vp8gotFirstKey, keyFrame, vp8w, vp8h, numBytes, lastSeq;
-	unsigned long int now, before, resync;
+	int frameLen, dec_errors, marker, frames, fps, step, vp8gotFirstKey, keyFrame, vp8w, vp8h, numBytes, lastSeq, video_lastTs;
+	unsigned long int now, initTime, before, resync, lastOffset;
 	//struct timespec tv;
 	struct timeval tv;
+	bool audioActive, videoActive;
+
 	AVFormatContext *fctx;
 	AVStream *vStream;
 	AVCodec *vCodec;

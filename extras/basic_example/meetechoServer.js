@@ -38,7 +38,7 @@ app.use(function (req, res, next) {
     }
 });
 
-N.API.init(config.nuve.superserviceID, config.nuve.superserviceKey, 'http://localhost:3000/');
+N.API.init(config.nuve.superserviceID, config.nuve.superserviceKey, 'http://localhost:13000/');
 
 app.post('/createToken/:room', function (req, res) {
     "use strict";

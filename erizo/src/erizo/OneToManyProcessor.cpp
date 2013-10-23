@@ -126,6 +126,9 @@ namespace erizo {
  }
 
   void OneToManyProcessor::closeAll() {
+    if (recorder!=NULL) {
+	this->removeRecorder();
+    }
     std::map<std::string, WebRtcConnection*>::iterator it;
     for (it = subscribers.begin(); it != subscribers.end(); it++) {
       (*it).second->close();

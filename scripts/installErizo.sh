@@ -40,10 +40,10 @@ install_erizo_controller(){
 }
 
 echo 'Installing libsrtp...'
-install_libsrtp
+#install_libsrtp
 echo 'Installing erizo...'
 install_erizo
 echo 'Installing erizoAPI...'
 install_erizo_api
 echo 'Installing erizoController...'
-install_erizo_controller
+#install_erizo_controller
