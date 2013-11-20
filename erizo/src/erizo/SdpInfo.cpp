@@ -98,10 +98,28 @@ namespace erizo {
           printedAudio = true;
         }
 
-        sdp << "a=candidate:" << cand.foundation << " " << cand.componentId
-          << " " << cand.netProtocol << " " << cand.priority << " "
-          << cand.hostAddress << " " << cand.hostPort << " typ "
-          << hostType_str << " generation 0" << endl;
+
+       int comps = cand.componentId;
+        if (isRtcpMux) {
+          comps++;
+        }
+        for (int idx = 1; idx <= comps; idx++) {
+          sdp << "a=candidate:" << cand.foundation << " " << idx
+              << " " << cand.netProtocol << " " << cand.priority << " "
+              << cand.hostAddress << " " << cand.hostPort << " typ "
+              << hostType_str;
+          if (cand.hostType == SRLFX) {
+            //raddr 192.168.0.12 rport 50483
+            sdp << " raddr " << cand.baseAddress << " rport " << cand.basePort;
+          }
+          sdp << " generation 0" << endl;
+        }
+
+
+//        sdp << "a=candidate:" << cand.foundation << " " << cand.componentId
+//          << " " << cand.netProtocol << " " << cand.priority << " "
+//          << cand.hostAddress << " " << cand.hostPort << " typ "
+//          << hostType_str << " generation 0" << endl;
 
         iceUsername_ = cand.username;
         icePassword_ = cand.password;
@@ -111,9 +129,10 @@ namespace erizo {
     if (printedAudio) {
       sdp << "a=ice-ufrag:" << iceUsername_ << endl;
       sdp << "a=ice-pwd:" << icePassword_ << endl;
-      sdp << "a=ice-options:google-ice" <<endl;
+//      sdp << "a=ice-options:google-ice" <<endl;
       sdp << "a=sendrecv" << endl;
       sdp << "a=mid:audio\n";
+//      sdp << "a=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level" << endl;
       if (isRtcpMux)
         sdp << "a=rtcp-mux\n";
       for (unsigned int it = 0; it < cryptoVector_.size(); it++) {
@@ -131,10 +150,15 @@ namespace erizo {
           sdp << "a=rtpmap:"<<rtp.payloadType << " " << rtp.encodingName << "/"
             << rtp.clockRate;
           if (rtp.encodingName=="opus")
-        	 sdp <<"/2";
+        	 sdp <<"/2" << "a=fmtp:111 minptime=10";
           sdp <<"\n";
         }
       }
+      if (audioSsrc == 0) {
+        audioSsrc = 44444;
+      }
+
+      sdp << "a=maxptime:60" << endl;
       sdp << "a=ssrc:" << audioSsrc << " cname:o/i14u9pJrxRKAsu" << endl<<
         "a=ssrc:"<< audioSsrc << " msid:"<< msidtemp << " a0"<< endl<<
         "a=ssrc:"<< audioSsrc << " mslabel:"<< msidtemp << endl<<
@@ -167,7 +191,7 @@ namespace erizo {
           sdp << "m=video " << cand.hostPort << " RTP/" << (profile==SAVPF?"SAVPF ":"AVPF "); //<<  "100 101 102 103\n"
           for (unsigned int it =0; it<payloadVector_.size(); it++){
             const RtpMap& payload_info = payloadVector_[it];
-            if (payload_info.mediaType == VIDEO_TYPE)
+            if (payload_info.mediaType == VIDEO_TYPE && payload_info.payloadType == 100)
               sdp << payload_info.payloadType <<" ";
           }
 
@@ -178,10 +202,27 @@ namespace erizo {
           printedVideo = true;
         }
 
-        sdp << "a=candidate:" << cand.foundation << " " << cand.componentId
-          << " " << cand.netProtocol << " " << cand.priority << " "
-          << cand.hostAddress << " " << cand.hostPort << " typ "
-          << hostType_str << " generation 0" << endl;
+
+        int comps = cand.componentId;
+         if (isRtcpMux) {
+           comps++;
+         }
+         for (int idx = 1; idx <= comps; idx++) {
+           sdp << "a=candidate:" << cand.foundation << " " << idx
+               << " " << cand.netProtocol << " " << cand.priority << " "
+               << cand.hostAddress << " " << cand.hostPort << " typ "
+               << hostType_str;
+           if (cand.hostType == SRLFX) {
+             //raddr 192.168.0.12 rport 50483
+             sdp << " raddr " << cand.baseAddress << " rport " << cand.basePort;
+           }
+           sdp << " generation 0" << endl;
+         }
+
+//        sdp << "a=candidate:" << cand.foundation << " " << cand.componentId
+//          << " " << cand.netProtocol << " " << cand.priority << " "
+//          << cand.hostAddress << " " << cand.hostPort << " typ "
+//          << hostType_str << " generation 0" << endl;
 
         iceUsername_ = cand.username;
         icePassword_ = cand.password;
@@ -191,7 +232,9 @@ namespace erizo {
     if (printedVideo) {
       sdp << "a=ice-ufrag:" << iceUsername_ << endl;
       sdp << "a=ice-pwd:" << icePassword_ << endl;
-      sdp << "a=ice-options:google-ice" <<endl;
+//      sdp << "a=extmap:2 urn:ietf:params:rtp-hdrext:toffset" << endl;
+//      sdp << "a=extmap:3 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time" << endl;
+//      sdp << "a=ice-options:google-ice" <<endl;
       sdp << "a=sendrecv" << endl;
       sdp << "a=mid:video\n";
       if (isRtcpMux) 
@@ -207,11 +250,11 @@ namespace erizo {
 
       for (unsigned int it = 0; it < payloadVector_.size(); it++) {
         const RtpMap& rtp = payloadVector_[it];
-        if (rtp.mediaType==VIDEO_TYPE) {
+        if (rtp.mediaType==VIDEO_TYPE && rtp.payloadType==100) {
            	sdp << "a=rtpmap:"<<rtp.payloadType << " " << rtp.encodingName << "/"
       			<< rtp.clockRate <<"\n";
         	if(rtp.payloadType == 100)
-          		sdp << "a=rtcp-fb:100 ccm fir\n" <<  "a=rtcp-fb:100 nack\n" << "a=rtcp-fb:100 goog-remb\n" << "a=fmtp:100 x-google-max-bitrate=512000";
+          		sdp << "a=rtcp-fb:100 ccm fir\n" <<  "a=rtcp-fb:100 nack\n" << "a=rtcp-fb:100 goog-remb\n";// << "a=fmtp:100 x-google-max-bitrate=512000" << endl;
         }
       }
 //      sdp << "a=rtcp-fb:* ccm fir\n" << "a=rtcp-fb:* nack\n";

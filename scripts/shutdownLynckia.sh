@@ -1,6 +1,6 @@
 #!/bin/bash
 
-killall node
+killall nodejs
 
 rm /root/.forever/*.log
 

@@ -108,12 +108,11 @@ namespace erizo {
       if (video_) {
         //        if (remoteSdp_.getCryptoInfos().size()!=0){
         if (remoteSdp_.profile==SAVPF){
-          videoSrtp_ = new SrtpChannel();
+	videoSrtp_ = new SrtpChannel();
           CryptoInfo crytp;
           crytp.cipherSuite = std::string("AES_CM_128_HMAC_SHA1_80");
           crytp.mediaType = VIDEO_TYPE;
           std::string key = SrtpChannel::generateBase64Key();
-
           crytp.keyParams = key;
           crytp.tag = 0;
           localSdp_.addCrypto(crytp);
@@ -135,7 +134,7 @@ namespace erizo {
           crytp.mediaType = AUDIO_TYPE;
           crytp.tag = 1;
           std::string key = SrtpChannel::generateBase64Key();
-          crytp.keyParams = key;
+         crytp.keyParams = key;
           localSdp_.addCrypto(crytp);
         }
         //        }

@@ -122,7 +122,7 @@ bool SrtpChannel::configureSrtpSession(srtp_t *session, const char* key,
 	policy.window_size = 1024;
 	policy.allow_repeat_tx = 1;
 	policy.next = NULL;
-	//printf("auth_tag_len %d\n", policy.rtp.auth_tag_len);
+	printf("auth_tag_len %d\n", policy.rtp.auth_tag_len);
 
 	gsize len = 0;
 	uint8_t *akey = (uint8_t*) g_base64_decode((gchar*) key, &len);

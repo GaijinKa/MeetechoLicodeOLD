@@ -520,12 +520,12 @@ namespace erizo {
 //	    		rtp_v.mark ? "M":".", rtp_v.cc);
 //	    std::cout << " %5d bytes\n", rtp_v.payload_size);
 
-	  //std::cout << "PT: " << rtp_v.type << std::endl;
+//	    std::cout << "PT: " << rtp_v.type << std::endl;
 	    packet += rtp_v.header_size;
 	    size -= rtp_v.header_size;
 
 	    if (rtp_v.type != VP8_PAYLOAD_TYPE) {
-	       //std::cout << "skipping non-vp8 packet" << std::endl;
+	       std::cout << "skipping non-vp8 packet" << std::endl;
 	       return len;
 	     }
 
@@ -615,7 +615,7 @@ namespace erizo {
 				  uint8_t size2 = ((vp8ph & 0x0000FF00) >> 8);
 				  int fpSize = size0 + 8 * size1 + 2048 * size2;
 				  if(!pbit) {
-					  std::cout << "VIDEO Pbit not marked! is a KeyFrame? -> reading.." << std::endl;
+//					  std::cout << "VIDEO Pbit not marked! is a KeyFrame? -> reading.." << std::endl;
 					  vp8gotFirstKey = 1;
 					  keyFrame = 1;
 					  // Get resolution

@@ -15,6 +15,7 @@
 
 typedef struct _NiceAgent NiceAgent;
 typedef struct _GMainLoop GMainLoop;
+typedef struct _GMainContext GMainContext;
 
 namespace erizo {
 //forward declarations
@@ -91,6 +92,7 @@ public:
 	std::vector<CandidateInfo>* localCandidates;
 
 	void updateIceState(IceState state);
+	void updateComponentState(unsigned int compId, IceState state);
 
 
 private:
@@ -99,9 +101,10 @@ private:
 	WebRtcConnection* conn_;
 	GMainLoop* loop_;
 	boost::thread m_Thread_;
-  int iceComponents_, stunPort_, minPort_, maxPort_;
-  std::string stunServer_;
-
+	int iceComponents_, stunPort_, minPort_, maxPort_;
+	std::string stunServer_;
+	std::map <unsigned int, IceState> comp_state_list;
+	GMainContext* context_;
 };
 
 } /* namespace erizo */
