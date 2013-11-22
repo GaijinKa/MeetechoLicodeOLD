@@ -150,7 +150,7 @@ namespace erizo {
           sdp << "a=rtpmap:"<<rtp.payloadType << " " << rtp.encodingName << "/"
             << rtp.clockRate;
           if (rtp.encodingName=="opus")
-        	 sdp <<"/2" << "a=fmtp:111 minptime=10";
+        	 sdp <<"/2\n" << "a=fmtp:111 minptime=10";
           sdp <<"\n";
         }
       }

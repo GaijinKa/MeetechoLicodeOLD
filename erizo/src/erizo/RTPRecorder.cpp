@@ -703,7 +703,7 @@ namespace erizo {
 						  create_webm(fps);
 					      	  recorderState_ = 3;
 					  }
-					  lastOffset = (fps!=0) ? floor(90000/frames) : 0; 
+					  lastOffset = 0; //FIXME (fps!=0) ? floor(90000/frames) : 0; 
 					  frames = 0;
 					  before = now;
 				  }
