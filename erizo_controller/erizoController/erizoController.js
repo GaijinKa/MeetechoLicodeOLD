@@ -240,8 +240,8 @@ var listen = function () {
             var id, st;
             if (options.state !== 'data') {
                 if (options.state === 'offer' && socket.state === 'sleeping') {
-                    id = Math.random() * 100000000000000000;
-                    socket.room.webRtcController.addPublisher(id, sdp, function (answer) {
+                    id = Math.floor(Math.random() * 1000000000000000000)..replace(/\./g, 'M'); 
+		    socket.room.webRtcController.addPublisher(id, sdp, function (answer) {
                         socket.state = 'waitingOk';
                         answer = answer.replace(privateRegexp, publicIP);
                         callback(answer, id);
@@ -255,8 +255,8 @@ var listen = function () {
                     sendMsgToRoom(socket.room, 'onAddStream', st.getPublicStream());
                 }
             } else {
-                id = Math.random() * 100000000000000000;
-                st = new ST.Stream({id: id, audio: options.audio, video: options.video, data: options.data, attributes: options.attributes});
+                id = Math.floor(Math.random() * 1000000000000000000)..replace(/\./g, 'M'); 
+		st = new ST.Stream({id: id, audio: options.audio, video: options.video, data: options.data, attributes: options.attributes});
                 socket.streams.push(id);
                 socket.room.streams[id] = st;
                 callback(undefined, id);
