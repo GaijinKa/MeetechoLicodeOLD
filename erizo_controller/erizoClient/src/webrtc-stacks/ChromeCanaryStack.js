@@ -2,7 +2,7 @@
 
 var Erizo = Erizo || {};
 
-Erizo.ChromeCanaryStack = function (spec) {
+Erizo.ChromeStableStack = function (spec) {
     "use strict";
 
     var that = {},
@@ -12,6 +12,8 @@ Erizo.ChromeCanaryStack = function (spec) {
         "iceServers": []
     };
 
+    that.con = {'optional': [{'DtlsSrtpKeyAgreement': false}]};
+    
     if (spec.stunServerUrl !== undefined) {
         that.pc_config.iceServers.push({"url": spec.stunServerUrl});
     } 
@@ -25,7 +27,7 @@ Erizo.ChromeCanaryStack = function (spec) {
 
     that.roapSessionId = 103;
 
-    that.peerConnection = new WebkitRTCPeerConnection(that.pc_config);
+    that.peerConnection = new WebkitRTCPeerConnection(that.pc_config, that.con);
 
     that.peerConnection.onicecandidate = function (event) {
         console.log("PeerConnection: ", spec.session_id);
@@ -92,7 +94,8 @@ Erizo.ChromeCanaryStack = function (spec) {
                     sdp: msg.sdp,
                     type: 'answer'
                 };
-                console.log("Received ANSWER: ", sd);
+                console.log("Received ANSWER: ", sd.sdp);
+                sd.sdp = setBandwidth(sd.sdp);
                 that.peerConnection.setRemoteDescription(new RTCSessionDescription(sd));
                 that.sendOK();
                 that.state = 'established';
@@ -196,7 +199,9 @@ Erizo.ChromeCanaryStack = function (spec) {
                 // See if the current offer is the same as what we already sent.
                 // If not, no change is needed.   
 
-                that.peerConnection.createOffer(function (sessionDescription) {
+                that.peerConnection.createOffer(function (sessionDescription) {             	
+                	
+                    sessionDescription.sdp = setBandwidth(sessionDescription.sdp);
 
                     var newOffer = sessionDescription.sdp;
 

@@ -94,7 +94,7 @@ Erizo.Stream = function (spec) {
         }
     };
 
-    that.show = function (elementID, options) {
+    that.show = function (elementID, options, callback) {
         that.elementID = elementID;
         if (that.hasVideo()) {
             // Draw on HTML
@@ -102,6 +102,7 @@ Erizo.Stream = function (spec) {
                 var player = new Erizo.VideoPlayer({id: that.getID(), stream: that.stream, elementID: elementID, options: options});
                 that.player = player;
                 that.showing = true;
+				callback();
             }
 		}
     };
@@ -114,6 +115,18 @@ Erizo.Stream = function (spec) {
             }
         }
     };
+
+	that.showOverlay = function () {
+        if (that.player !== undefined) {
+            that.player.showOverlay();
+        }	
+	}
+	
+	that.hideOverlay = function () {
+        if (that.player !== undefined) {
+            that.player.hideOverlay();
+        }	
+	}
 
     getFrame = function () {
         if (that.player !== undefined && that.stream !== undefined) {

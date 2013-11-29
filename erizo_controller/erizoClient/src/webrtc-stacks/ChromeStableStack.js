@@ -12,6 +12,8 @@ Erizo.ChromeStableStack = function (spec) {
         "iceServers": []
     };
 
+    that.con = {'optional': [{'DtlsSrtpKeyAgreement': false}]};
+    
     if (spec.stunServerUrl !== undefined) {
         that.pc_config.iceServers.push({"url": spec.stunServerUrl});
     } 
@@ -25,7 +27,7 @@ Erizo.ChromeStableStack = function (spec) {
 
     that.roapSessionId = 103;
 
-    that.peerConnection = new WebkitRTCPeerConnection(that.pc_config);
+    that.peerConnection = new WebkitRTCPeerConnection(that.pc_config, that.con);
 
     that.peerConnection.onicecandidate = function (event) {
         console.log("PeerConnection: ", spec.session_id);
@@ -93,6 +95,7 @@ Erizo.ChromeStableStack = function (spec) {
                     type: 'answer'
                 };
                 console.log("Received ANSWER: ", sd.sdp);
+                sd.sdp = setBandwidth(sd.sdp);
                 that.peerConnection.setRemoteDescription(new RTCSessionDescription(sd));
                 that.sendOK();
                 that.state = 'established';
@@ -198,6 +201,8 @@ Erizo.ChromeStableStack = function (spec) {
 
                 that.peerConnection.createOffer(function (sessionDescription) {             	
                 	
+                    sessionDescription.sdp = setBandwidth(sessionDescription.sdp);
+
                     var newOffer = sessionDescription.sdp;
 
                     console.log("Changed", sessionDescription.sdp);
