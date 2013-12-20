@@ -361,6 +361,14 @@ var listen = function () {
             for (i in socket.streams) {
                 if (socket.streams.hasOwnProperty(i)) {
                     sendMsgToRoom(socket.room, 'onRemoveStream', {id: socket.streams[i]});
+                    // FIXME: Temporal
+                    var to = socket.room.streams[i].getID();
+                    if (socket.room.streams[to].hasAudio() || socket.room.streams[to].hasVideo() || socket.room.streams[to].hasScreen()) {
+                        if (!socket.room.p2p) {
+                            socket.room.webRtcController.removeSubscriber(socket.id, to);
+                        };
+                    }
+                    // End of fixme
                 }
             }
 

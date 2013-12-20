@@ -345,7 +345,7 @@ bool NiceConnection::setRemoteCandidates(
 		thecandidate->priority = cinfo.priority;
 		thecandidate->transport = NICE_CANDIDATE_TRANSPORT_UDP;
 		candList = g_slist_append(candList, thecandidate);
-	        nice_agent_set_remote_credentials(agent_, (guint) 1, thecandidate->username, thecandidate->password);
+	    nice_agent_set_remote_credentials(agent_, (guint) 1, thecandidate->username, thecandidate->password);
 
 	}
 
